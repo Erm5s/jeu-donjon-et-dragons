@@ -1,27 +1,86 @@
 @startuml
-'https://plantuml.com/class-diagram
+scale 1
+package DOOnjonsEtDragons
+{
+    package Personnage
+    {
+        class Joueur
+        {
+            - m_nomJoueur : String
+            - m_personnage : Personnage
+            + <<Create>> Joueur (nom:String, personnage:Personnage)
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+        }
+        class Personnage
+        {
+            - m_nomPersonnage : String
+            - m_race : Race
+            - m_classe : Classe
+            - m_caract : Caracteristique
+            - m_inventaire : Array<Equipement>
+            - m_equipement : Array<Equipement>
+            + <<Create>> Personnage (nom:String, race:Race, caract:Caracteristique, inventaire:Array, equipement:Array)
+            + sEquiper(equipement:Equipement)
+            + seDeplacer()
+            + attaquer()
+            + ramasser()
+        }
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+        class Race
+        {
+            - m_nomRace : String
+            + <<Create>> Race (nom:String)
+        }
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
+        class Classe
+        {
+            - m_nomClasse : String
+            + <<Create>> Classe (nom:String)
+        }
 
-class ArrayList {
-Object[] elementData
-size()
+
+
+        class Caracteristique
+        {
+            - m_PDV : Integer
+            - m_Force : Integer
+            - m_Dexterite : Integer
+            - m_ClasseArmure : Integer
+            - m_Vitesse : Integer
+            - m_Initiative : Integer
+            + <<Create>> Caracteristique (pdv:Integer, force:Integer, dexterite:Integer, vitesse:Integer, initiative:Integer)
+            + <<Create>> Caracteristique (pdv:Integer, force:Integer, dexterite:Integer, classeArmure:Integer, initiative:Integer)
+            + attributionStats (personnage:Personnage)
+        }
+    }
+
+    class MDJ
+    {
+        - m_nom : String
+        + debutPartie()
+        + creerCarteDonjon():String
+        + positionnerObstacle():String
+        + creerMonstre():String
+        + positionnerJoueur():String
+        + positionnerEquipement():String
+        + presentation():String
+    }
+
+    class Dé
+    {
+        + lancerDe(nmbDé:Integer, nmbFace:Integer) : Integer
+    }
+
+    class Monstre
+    {
+        - m_espece : String
+        - m_numero : Integer
+        - m_attaque : Attaque
+        - m_caract : Caracteristique
+        + attaquer()
+        + seDeplacer()
+    }
+
+
 }
-
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
-}
-
 @enduml
