@@ -4,13 +4,6 @@ package DOOnjonsEtDragons
 {
     package Personnage
     {
-        class Joueur
-        {
-            - m_nomJoueur : String
-            - m_personnage : Personnage
-            + <<Create>> Joueur (nom:String, personnage:Personnage)
-
-        }
         class Personnage
         {
             - m_nomPersonnage : String
@@ -40,7 +33,7 @@ package DOOnjonsEtDragons
 
 
 
-        class Caracteristique
+        class Caracteristiques
         {
             - m_PDV : Integer
             - m_Force : Integer
@@ -80,7 +73,33 @@ package DOOnjonsEtDragons
         + attaquer()
         + seDeplacer()
     }
+package Equipement
+{
+    Abstract class Equipement
+    {
+        - m_estLourde:Boolean
+        - m_estADistance:Boolean
+        - m_estCourante:Boolean
 
+        - m_portee: Integer
+        - m_degats: Integer
+
+        - m_classArmure: Integer
+    }
+    class Arme extends Equipement
+    {
+        - m_estADistance:Boolean
+        - m_estCourante:Boolean
+        - m_portee: Integer
+        - m_degats: Integer
+
+    }
+    class Armure extends Equipement
+    {
+        - m_estLourde:Boolean
+        - m_classArmure: Integer
+    }
+}
 
 }
 @enduml
