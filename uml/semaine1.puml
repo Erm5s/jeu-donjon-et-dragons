@@ -2,11 +2,11 @@
 scale 1
 package DOOnjonsEtDragons
 {
-    package Personnage
+    package Personnages
     {
         class Personnage
         {
-            - m_nomPersonnage : String
+            - m_nom : String
             - m_race : Race
             - m_classe : Classe
             - m_caract : Caracteristique
@@ -14,24 +14,34 @@ package DOOnjonsEtDragons
             - m_equipement : Array<Equipement>
             + <<Create>> Personnage (nom:String, race:Race, caract:Caracteristique, inventaire:Array, equipement:Array)
             + sEquiper(equipement:Equipement)
-            + seDeplacer()
-            + attaquer()
             + ramasser()
         }
 
-        class Race
+        class Monstre
         {
-            - m_nomRace : String
-            + <<Create>> Race (nom:String)
+            - m_espece : String
+            - m_numero : Integer
+            - m_attaque : Attaque
+            - m_caract : Caracteristique
+            + attaquer()
+            + seDeplacer()
         }
 
-        class Classe
+        enum Race
         {
-            - m_nomClasse : String
-            + <<Create>> Classe (nom:String)
+            ELFE,
+            HALFELIN,
+            HUMAIN,
+            NAIN
         }
 
-
+        enum Classe
+        {
+            CLERC,
+            GUERRIER,
+            MAGICIEN,
+            ROUBLARD
+        }
 
         class Caracteristiques
         {
@@ -44,6 +54,27 @@ package DOOnjonsEtDragons
             + <<Create>> Caracteristique (pdv:Integer, force:Integer, dexterite:Integer, vitesse:Integer, initiative:Integer)
             + <<Create>> Caracteristique (pdv:Integer, force:Integer, dexterite:Integer, classeArmure:Integer, initiative:Integer)
             + attributionStats (personnage:Personnage)
+        }
+    }
+
+    package DéroulementDuDonjon
+    {
+        class creationDonjon
+        {
+            + creationCarte():Void
+            + creationObstacle():Void
+            + creationMonstre():Void
+            + placerPersonnages():Void
+            + placerEquipements():Void
+            + contexte():String
+        }
+        class tour
+        {
+
+        }
+        class fin
+        {
+
         }
     }
 
@@ -64,42 +95,39 @@ package DOOnjonsEtDragons
         + lancerDe(nmbDé:Integer, nmbFace:Integer) : Integer
     }
 
-    class Monstre
-    {
-        - m_espece : String
-        - m_numero : Integer
-        - m_attaque : Attaque
-        - m_caract : Caracteristique
-        + attaquer()
-        + seDeplacer()
-    }
-package Equipement
-{
-    Abstract class Equipement
-    {
-        - m_estLourde:Boolean
-        - m_estADistance:Boolean
-        - m_estCourante:Boolean
 
-        - m_portee: Integer
-        - m_degats: Integer
-
-        - m_classArmure: Integer
-    }
-    class Arme extends Equipement
+    package Equipement
     {
-        - m_estADistance:Boolean
-        - m_estCourante:Boolean
-        - m_portee: Integer
-        - m_degats: Integer
+        abstract class Equipement <<abstract>>
+        {
+            - m_estLourde:Boolean
+            - m_estADistance:Boolean
+            - m_estCourante:Boolean
 
-    }
-    class Armure extends Equipement
-    {
-        - m_estLourde:Boolean
-        - m_classArmure: Integer
-    }
-}
+            - m_portee: Integer
+            - m_degats: Integer
 
+            - m_classArmure: Integer
+        }
+
+        class Arme extends Equipement
+        {
+            - m_estADistance:Boolean
+            - m_estCourante:Boolean
+            - m_portee: Integer
+            - m_degats: Integer
+
+        }
+
+        class Armure extends Equipement
+        {
+            - m_estLourde:Boolean
+            - m_classArmure: Integer
+        }
+    }
+Caracteristiques <|-- Personnage
+Caracteristiques <|-- Monstre
+Personnage <|-- Classe
+Personnage <|-- Race
 }
 @enduml
