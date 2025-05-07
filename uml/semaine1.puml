@@ -89,12 +89,13 @@ package DOOnjonsEtDragons
         + positionnerEquipement():String
         + presentation():String
     }
-
+package Dé
+{
     class Dé
     {
         + lancerDe(nmbDé:Integer, nmbFace:Integer) : Integer
     }
-
+}
 
     package Equipement
     {
