@@ -1,4 +1,5 @@
 package Personnages;
+import Dice.Dice;
 
 public class Attaque {
     private int m_portee;

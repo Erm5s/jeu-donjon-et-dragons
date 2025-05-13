@@ -29,4 +29,13 @@ public class Personnage {
     public Classe getClasse() {
         return this.m_classe;
     }
+
+    public String afficheStats() {
+        String stats = "";
+        stats += "PV         : " + m_caract.getPV();
+        stats += "\nForce      : " + m_caract.getDexterite();
+        stats += "\nVitesse    : " + m_caract.getVitesse();
+        stats += "\nInitiative : " + m_caract.getInitiative();
+        return stats;
+    }
 }
