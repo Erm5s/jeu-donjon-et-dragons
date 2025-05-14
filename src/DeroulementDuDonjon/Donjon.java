@@ -12,7 +12,7 @@ package DeroulementDuDonjon;
             this.m_carte = new String[15][25];
             for(int i = 0; i < this.m_carte.length; i++)
             {
-                for(int j = 0; i < this.m_carte.length; j++)
+                for(int j = 0; j < this.m_carte[i].length; j++)
                 {
                     m_carte[i][j] = ".";
                 }
@@ -34,17 +34,23 @@ package DeroulementDuDonjon;
 
         public String afficherDonjon()
         {
+            int count_colonne = 0;
+            int count_ligne = 0;
             String affichage = "";
+            affichage+= "   A B C D F G H I J K L M N O P Q R S T U V W X Y Z\n";
             for(int i = 0; i < this.m_carte.length ;i++)
             {
-                for(int j = 0; j < this.m_carte.length ;j++)
+                count_colonne+=1;
+                affichage+= count_colonne + " ";
+                if(count_colonne < 10)
                 {
-                    if(i % 15 == 0)
-                    {
-                        affichage += "\n";
-                    }
-                    affichage += this.m_carte[i][j];
+                    affichage += " ";
                 }
+                for(int j = 0; j < this.m_carte[i].length ;j++)
+                {
+                    affichage += this.m_carte[i][j] + " ";
+                }
+                affichage += "\n";
             }
             return affichage;
         }
