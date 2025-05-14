@@ -11,21 +11,23 @@ public class Caracteristique {
 
     public Caracteristique (Personnage personnage)
     {
-        switch (personnage.getClasse()) {
+        // Attribution point de vie selon la classe
+        switch (personnage.getClasse()) { // ajouter un case en cas de nouvelle classe
             case GUERRIER -> m_pointsDeVie = 20;
             case CLERC -> m_pointsDeVie = 16;
             case MAGICIEN -> m_pointsDeVie = 12;
             case ROUBLARD -> m_pointsDeVie = 16;
         }
 
+        // Attribution force, dexterite, vitesse, initiative (commune à chaque type de Personnage)
         Dice de = new Dice(4);
-        m_force = de.lanceDes(1) + 3;
-        m_dexterite = de.lanceDes(1) + 3;
-        m_vitesse = de.lanceDes(1) + 3;
-        m_initiative = de.lanceDes(1) + 3;
+        m_force = de.lanceDes(4) + 3;
+        m_dexterite = de.lanceDes(4) + 3;
+        m_vitesse = de.lanceDes(4) + 3;
+        m_initiative = de.lanceDes(4) + 3;
 
-
-        switch (personnage.getRace()){
+        // Ajustement de stats selon la race
+        switch (personnage.getRace()){ // ajouter un case en cas de nouvelle race
             case HUMAIN ->
             {
                 m_pointsDeVie += 2;
