@@ -43,6 +43,8 @@ public class Personnage {
         }
     }
 
+    // GETTERS
+
     public String getNom() {
         return this.m_nom;
     }
@@ -55,20 +57,35 @@ public class Personnage {
         return this.m_classe;
     }
 
-    public String afficheStats() {
+    public Caracteristique getStats() {
+        return this.m_stats;
+    }
+
+    public Arme getArmeEquipee() {
+        return m_armeEquipee;
+    }
+
+    public Armure getArmureEquipee() {
+        return m_armureEquipee;
+    }
+
+    // AFFICHAGE A DEPLACER DANS UNE FONCTION AFFICHAGE
+    public void afficheStats() {
         String stats = "";
-        stats += "PV           : " + m_stats.getPV();
-        stats += "\nForce      : " + m_stats.getDexterite();
+        stats += "PV         : " + m_stats.getPV();
+        stats += "\nForce      : " + m_stats.getForce();
+        stats += "\nDextérité  : " + m_stats.getDexterite();
         stats += "\nVitesse    : " + m_stats.getVitesse();
         stats += "\nInitiative : " + m_stats.getInitiative();
-        return stats;
+        System.out.println(stats);
     }
 
     public void afficheInventaire() {
         for (Equipement e : m_inventaire)
         {
-            if (e!=null)
-            System.out.println(e.getNom());
+            if (e!=null){
+                System.out.println(e.getNom());
+            }
         }
     }
 }

@@ -54,8 +54,9 @@ public class Main {
         Personnage p = new Personnage(nom, race, classe);
 
         p.afficheInventaire();
-
-        System.out.println(p.afficheStats());
+        p.afficheStats();
+        p.getStats().statsPoidEquipement(p);
+        p.afficheStats();
 
     }
 

@@ -2,7 +2,6 @@ package Equipement;
 
 import java.util.Hashtable;
 
-
 public class Armure extends Equipement
 {
     private String m_nom;
@@ -10,9 +9,9 @@ public class Armure extends Equipement
     private boolean m_estLourde;
 
     public Armure(String nom, int classe, boolean estLourde) {
-        this.m_nom = nom;
-        this.m_classe = classe;
-        this.m_estLourde = estLourde;
+        m_nom = nom;
+        m_classe = classe;
+        m_estLourde = estLourde;
     }
 
     public static final Hashtable<Integer, Armure> listeArmures = new Hashtable<>();

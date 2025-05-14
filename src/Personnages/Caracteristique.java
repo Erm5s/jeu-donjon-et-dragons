@@ -56,6 +56,18 @@ public class Caracteristique {
         }
     }
 
+    public void statsPoidEquipement (Personnage personnage){
+        if(personnage.getArmeEquipee().getEstLourde()){
+            m_vitesse -= 2;
+            m_force += 4;
+        }
+        if(personnage.getArmureEquipee().getEstLourde()){
+            m_vitesse -= 4;
+        }
+    }
+
+    // GETTERS
+
     public int getPV() {
         return m_pointsDeVie;
     }

@@ -10,10 +10,10 @@ public class Arme extends Equipement
     private boolean m_estLourde;
 
     public Arme(String nom, int degats, int portee, boolean estLourde) {
-        this.m_nom = nom;
-        this.m_degats = degats;
-        this.m_portee = portee;
-        this.m_estLourde = estLourde;
+        m_nom = nom;
+        m_degats = degats;
+        m_portee = portee;
+        m_estLourde = estLourde;
     }
 
     public static final Hashtable<Integer, Arme> listeArmes = new Hashtable<>();
