@@ -1,30 +1,60 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import DeroulementDuDonjon.Donjon;
 import Entite.Personnages.*;
+import java.util.List;
 
 public class Main {
     public static void main(String args[]){
 
+        //MISE EN PLACE DU JEU
+        Scanner scanner = new Scanner(System.in);
+        List<Personnage> joueurs = new ArrayList<Personnage>();
 
-        //test afficher donjon avec obstacles
-        System.out.println("Bienvenue dans DOOnjon et Dragons");
-        Personnage feur =  new Personnage("feur", Race.HUMAIN, Classe.CLERC);
-        MeneurDeJeu Ferencz  = new MeneurDeJeu();
-        Donjon bonjour = new Donjon();
-        Ferencz.placerObstacle(bonjour, 5,5);
-        Ferencz.placerObstacle(bonjour,5,5);
-        Ferencz.placerJoueur(bonjour, feur, 15,15);
+        System.out.println("Bienvenue dans DOOnjon et Dragons\n");
+        System.out.println("Veuillez indiquer le nombre de joueurs: ");
+        int nb_joueurs = scanner.nextInt();
+        for(int i =0; i < nb_joueurs; i++)
+        {
+            joueurs.add(CreationPerso());
+        }
 
-        String jsp  = bonjour.afficherDonjon();
-        System.out.println(jsp);
+        //MISE EN PLACE DU DONJON
+        MeneurDeJeu mdj = new MeneurDeJeu();
+        Donjon donjon1 = new Donjon();
+        System.out.println("Il est l'heure de commencer le premier donjon de votre aventure !\n\n");
+        System.out.println("Meneur de jeu, combien d'obstacle souhaitez vous placer ? (10 max)\n\n");
 
-        CreationPerso();
+        int nb_obstacles = scanner.nextInt();
+        for(int i = 0; i < nb_obstacles; i++)
+        {
+            System.out.println("Où voulez-vous placer l'obstacle? (x puis y)");
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            mdj.placerObstacle(donjon1,x,y);
+            System.out.println("\n\nCarte mise à jour:\n\n");
+            String carte =donjon1.afficherDonjon();
+            System.out.println(carte);
+        }
+        System.out.println("Passons aux joueurs, où souhaitez vous les placer ?\n\n");
+        for(int i = 0; i < nb_joueurs; i++)
+        {
+            System.out.println("Entrez les coordonnées pour placer le joueur numéro %d (x, PUIS y: \n\n");
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            mdj.placerJoueur(donjon1, joueurs.get(i), x, y);
+
+            System.out.println("\n\nCarte mise à jour:\n\n");
+            String carte =donjon1.afficherDonjon();
+            System.out.println(carte);
+        }
+
 
 
     }
 
-    public static void CreationPerso()
+    public static Personnage CreationPerso()
     {
         Scanner scanner = new Scanner(System.in);
 
@@ -35,7 +65,7 @@ public class Main {
         String nom = scanner.nextLine();
 
         // la race
-        System.out.print("Choisissez votre race : ");
+        System.out.print("Choisissez votre race :\n1,2,3 ou 4 ");
         int raceNb = scanner.nextInt();
         Race race = null;
         switch (raceNb){
@@ -46,7 +76,7 @@ public class Main {
         }
 
         // la classe
-        System.out.print("Choisissez votre classe : ");
+        System.out.print("Choisissez votre classe :\n 1,2,3 ou 4 ");
         Classe classe = null;
         int classeNb = scanner.nextInt();
         switch (classeNb) {
@@ -64,6 +94,8 @@ public class Main {
         p.afficheInventaire();
         System.out.println();
         p.afficheStats();
+
+        return p;
 
     }
 
