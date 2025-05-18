@@ -3,8 +3,10 @@ package Entite.Personnages;
 import java.util.ArrayList;
 import java.util.List;
 
-import Entite.Entite;
+import Entite.*;
+import Entite.Monstres.*;
 import Entite.Equipement.*;
+import Dice.Dice;
 
 
 public class Personnage extends Entite {
@@ -44,6 +46,54 @@ public class Personnage extends Entite {
             }
         }
     }
+
+
+    // METHODES
+    public String equiper(int i) {
+        Equipement e = m_inventaire.get(i);
+        if (m_inventaire.get(i) instanceof Arme) {
+            m_inventaire.remove(i);
+            m_inventaire.add(m_armeEquipee);
+            m_armeEquipee = (Arme) e;
+        } else if (m_inventaire.get(i) instanceof Armure) {
+            m_inventaire.remove(i);
+            m_inventaire.add(m_armureEquipee);
+            m_armureEquipee = (Armure) e;
+        }
+        return "Vous avez équipé votre " + e.getNom();
+    }
+
+    public void retirerPV(int degats) {
+
+    }
+
+    public String seDeplacer(){
+        return "On codera plus tard";
+    }
+
+    public String attaquer(Monstre cible) {
+        //erreur si aucune arme équipée
+        //gerer les portees
+        Dice de = new Dice(20);
+        int jet = de.lanceDes(1);
+        int bonus = m_armeEquipee.getEstDistance() ? m_stats.getDexterite() : m_stats.getForce();
+        int puissance = jet + bonus;
+        if (puissance > cible.getClasseArmure()) {
+            Dice deDegat = new Dice(m_armeEquipee.getDegats());
+            int degats = deDegat.lanceDes(1);
+            cible.retirerPV(degats);
+            return "Vous avez infligé " + degats + " au monstre " + cible.getEspece();
+        }
+        else {
+            return "Vous êtes faible, vous n'avez infligé aucun dégât...";
+        }
+    }
+
+    public String ramasser(){
+        return "On codera plus tard";
+    }
+
+
 
     // GETTERS
 

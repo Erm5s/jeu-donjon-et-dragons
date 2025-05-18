@@ -22,9 +22,13 @@ public class Armure extends Equipement
         listeArmures.put(4, new Armure("harnois", 12, true));
     }
 
+    // METHODES
     public static Armure creerArmure(Integer id) {
         return listeArmures.get(id);
     }
+
+
+    // GETTERS
 
     public String getNom() {
         return m_nom;

@@ -3,21 +3,20 @@ import Dice.Dice;
 import Entite.Monstres.Monstre;
 
 public class Caracteristique {
-    private int m_pointsDeVie;
+    private int m_PV;
     private int m_force;
     private int m_dexterite;
     private int m_vitesse;
     private int m_initiative;
-    private int m_classeArmure;
 
     public Caracteristique (Personnage personnage)
     {
         // Attribution point de vie selon la classe
         switch (personnage.getClasse()) { // ajouter un case en cas de nouvelle classe
-            case GUERRIER -> m_pointsDeVie = 20;
-            case CLERC -> m_pointsDeVie = 16;
-            case MAGICIEN -> m_pointsDeVie = 12;
-            case ROUBLARD -> m_pointsDeVie = 16;
+            case GUERRIER -> m_PV = 20;
+            case CLERC -> m_PV = 16;
+            case MAGICIEN -> m_PV = 12;
+            case ROUBLARD -> m_PV = 16;
         }
 
         // Attribution force, dexterite, vitesse, initiative (commune à chaque type de Personnage)
@@ -31,7 +30,7 @@ public class Caracteristique {
         switch (personnage.getRace()){ // ajouter un case en cas de nouvelle race
             case HUMAIN ->
             {
-                m_pointsDeVie += 2;
+                m_PV += 2;
                 m_force += 2;
                 m_dexterite += 2;
                 m_vitesse += 2;
@@ -46,17 +45,6 @@ public class Caracteristique {
             }
         }
     }
-
-    public Caracteristique (Monstre monstre)
-    {
-        if (monstre.getEstCac()) {
-            m_dexterite = 0;
-        }
-        else {
-            m_force = 0;
-        }
-    }
-
     public void statsPoidEquipement (Personnage personnage){
         if(personnage.getArmeEquipee().getEstLourde()){
             m_vitesse -= 2;
@@ -70,7 +58,7 @@ public class Caracteristique {
     // GETTERS
 
     public int getPV() {
-        return m_pointsDeVie;
+        return m_PV;
     }
 
     public int getForce() {

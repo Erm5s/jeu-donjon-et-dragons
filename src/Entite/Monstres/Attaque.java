@@ -3,9 +3,9 @@ import Dice.Dice;
 
 public class Attaque {
     private int m_portee;
-    private Dice m_degats;
+    private String m_degats;
 
-    public Attaque (int portee,Dice degats){
+    public Attaque(int portee, String degats) {
         m_portee = portee;
         m_degats = degats;
     }
