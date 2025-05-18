@@ -2,6 +2,7 @@ package DeroulementDuDonjon;
 
 
 import Personnages.Personnage;
+import Equipement.Equipement;
 
 public class Donjon
     {
@@ -11,7 +12,7 @@ public class Donjon
 
         public Donjon()
         {
-            this.m_carte = new String[15][25];
+            this.m_carte = new String[25][25];
             for(int i = 0; i < this.m_carte.length; i++)
             {
                 for(int j = 0; j < this.m_carte[i].length; j++)
@@ -70,4 +71,30 @@ public class Donjon
             return false;
         }
 
+        public boolean placerJoueur(Personnage personnage,int x, int y)
+        {
+            if (x >= 0 && x < this.m_carte.length && y >= 0 && y < this.m_carte[0].length)
+            {
+                if(this.m_carte[x][y] == "." )
+                {
+                    this.m_carte[x][y] = personnage.getNom().substring(0,3);
+                    personnage.setCoordonnees(x,y);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public boolean placerEquipement(Equipement equipement,int x, int y)
+        {
+            if (x >= 0 && x < this.m_carte.length && y >= 0 && y < this.m_carte[0].length)
+            {
+                if(this.m_carte[x][y] == "." )
+                {
+                    this.m_carte[x][y] = "*";
+                    return true;
+                }
+            }
+            return false;
+        }
     }

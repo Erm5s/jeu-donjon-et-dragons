@@ -6,12 +6,19 @@ import Personnages.*;
 public class Main {
     public static void main(String args[]){
 
+
+        //test afficher donjon avec obstacles
         System.out.println("Bienvenue dans DOOnjon et Dragons");
-
+        Personnage feur =  new Personnage("feur", Race.HUMAIN, Classe.CLERC);
+        MeneurDeJeu Ferencz  = new MeneurDeJeu();
         Donjon bonjour = new Donjon();
-        String jsp  = bonjour.afficherDonjon();
+        Ferencz.placerObstacle(bonjour, 5,5);
+        Ferencz.placerObstacle(bonjour,5,5);
+        Ferencz.placerJoueur(bonjour, feur, 15,15);
 
+        String jsp  = bonjour.afficherDonjon();
         System.out.println(jsp);
+
         CreationPerso();
 
 

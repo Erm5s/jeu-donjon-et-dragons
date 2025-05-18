@@ -2,10 +2,12 @@ package Personnages;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Entite.Entite;
 import Equipement.*;
 
 
-public class Personnage {
+public class Personnage extends Entite {
     private final String m_nom;
     private final Race m_race;
     private final Classe m_classe;
@@ -68,6 +70,7 @@ public class Personnage {
     public Armure getArmureEquipee() {
         return m_armureEquipee;
     }
+
 
     // AFFICHAGE A DEPLACER DANS UNE FONCTION AFFICHAGE
     public void afficheStats() {

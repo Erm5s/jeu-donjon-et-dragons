@@ -1,9 +1,9 @@
 package Equipement;
 
-import java.util.Hashtable;
 
+import Entite.Entite;
 
-public abstract class Equipement {
+public abstract class Equipement extends Entite {
 
     public abstract String getNom();
 
