@@ -1,4 +1,6 @@
-package Personnages;
+package Entite.Monstres;
+
+import Entite.Personnages.Caracteristique;
 
 public class Monstre {
     private String m_espece;

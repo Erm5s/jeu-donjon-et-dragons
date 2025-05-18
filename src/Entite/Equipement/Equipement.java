@@ -1,4 +1,4 @@
-package Equipement;
+package Entite.Equipement;
 
 
 import Entite.Entite;

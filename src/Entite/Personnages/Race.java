@@ -1,4 +1,4 @@
-package Personnages;
+package Entite.Personnages;
 
 public enum Race {
     HUMAIN,

@@ -1,8 +1,8 @@
 package DeroulementDuDonjon;
 
 
-import Personnages.Personnage;
-import Equipement.Equipement;
+import Entite.Personnages.Personnage;
+import Entite.Equipement.Equipement;
 
 public class Donjon
     {

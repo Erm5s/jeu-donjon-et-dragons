@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 import DeroulementDuDonjon.Donjon;
-import Personnages.*;
+import Entite.Personnages.*;
 
 public class Main {
     public static void main(String args[]){
@@ -60,9 +60,9 @@ public class Main {
 
         Personnage p = new Personnage(nom, race, classe);
 
+        System.out.println();
         p.afficheInventaire();
-        p.afficheStats();
-        p.getStats().statsPoidEquipement(p);
+        System.out.println();
         p.afficheStats();
 
     }

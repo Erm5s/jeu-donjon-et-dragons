@@ -1,4 +1,4 @@
-package Personnages;
+package Entite.Monstres;
 import Dice.Dice;
 
 public class Attaque {

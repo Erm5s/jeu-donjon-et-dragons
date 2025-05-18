@@ -1,10 +1,10 @@
-package Personnages;
+package Entite.Personnages;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Entite.Entite;
-import Equipement.*;
+import Entite.Equipement.*;
 
 
 public class Personnage extends Entite {

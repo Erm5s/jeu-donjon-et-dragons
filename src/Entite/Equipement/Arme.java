@@ -1,4 +1,4 @@
-package Equipement;
+package Entite.Equipement;
 
 import java.util.Hashtable;
 

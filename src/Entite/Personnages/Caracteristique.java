@@ -1,5 +1,6 @@
-package Personnages;
+package Entite.Personnages;
 import Dice.Dice;
+import Entite.Monstres.Monstre;
 
 public class Caracteristique {
     private int m_pointsDeVie;

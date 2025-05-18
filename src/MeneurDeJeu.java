@@ -1,6 +1,6 @@
 import DeroulementDuDonjon.Donjon;
-import Equipement.Equipement;
-import Personnages.Personnage;
+import Entite.Equipement.Equipement;
+import Entite.Personnages.Personnage;
 
 public class MeneurDeJeu
 {
