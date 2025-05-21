@@ -5,12 +5,14 @@ import java.util.Hashtable;
 public class Arme extends Equipement
 {
     private String m_nom;
+    private TypeEquipement m_typeEquipement;
     private int m_degats;
     private int m_portee;
     private boolean m_estLourde;
     private boolean m_estDistance;
 
     public Arme(String nom, int degats, int portee, boolean estLourde) {
+        m_typeEquipement = TypeEquipement.ARME;
         m_nom = nom;
         m_degats = degats;
         m_portee = portee;
@@ -44,6 +46,10 @@ public class Arme extends Equipement
         return m_nom;
     }
 
+    public TypeEquipement getTypeEquipement() {
+        return m_typeEquipement;
+    }
+
     public int getDegats() {
         return m_degats;
     }
@@ -58,5 +64,13 @@ public class Arme extends Equipement
 
     public boolean getEstDistance() {
         return m_estDistance;
+    }
+
+    @Override
+    public String toString() {
+        return "Arme   : " + m_nom +
+                "\t[Degats:1d" + m_degats +
+                ", Portee:" + m_portee +
+                ", " +(m_estLourde?"Lourde]":"Legere]");
     }
 }

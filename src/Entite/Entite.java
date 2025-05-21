@@ -15,4 +15,12 @@ public abstract class Entite
         this.m_x = x;
         this.m_y = y;
     }
+
+    public int getX(){
+        return m_x;
+    }
+
+    public int getY() {
+        return m_y;
+    }
 }

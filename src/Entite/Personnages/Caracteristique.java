@@ -56,7 +56,9 @@ public class Caracteristique {
     }
 
     // GETTERS
-
+    public void retirerPV(int degats) {
+        m_PV -= degats;
+    }
     public int getPV() {
         return m_PV;
     }

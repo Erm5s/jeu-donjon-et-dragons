@@ -2,7 +2,9 @@ package Entite.Personnages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
+import DeroulementDuDonjon.Donjon;
 import Entite.*;
 import Entite.Monstres.*;
 import Entite.Equipement.*;
@@ -13,6 +15,7 @@ public class Personnage extends Entite {
     private final String m_nom;
     private final Race m_race;
     private final Classe m_classe;
+    private int m_scoreTour;
     private Caracteristique m_stats;
     private List<Equipement> m_inventaire;
     private Arme m_armeEquipee;
@@ -45,17 +48,21 @@ public class Personnage extends Entite {
                 m_inventaire.add(Arme.creerArme(9));
             }
         }
+
+        Dice deTour = new Dice(20);
+        m_scoreTour = m_stats.getInitiative() + deTour.lanceDes(1);
     }
 
 
     // METHODES
     public String equiper(int i) {
+        i--;
         Equipement e = m_inventaire.get(i);
-        if (m_inventaire.get(i) instanceof Arme) {
+        if (m_inventaire.get(i).getTypeEquipement() == TypeEquipement.ARME) {
             m_inventaire.remove(i);
             m_inventaire.add(m_armeEquipee);
             m_armeEquipee = (Arme) e;
-        } else if (m_inventaire.get(i) instanceof Armure) {
+        } else if (m_inventaire.get(i).getTypeEquipement() == TypeEquipement.ARMURE) {
             m_inventaire.remove(i);
             m_inventaire.add(m_armureEquipee);
             m_armureEquipee = (Armure) e;
@@ -63,12 +70,39 @@ public class Personnage extends Entite {
         return "Vous avez équipé votre " + e.getNom();
     }
 
-    public void retirerPV(int degats) {
+    public String seDeplacer(Donjon donjon){
+        // gérer les différents erreurs de déplacement, déplacer les system.out.println
+        int nbCase = getStats().getVitesse()/3;
+        String dialog = "";
+        dialog += ("\nVous êtes en " + getX() + ";" + getY());
+        dialog += ("\nVous pouvez vous déplacer de " + nbCase + " cases");
 
-    }
+        int Xmin = Math.max(getX() - nbCase, 0);
+        int Xmax = Math.min(getX() + nbCase, 25);
+        int Ymin = Math.max(getY() - nbCase, 0);
+        int Ymax = Math.min(getY() + nbCase, 25);
 
-    public String seDeplacer(){
-        return "On codera plus tard";
+        dialog += "\nVous pouvez vous déplacer entre x[" + Xmin + "," + Xmax + "] et y[" + Ymin + "," + Ymax +"]";
+        System.out.println(dialog);
+        int newX = -1;
+        int newY = -1;
+
+
+        while (newX<Xmin || newX>Xmax || newY<Ymin || newY>Ymax ||
+                !donjon.getCase(newX,newY).equals(".") || !donjon.getCase(newX,newY).equals("*"))
+        {
+            System.out.println("\n\nTapez les coordonnées X puis Y pour vous déplacer");
+            Scanner scanner = new Scanner(System.in);
+            newX = Integer.parseInt(scanner.nextLine());
+            newY =  Integer.parseInt(scanner.nextLine());
+            if(newX<Xmin || newX>Xmax || newY<Ymin || newY>Ymax)
+            {
+                System.out.println("\nVous ne pouvez pas vous déplacer ici, trop loin");
+            }
+        }
+        setCoordonnees(newX, newY);
+        System.out.println("Vous êtes en " + getX() + ";" + getY());
+        return null;
     }
 
     public String attaquer(Monstre cible) {
@@ -90,7 +124,8 @@ public class Personnage extends Entite {
     }
 
     public String ramasser(){
-        return "On codera plus tard";
+        return
+                "";
     }
 
 
@@ -121,6 +156,10 @@ public class Personnage extends Entite {
         return m_armureEquipee;
     }
 
+    public int getScoreTour() {
+        return m_scoreTour;
+    }
+
 
     // AFFICHAGE A DEPLACER DANS UNE FONCTION AFFICHAGE
     public void afficheStats() {
@@ -137,7 +176,7 @@ public class Personnage extends Entite {
         for (Equipement e : m_inventaire)
         {
             if (e!=null){
-                System.out.println(e.getNom());
+                System.out.println((m_inventaire.indexOf(e)+1) + " - " + e.toString());
             }
         }
     }
