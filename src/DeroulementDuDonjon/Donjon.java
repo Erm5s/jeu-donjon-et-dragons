@@ -67,8 +67,13 @@ public class Donjon
             {
                 if(this.m_carte[x][y] == "." )
                 {
-                    this.m_carte[x][y] = personnage.getNom().substring(0,3);
-                    personnage.setCoordonnees(x,y);
+                    if(personnage.getNom().length() > 3)
+                    {
+                        this.m_carte[x][y] = personnage.getNom().substring(0, 3);
+                        personnage.setCoordonnees(x, y);
+                        return true;
+                    }
+                    this.m_carte[x][y] = personnage.getNom().substring(0, personnage.getNom().length());
                     return true;
                 }
             }
