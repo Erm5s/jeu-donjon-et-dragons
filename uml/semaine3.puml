@@ -1,8 +1,13 @@
 @startuml
-scale 1
+scale 0.7
 package DOOnjonsEtDragons
 {
-    package Entite {
+    package entite
+    {
+        abstract class Entite
+        {
+
+        }
         package Personnages
         {
             class Personnage
@@ -147,14 +152,6 @@ package DOOnjonsEtDragons
             + placerEquipements():Void
             + contexte():String
         }
-        class tour
-        {
-
-        }
-        class fin
-        {
-
-        }
     }
 
     class MDJ
@@ -182,7 +179,13 @@ package Dé
 
 Caracteristiques <|-- Personnage
 Monstre <|-- Attaque
-Personnage <|-- Classe
-Personnage <|-- Race
+DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Personnages.Personnage
+DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Monstres.Monstre
+DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Equipement.Equipement
+Personnage --* Classe
+Personnage --* Race
+
+
+
 }
 @enduml

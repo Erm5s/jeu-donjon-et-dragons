@@ -1,5 +1,6 @@
 import DeroulementDuDonjon.Donjon;
 import Entite.Equipement.Equipement;
+import Entite.Monstres.Monstre;
 import Entite.Personnages.Classe;
 import Entite.Personnages.Personnage;
 import Entite.Personnages.Race;
@@ -69,6 +70,17 @@ public class MeneurDeJeu {
 
     }
 
+    public void jouerDonjon()
+    {
+        while(joueursEnVie())
+        {
+            for(int i = 0; i < m_joueurs.size();i++)
+            {
+
+            }
+        }
+    }
+
     public static Personnage CreationPerso() {
         Scanner scanner = new Scanner(System.in);
 
@@ -112,15 +124,27 @@ public class MeneurDeJeu {
 
     }
 
+    /*public void actionsPersonnage(Personnage personnage)
+    {
+        int numero_action = 0;
+        switch(numero_action)
+        {
+            case 1 -> personnage.attaquer();
+            case 2 -> personnage.seDeplacer();
+            case 3 -> personnage.ramasser();
+            case 4 -> personnage.equiper();
+        }
+    }*/
+
     public Boolean placerObstacle(Donjon donjon, int x, int y) {
         return donjon.placerObstacle(x, y);
     }
 
-    public Boolean placerJoueur(Donjon donjon, Personnage personnage, int x, int y) {
+    public boolean placerJoueur(Donjon donjon, Personnage personnage, int x, int y) {
         return donjon.placerJoueur(personnage, x, y);
     }
 
-    public Boolean placerEquipement(Donjon donjon, Equipement equipement, int x, int y) {
+    public boolean placerEquipement(Donjon donjon, Equipement equipement, int x, int y) {
         return donjon.placerEquipement(equipement, x, y);
     }
 
@@ -147,10 +171,25 @@ public class MeneurDeJeu {
     //FONCTION POUR AFFICHER L'ORDRE DES PUTAIN DE JOUEURS
     public void afficherOrdre()
     {
+        int index = 0;
         for (Personnage personnage : m_OrdreJoueurs.keySet())
         {
+            index +=1;
             Personnage key = personnage;
-            System.out.println("Joueur: " + key.toString());
+            System.out.println("Joueur numero "+ index +": " + key.getNom());
         }
+    }
+
+    //fonction pour savoir si tt les joueurs sont encore en vie
+    public boolean joueursEnVie()
+    {
+        for(int i = 0; i < m_joueurs.size();i++)
+        {
+            if(m_joueurs.get(i).getStats().getPV() < 1)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
