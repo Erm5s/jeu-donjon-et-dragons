@@ -20,23 +20,21 @@ public class Arme extends Equipement
         m_estDistance = (m_portee > 1);
     }
 
-    private static final Hashtable<Integer, Arme> listeArmes = new Hashtable<>();
+    private static final Hashtable<ListeEquipements, Arme> listeArmes = new Hashtable<>();
     static {
-        listeArmes.put(1, new Arme("épée longue", 8, 1, true));
-        listeArmes.put(2, new Arme("dague", 4, 1, false));
-        listeArmes.put(3, new Arme("arc", 6, 16, false));
-        listeArmes.put(4, new Arme("bâton", 6, 1, false));
-        listeArmes.put(5, new Arme("masse d'armes", 8, 1, false));
-        listeArmes.put(6, new Arme("rapière", 8, 1, true));
-        listeArmes.put(7, new Arme("arbalète légère", 8, 16, false));
-        listeArmes.put(8, new Arme("fronde", 4, 6, false));
-        listeArmes.put(9, new Arme("arc court", 6, 16, false));
+        listeArmes.put(ListeEquipements.BATON, new Arme("bâton", 6, 1, false));
+        listeArmes.put(ListeEquipements.MASSE_D_ARMES, new Arme("masse d'armes", 6, 1, false));
+        listeArmes.put(ListeEquipements.EPEE_LONGUE, new Arme("épée longue", 8, 1, true));
+        listeArmes.put(ListeEquipements.RAPIERE, new Arme("rapière", 8, 1, true));
+        listeArmes.put(ListeEquipements.ARBALETE_LEGERE, new Arme("arbalète légère", 8, 16, false));
+        listeArmes.put(ListeEquipements.FRONDE, new Arme("fronde", 4, 6, false));
+        listeArmes.put(ListeEquipements.ARC_COURT, new Arme("arc court", 6, 16, false));
     }
 
     // METHODES
 
-    public static Arme creerArme(Integer id) {
-        return listeArmes.get(id);
+    public static Arme creerArme(ListeEquipements equipement) {
+        return listeArmes.get(equipement);
     }
 
 

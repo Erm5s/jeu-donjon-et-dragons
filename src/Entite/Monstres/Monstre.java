@@ -1,22 +1,28 @@
 package Entite.Monstres;
 
-import Entite.Personnages.Caracteristique;
+import Dice.Dice;
+import Entite.Personnages.*;
+import Entite.Equipement.*;
 
 public class Monstre {
     private String m_espece;
     private int m_numero;
-    private Attaque m_attaque;
+    private int m_portee;
+    private int m_degats;
+    private int m_nbLance;
     private int m_PV;
     private int m_force;
     private int m_dexterite;
     private int m_classeArmure;
     private int m_initiative;
 
-    public Monstre (String espece, int numero, int portee, String degats,
+    public Monstre (String espece, int numero, int portee, int degats, int nbLance,
                     int PV, int force, int dexterite, int classeArmure, int initiative) {
         this.m_espece = espece;
         this.m_numero = numero;
-        this.m_attaque = new Attaque(portee, degats);
+        this.m_portee = portee;
+        this.m_degats = degats;
+        this.m_nbLance = nbLance;
         this.m_PV = PV;
         this.m_force = force;
         this.m_dexterite = dexterite;
@@ -30,9 +36,24 @@ public class Monstre {
         m_PV -= degats;
     }
 
-    public String attaquer(){
-        return "On codera plus tard";
+    public String attaquer(Personnage cible) {
+        //erreur si aucune arme équipée
+        //gerer les portees
+        Dice de = new Dice(20);
+        int jet = de.lanceDes(1);
+        int bonus = m_portee == 1 ? m_dexterite : m_force;
+        int puissance = jet + bonus;
+        if (puissance > cible.getArmureEquipee().getClasseArmure()) {
+            Dice deDegat = new Dice(m_degats);
+            int degats = deDegat.lanceDes(m_nbLance);
+            cible.getStats().retirerPV(degats);
+            return "Vous avez infligé " + degats + " au joueur " + cible.getNom();
+        } else {
+            return "Vous êtes faible, vous n'avez infligé aucun dégât...";
+
+        }
     }
+
     public String seDeplacer(){
         return "On codera plus tard";
     }

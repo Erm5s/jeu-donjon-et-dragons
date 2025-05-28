@@ -30,22 +30,22 @@ public class Personnage extends Entite {
         m_inventaire = new ArrayList<>();
         switch (getClasse()) {
             case CLERC -> {
-                m_inventaire.add(Armure.creerArmure(1));
-                m_inventaire.add(Arme.creerArme(5));
-                m_inventaire.add(Arme.creerArme(7));
+                m_inventaire.add(Armure.creerArmure(ListeEquipements.ARMURE_D_ECAILLES));
+                m_inventaire.add(Arme.creerArme(ListeEquipements.MASSE_D_ARMES));
+                m_inventaire.add(Arme.creerArme(ListeEquipements.ARBALETE_LEGERE));
             }
             case GUERRIER -> {
-                m_inventaire.add(Armure.creerArmure(3));
-                m_inventaire.add(Arme.creerArme(1));
-                m_inventaire.add(Arme.creerArme(7));
+                m_inventaire.add(Armure.creerArmure(ListeEquipements.COTTE_DE_MAILLES));
+                m_inventaire.add(Arme.creerArme(ListeEquipements.EPEE_LONGUE));
+                m_inventaire.add(Arme.creerArme(ListeEquipements.ARBALETE_LEGERE));
             }
             case MAGICIEN -> {
-                m_inventaire.add(Arme.creerArme(4));
-                m_inventaire.add(Arme.creerArme(8));
+                m_inventaire.add(Arme.creerArme(ListeEquipements.BATON));
+                m_inventaire.add(Arme.creerArme(ListeEquipements.FRONDE));
             }
             case ROUBLARD -> {
-                m_inventaire.add(Arme.creerArme(6));
-                m_inventaire.add(Arme.creerArme(9));
+                m_inventaire.add(Arme.creerArme(ListeEquipements.RAPIERE));
+                m_inventaire.add(Arme.creerArme(ListeEquipements.ARC_COURT));
             }
         }
 
@@ -123,9 +123,13 @@ public class Personnage extends Entite {
         }
     }
 
-    public String ramasser(){
-        return
-                "";
+    public String ramasser(Donjon donjon){
+        if (donjon.getCase(getX(), getY()) == "*")
+        {
+            // deplacer les print
+            System.out.println("Vous pouvez ramasser l'arme");
+        }
+        return "";
     }
 
 
