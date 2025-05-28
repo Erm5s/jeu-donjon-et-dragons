@@ -16,17 +16,17 @@ public class Armure extends Equipement
         m_estLourde = estLourde;
     }
 
-    public static final Hashtable<Integer, Armure> listeArmures = new Hashtable<>();
+    public static final Hashtable<ListeEquipements, Armure> listeArmures = new Hashtable<>();
     static {
-        listeArmures.put(1, new Armure("armure d'écailles", 9, false));
-        listeArmures.put(2, new Armure("demi-plate", 10, false));
-        listeArmures.put(3, new Armure("cotte de mailles", 11, true));
-        listeArmures.put(4, new Armure("harnois", 12, true));
+        listeArmures.put(ListeEquipements.ARMURE_D_ECAILLES, new Armure("armure d'écailles", 9, false));
+        listeArmures.put(ListeEquipements.DEMI_PLATE, new Armure("demi-plate", 10, false));
+        listeArmures.put(ListeEquipements.COTTE_DE_MAILLES, new Armure("cotte de mailles", 11, true));
+        listeArmures.put(ListeEquipements.HARNOIS, new Armure("harnois", 12, true));
     }
 
     // METHODES
-    public static Armure creerArmure(Integer id) {
-        return listeArmures.get(id);
+    public static Armure creerArmure(ListeEquipements equipement) {
+        return listeArmures.get(equipement);
     }
 
 
