@@ -18,36 +18,36 @@ public class MeneurDeJeu {
         Affichage affichage = new Affichage();
         Scanner scanner = new Scanner(System.in);
         this.m_joueurs = new ArrayList<Personnage>();
-        System.out.println("Bienvenue dans DOOnjon et Dragons\n");
-        System.out.println("Veuillez indiquer le nombre de joueurs: ");
+        affichage.DDAfficherMessage("Bienvenue dans DOOnjon et Dragons\n");
+        affichage.DDAfficherMessage("Veuillez indiquer le nombre de joueurs: ");
         int nb_joueurs = scanner.nextInt();
         for (int i = 0; i < nb_joueurs; i++) {
             this.m_joueurs.add(CreationPerso());
         }
         //MISE EN PLACE DU DONJON
-        affichage.afficherMessage("Il est l'heure de commencer le premier donjon de votre aventure !\n\nMeneur de jeu, combien d'obstacle souhaitez vous placer ? (10 max)");
+        affichage.DDAfficherMessage("Il est l'heure de commencer le premier donjon de votre aventure !\n\nMeneur de jeu, combien d'obstacle souhaitez vous placer ? (10 max)");
 
         int nb_obstacles = scanner.nextInt();
         for (int i = 0; i < nb_obstacles; i++) {
-            System.out.println("Où voulez-vous placer l'obstacle? (x puis y)");
+            affichage.DDAfficherMessage("Où voulez-vous placer l'obstacle? (x puis y)");
             int x = scanner.nextInt();
             int y = scanner.nextInt();
             this.placerObstacle(donjon, x, y);
-            System.out.println("\n\nCarte mise à jour:\n\n");
+            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
             affichage.afficherDonjon(donjon);
         }
         System.out.println("Passons aux joueurs, où souhaitez vous les placer ?\n\n");
         for (int i = 0; i < nb_joueurs; i++) {
-            System.out.println("Entrez les coordonnées pour placer le joueur numéro %d (x, PUIS y: \n\n");
+            affichage.DDAfficherMessage("Entrez les coordonnées pour placer le joueur numéro %d (x, PUIS y: \n\n");
             int x = scanner.nextInt();
             int y = scanner.nextInt();
             this.placerJoueur(donjon, this.m_joueurs.get(i), x, y);
 
-            System.out.println("\n\nCarte mise à jour:\n\n");
+            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
             affichage.afficherDonjon(donjon);
         }
         //ON DETERMINE L'ORDRE DES JOUEURS
-        System.out.println("Maintenant, passons à l'ordre de jeu de chaque personnage. " +
+        affichage.DDAfficherMessage("Maintenant, passons à l'ordre de jeu de chaque personnage. " +
                 "Il est déterminé par l'initiative du personnage à laquelle on additionne le résultat d'un lancé de dé à 20 faces :\n\n");
         //on trie la hashmap
         determinerOrdre();
@@ -68,15 +68,15 @@ public class MeneurDeJeu {
 
     public static Personnage CreationPerso() {
         Scanner scanner = new Scanner(System.in);
-
+        Affichage affichage = new Affichage();
 
         // FONCTION CREATION DE PERSONNAGE
         // le nom
-        System.out.print("\nEntrez votre nom : ");
+        affichage.DDAfficherMessage("\nEntrez votre nom : ");
         String nom = scanner.nextLine();
 
         // la race
-        System.out.print("Choisissez votre race :\n1,2,3 ou 4 ");
+        affichage.DDAfficherMessage("Choisissez votre race :\n1,2,3 ou 4 ");
         int raceNb = scanner.nextInt();
         Race race = null;
         switch (raceNb) {
@@ -87,7 +87,7 @@ public class MeneurDeJeu {
         }
 
         // la classe
-        System.out.print("Choisissez votre classe :\n 1,2,3 ou 4 ");
+        affichage.DDAfficherMessage("Choisissez votre classe :\n 1,2,3 ou 4 ");
         Classe classe = null;
         int classeNb = scanner.nextInt();
         switch (classeNb) {

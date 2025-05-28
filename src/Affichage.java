@@ -2,10 +2,19 @@ import DeroulementDuDonjon.Donjon;
 
 public class Affichage
 {
-    public void afficherMessage(String message)
+    private String blanc = "\u001B[0m";
+    private String jaune = "\u001B[33m";
+    private String rouge = "\u001B[31m";
+    public void mdjAfficherMessage(String message)
     {
-        System.out.println(message);
+        System.out.println(jaune + message + blanc);
     }
+
+    public void DDAfficherMessage(String message)
+    {
+        System.out.println(rouge + message + blanc);
+    }
+
 
     public void afficherDonjon(Donjon donjon)
     {
