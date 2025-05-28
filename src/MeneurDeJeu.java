@@ -1,12 +1,10 @@
 import DeroulementDuDonjon.Donjon;
 import Entite.Equipement.Equipement;
-import Entite.Monstres.Monstre;
 import Entite.Personnages.Classe;
 import Entite.Personnages.Personnage;
 import Entite.Personnages.Race;
 import Dice.Dice;
 
-import java.security.Key;
 import java.util.*;
 
 public class MeneurDeJeu {
@@ -15,59 +13,46 @@ public class MeneurDeJeu {
     private HashMap<Personnage, Integer> m_OrdreJoueurs = new HashMap<Personnage,Integer>();
 
 
-    public void creerDonjon() {
+    public void creerDonjon(Donjon donjon) {
         //MISE EN PLACE DU JEU
+        Affichage affichage = new Affichage();
         Scanner scanner = new Scanner(System.in);
         this.m_joueurs = new ArrayList<Personnage>();
-
         System.out.println("Bienvenue dans DOOnjon et Dragons\n");
         System.out.println("Veuillez indiquer le nombre de joueurs: ");
         int nb_joueurs = scanner.nextInt();
         for (int i = 0; i < nb_joueurs; i++) {
             this.m_joueurs.add(CreationPerso());
         }
-
         //MISE EN PLACE DU DONJON
-        Donjon donjon1 = new Donjon();
-        System.out.println("Il est l'heure de commencer le premier donjon de votre aventure !\n\n");
-        System.out.println("Meneur de jeu, combien d'obstacle souhaitez vous placer ? (10 max)");
+        affichage.afficherMessage("Il est l'heure de commencer le premier donjon de votre aventure !\n\nMeneur de jeu, combien d'obstacle souhaitez vous placer ? (10 max)");
 
         int nb_obstacles = scanner.nextInt();
         for (int i = 0; i < nb_obstacles; i++) {
             System.out.println("Où voulez-vous placer l'obstacle? (x puis y)");
             int x = scanner.nextInt();
             int y = scanner.nextInt();
-            this.placerObstacle(donjon1, x, y);
+            this.placerObstacle(donjon, x, y);
             System.out.println("\n\nCarte mise à jour:\n\n");
-            String carte = donjon1.afficherDonjon();
-            System.out.println(carte);
+            affichage.afficherDonjon(donjon);
         }
         System.out.println("Passons aux joueurs, où souhaitez vous les placer ?\n\n");
         for (int i = 0; i < nb_joueurs; i++) {
             System.out.println("Entrez les coordonnées pour placer le joueur numéro %d (x, PUIS y: \n\n");
             int x = scanner.nextInt();
             int y = scanner.nextInt();
-            this.placerJoueur(donjon1, this.m_joueurs.get(i), x, y);
+            this.placerJoueur(donjon, this.m_joueurs.get(i), x, y);
 
             System.out.println("\n\nCarte mise à jour:\n\n");
-            String carte = donjon1.afficherDonjon();
-            System.out.println(carte);
+            affichage.afficherDonjon(donjon);
         }
-
         //ON DETERMINE L'ORDRE DES JOUEURS
         System.out.println("Maintenant, passons à l'ordre de jeu de chaque personnage. " +
                 "Il est déterminé par l'initiative du personnage à laquelle on additionne le résultat d'un lancé de dé à 20 faces :\n\n");
-        m_JoueursInitiative = new HashMap<>();
-        Dice de = new Dice(20);
-        //on remplit la hashmap
-        for (int i = 0; i < nb_joueurs; i++) {
-            m_JoueursInitiative.put(m_joueurs.get(i), m_joueurs.get(i).getStats().getInitiative() + de.lanceDes(1));
-        }
         //on trie la hashmap
         determinerOrdre();
         //ON AFFICHE LE QUOICOUORDRE
         afficherOrdre();
-
     }
 
     public void jouerDonjon()
@@ -151,6 +136,12 @@ public class MeneurDeJeu {
 
     //FONCTION POUR DETERMINER L'ORDRE DE JEUUUUUUUUUUUUUUUUUUUU
     public void determinerOrdre() {
+        m_JoueursInitiative = new HashMap<>();
+        Dice de = new Dice(20);
+        //on remplit la hashmap
+        for (int i = 0; i < m_joueurs.size(); i++) {
+            m_JoueursInitiative.put(m_joueurs.get(i), m_joueurs.get(i).getStats().getInitiative() + de.lanceDes(1));
+        }
         while (!m_JoueursInitiative.isEmpty()) {
             Personnage maxKey = null;
             int max = Integer.MIN_VALUE;
@@ -166,7 +157,6 @@ public class MeneurDeJeu {
                 m_JoueursInitiative.remove(maxKey);
         }
     }
-
 
     //FONCTION POUR AFFICHER L'ORDRE DES PUTAIN DE JOUEURS
     public void afficherOrdre()

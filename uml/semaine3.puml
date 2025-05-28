@@ -143,7 +143,7 @@ package DOOnjonsEtDragons
 
     package DéroulementDuDonjon
     {
-        class creationDonjon
+        class Donjon
         {
             + creationCarte():Void
             + creationObstacle():Void
@@ -156,14 +156,11 @@ package DOOnjonsEtDragons
 
     class MDJ
     {
-        - m_nom : String
-        + debutPartie()
-        + creerCarteDonjon():String
-        + positionnerObstacle():String
-        + creerMonstre():String
-        + positionnerJoueur():String
-        + positionnerEquipement():String
-        + presentation():String
+        + creerDonjon(Donjon donjon)
+        + creerPersonnage()
+        + placerObstacle()
+        + placerJoueur()
+        + placerEquipements()
         + determinerOrdre()
         + afficherOrdre()
         + joueursEnVie():boolean
@@ -176,6 +173,10 @@ package Dé
     }
 }
 
+    class Affichage
+    {
+    + afficherDonjon(Donjon donjon)
+    }
 
 Caracteristiques <|-- Personnage
 Monstre <|-- Attaque
@@ -184,6 +185,8 @@ DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Monstres.Monstre
 DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Equipement.Equipement
 Personnage --* Classe
 Personnage --* Race
+MDJ ..> Donjon : <<uses>>
+MDJ ..> Personnage : <<instanciates>>
 
 
 

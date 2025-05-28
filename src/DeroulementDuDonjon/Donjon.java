@@ -22,23 +22,9 @@ public class Donjon
             }
         }
 
-        public String afficherDonjon()
+        public int getTailleCarte()
         {
-            int count_colonne = 0;
-            int count_ligne = 0;
-            String affichage = "";
-                affichage+= "   A\tB\tC\tD\tF\tG\tH\tI\tJ\tK\tL\tM\tN\tO\tP\tQ\tR\tS\tT\tU\tV\tW\tX\tY\tZ\n";
-            for(int i = 0; i < this.m_carte.length ;i++)
-            {
-                affichage+= count_colonne + "\t";
-                count_colonne+=1;
-                for(int j = 0; j < this.m_carte[i].length ;j++)
-                {
-                    affichage += this.m_carte[i][j] + "\t";
-                }
-                affichage += "\n";
-            }
-            return affichage;
+            return this.m_carte.length;
         }
 
         public String getCase(int x, int y)

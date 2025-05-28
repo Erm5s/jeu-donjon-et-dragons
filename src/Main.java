@@ -10,6 +10,7 @@ public class Main
     public static void main(String args[])
     {
         MeneurDeJeu mdj = new MeneurDeJeu();
-        mdj.creerDonjon();
+        Donjon donjon1 = new Donjon();
+        mdj.creerDonjon(donjon1);
     }
 }

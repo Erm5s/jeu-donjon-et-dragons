@@ -202,7 +202,7 @@ Un donjon se termine lorsqu'un joueur est tué (défaite) ou lorsque tous les mo
 
 En cas de victoire, les personnages regagnent l'intégralité de leur vie et passent au donjon suivant.
 
-### Exemple d'affichage
+### Exemple d'Affichage
 
 ```console
 ********************************************************************************
