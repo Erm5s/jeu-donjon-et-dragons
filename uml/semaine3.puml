@@ -145,6 +145,7 @@ package DOOnjonsEtDragons
     {
         class Donjon
         {
+            +<<create>>Donjon()
             + creationCarte():Void
             + creationObstacle():Void
             + creationMonstre():Void
@@ -154,10 +155,12 @@ package DOOnjonsEtDragons
         }
     }
 
-    class MDJ
+    class MeneurDeJeu
     {
+        + <<create>> MeneurDeJeu(String nom)
         + creerDonjon(Donjon donjon)
         + creerPersonnage()
+        + creerMonstre()
         + placerObstacle()
         + placerJoueur()
         + placerEquipements()
@@ -169,12 +172,14 @@ package Dé
 {
     class Dé
     {
+        + <<create>>Affichage()
         + lancerDe(nmbDé:Integer, nmbFace:Integer) : Integer
     }
 }
 
     class Affichage
     {
+    + <<create>>Affichage()
     + afficherDonjon(Donjon donjon)
     }
 
@@ -185,9 +190,15 @@ DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Monstres.Monstre
 DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Equipement.Equipement
 Personnage --* Classe
 Personnage --* Race
-MDJ ..> Donjon : <<uses>>
-MDJ ..> Personnage : <<instanciates>>
-
+Personnage ..> Monstre : attaque
+MeneurDeJeu ..> Donjon : <<uses>>
+MeneurDeJeu ..> DOOnjonsEtDragons.entite.Equipement.Equipement : <<uses>>
+MeneurDeJeu ..> Personnage : <<instanciates>>
+MeneurDeJeu ..> Monstre : <<instanciates>>
+Affichage ..> Donjon : <<uses>>
+Affichage ..> MeneurDeJeu : <<uses>>
+Donjon ..> Personnage : <<uses>>
+Donjon ..> DOOnjonsEtDragons.entite.Equipement.Equipement : <<uses>>
 
 
 }
