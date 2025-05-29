@@ -44,7 +44,7 @@ public class Armure extends Equipement
         return m_estLourde;
     }
 
-    public int getClasse() {
+    public int getClasseArmure() {
         return m_classe;
     }
 

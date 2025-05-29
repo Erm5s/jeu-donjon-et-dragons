@@ -4,5 +4,5 @@ public enum Classe {
     CLERC,
     GUERRIER,
     MAGICIEN,
-    ROUBLARD
+    ROUBLARD;
 }

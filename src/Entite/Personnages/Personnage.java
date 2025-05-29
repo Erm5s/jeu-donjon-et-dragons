@@ -165,15 +165,15 @@ public class Personnage extends Entite {
     }
 
 
-    // AFFICHAGE A DEPLACER DANS UNE FONCTION AFFICHAGE
-    public void afficheStats() {
-        String stats = "";
-        stats += "PV         : " + m_stats.getPV();
-        stats += "\nForce      : " + m_stats.getForce();
-        stats += "\nDextérité  : " + m_stats.getDexterite();
-        stats += "\nVitesse    : " + m_stats.getVitesse();
-        stats += "\nInitiative : " + m_stats.getInitiative();
-        System.out.println(stats);
+    @Override
+    public String toString() {
+        String infosJoueur = m_nom + " le";
+        infosJoueur += "\nPDV : " + m_stats.getPV();
+        infosJoueur += "\nFOR : " + m_stats.getForce();
+        infosJoueur += "\nDEX : " + m_stats.getDexterite();
+        infosJoueur += "\nVIT : " + m_stats.getVitesse();
+        infosJoueur += "\nITV : " + m_stats.getInitiative();
+        return infosJoueur;
     }
 
     public void afficheInventaire() {

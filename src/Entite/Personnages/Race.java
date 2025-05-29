@@ -4,5 +4,5 @@ public enum Race {
     HUMAIN,
     NAIN,
     ELFE,
-    HALFELIN
+    HALFELIN;
 }

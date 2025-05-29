@@ -1,6 +1,10 @@
-import DeroulementDuDonjon.Donjon;
+ import DeroulementDuDonjon.Donjon;
+ import Entite.Monstres.Monstre;
+ import Entite.Personnages.Personnage;
 
-public class Affichage
+ import java.util.List;
+
+ public class Affichage
 {
     public void afficherMessage(String message)
     {
@@ -29,5 +33,15 @@ public class Affichage
             affichage += "\n";
         }
         System.out.println(affichage);
+    }
+
+    public void afficherInfoPersonnage(Personnage p)
+    {
+        System.out.println("\u001B[32m" + p.toString() + "\u001B[0m");
+    }
+
+    public void afficherInfoMonstre(Monstre m)
+    {
+        System.out.println("\u001B[31m" + m.toString() + "\u001B[0m");
     }
 }

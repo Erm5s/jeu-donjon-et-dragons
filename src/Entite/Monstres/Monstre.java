@@ -84,4 +84,17 @@ public class Monstre {
     public int getInitiative() {
         return m_initiative;
     }
+
+    @Override
+    public String toString()
+    {
+        String infoMonstre = m_espece + " " + m_numero + " :"
+                    + "\n ATQ : " + m_nbLance + "d" + m_degats + "portée : " + m_portee
+                    + "\n PDV : " + m_PV
+                    + "\n FOR : " + m_force
+                    + "\n DEX : " + m_dexterite
+                    + "\n ARM : " + m_classeArmure
+                    + "\n ITV : " + m_initiative;
+        return infoMonstre;
+    }
 }
