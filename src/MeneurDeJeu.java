@@ -73,13 +73,15 @@ public class MeneurDeJeu {
         }
     }
 
-    public void jouerDonjon()
+    public void jouerDonjon(Donjon donjon)
     {
         while(joueursEnVie())
         {
-            for(int i = 0; i < m_joueurs.size();i++)
+            for(Personnage key : m_JoueursInitiative.keySet())
             {
-
+                Personnage personnage =key;
+                affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?");
+                actionsPersonnage(personnage, donjon);
             }
         }
     }
@@ -163,7 +165,7 @@ public class MeneurDeJeu {
         m_monstres.add(m);
     }
 
-    /*public void actionsPersonnage(Personnage personnage, Donjon donjon)
+    public void actionsPersonnage(Personnage personnage, Donjon donjon)
     {
         int nb_actions = 0;
         while (nb_actions < 3)
@@ -171,13 +173,10 @@ public class MeneurDeJeu {
             int numero_action = 0;
             switch (numero_action)
             {
-                case 1 -> personnage.attaquer();
                 case 2 -> personnage.seDeplacer(donjon);
-                case 3 -> personnage.ramasser();
-                case 4 -> personnage.equiper();
             }
         }
-    }*/
+    }
 
     public Boolean placerObstacle(Donjon donjon, int x, int y) {
         return donjon.placerObstacle(x, y);
