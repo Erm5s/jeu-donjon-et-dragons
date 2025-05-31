@@ -64,6 +64,12 @@ public class MeneurDeJeu {
         for(int i = 0; i < nb_Monstres;i++)
         {
             creationMonstre();
+            affichage.DDAfficherMessage("Où souhaitez-vous placer le monstre ? (x puis y)");
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            placerMonstre(donjon,m_monstres.get(i),x,y);
+            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
+            affichage.afficherDonjon(donjon);
         }
     }
 
@@ -115,7 +121,7 @@ public class MeneurDeJeu {
         System.out.println();
         p.afficheInventaire();
         System.out.println();
-        p.afficheStats();
+        p.toString();
 
         return p;
 
@@ -179,6 +185,11 @@ public class MeneurDeJeu {
 
     public boolean placerJoueur(Donjon donjon, Personnage personnage, int x, int y) {
         return donjon.placerJoueur(personnage, x, y);
+    }
+
+    public boolean placerMonstre(Donjon donjon,Monstre monstre, int x, int y)
+    {
+        return donjon.placerMonstre(monstre,x,y);
     }
 
     public boolean placerEquipement(Donjon donjon, Equipement equipement, int x, int y) {

@@ -71,7 +71,7 @@ public class Personnage extends Entite {
     }
 
     public String seDeplacer(Donjon donjon){
-        // gérer les différents erreurs de déplacement, déplacer les system.out.println
+        // gérer les différentes erreurs de déplacement, déplacer les system.out.println
         int nbCase = getStats().getVitesse()/3;
         String dialog = "";
         dialog += ("\nVous êtes en " + getX() + ";" + getY());

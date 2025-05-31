@@ -4,7 +4,7 @@ import Dice.Dice;
 import Entite.Personnages.*;
 import Entite.Equipement.*;
 
-public class Monstre {
+public class Monstre extends Entite.Entite{
     private String m_espece;
     private int m_numero;
     private int m_portee;
@@ -60,6 +60,11 @@ public class Monstre {
 
 
     // GETTERS
+
+    public String getNom()
+    {
+        return this.m_espece;
+    }
 
     public String getEspece() {
         return m_espece;

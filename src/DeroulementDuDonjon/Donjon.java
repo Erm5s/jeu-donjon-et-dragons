@@ -2,6 +2,7 @@ package DeroulementDuDonjon;
 
 
 import Entite.Personnages.Personnage;
+import Entite.Monstres.Monstre;
 import Entite.Equipement.Equipement;
 
 public class Donjon
@@ -60,6 +61,25 @@ public class Donjon
                         return true;
                     }
                     this.m_carte[x][y] = personnage.getNom().substring(0, personnage.getNom().length());
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public boolean placerMonstre(Monstre monstre,int x, int y)
+        {
+            if (x >= 0 && x < this.m_carte.length && y >= 0 && y < this.m_carte[0].length)
+            {
+                if(this.m_carte[x][y] == "." )
+                {
+                    if(monstre.getNom().length() > 3)
+                    {
+                        this.m_carte[x][y] = monstre.getNom().substring(0, 3);
+                        monstre.setCoordonnees(x, y);
+                        return true;
+                    }
+                    this.m_carte[x][y] = monstre.getNom().substring(0, monstre.getNom().length());
                     return true;
                 }
             }
