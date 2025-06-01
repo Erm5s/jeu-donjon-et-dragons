@@ -70,17 +70,25 @@ public class MeneurDeJeu {
             placerMonstre(donjon,m_monstres.get(i),x,y);
             affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
             affichage.afficherDonjon(donjon);
+
+            System.out.println("Taille de m_joueurs : " + m_joueurs.size());
+            System.out.println("Taille de m_JoueursInitiative : " + m_JoueursInitiative.size());
         }
     }
 
     public void jouerDonjon(Donjon donjon)
     {
+        System.out.println("État initial des joueurs :");
+        for (Personnage p : m_joueurs) {
+            System.out.println(p.getNom() + " a " + p.getStats().getPV() + " PV");
+        }
+
+        System.out.println("joueursEnVie() = " + joueursEnVie());
         while(joueursEnVie())
         {
             for(Personnage key : m_JoueursInitiative.keySet())
             {
                 Personnage personnage =key;
-                affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?");
                 actionsPersonnage(personnage, donjon);
             }
         }
@@ -167,14 +175,20 @@ public class MeneurDeJeu {
 
     public void actionsPersonnage(Personnage personnage, Donjon donjon)
     {
+        Scanner scanner  = new Scanner(System.in);
         int nb_actions = 0;
         while (nb_actions < 3)
         {
-            int numero_action = 0;
+            affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?");
+            int numero_action = scanner.nextInt();
             switch (numero_action)
             {
-                case 2 -> personnage.seDeplacer(donjon);
+                case 2 ->
+                {
+                    personnage.seDeplacer(donjon);
+                }
             }
+            nb_actions+=1;
         }
     }
 
