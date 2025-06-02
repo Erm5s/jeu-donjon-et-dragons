@@ -1,5 +1,9 @@
 package Entite.Equipement;
 
+/**
+ * Énumération représentant la liste de tous les équipements disponibles dans le jeu.
+ * Elle contient à la fois les armes et les armures utilisables par les joueurs.
+ */
 public enum ListeEquipements {
     //Armes :
     BATON,
