@@ -14,6 +14,11 @@
         System.out.println(jaune + message + blanc);
     }
 
+    public void PersonnageAfficherMessage(String message)
+    {
+        System.out.println(blanc + message + blanc);
+    }
+
     public void DDAfficherMessage(String message)
     {
         System.out.println(rouge + message + blanc);
