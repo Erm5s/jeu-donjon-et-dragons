@@ -83,13 +83,15 @@ public class MeneurDeJeu {
             System.out.println(p.getNom() + " a " + p.getStats().getPV() + " PV");
         }
 
-        System.out.println("joueursEnVie() = " + joueursEnVie());
+        System.out.println("j oueursEnVie() = " + joueursEnVie());
         while(joueursEnVie())
         {
-            for(Personnage key : m_JoueursInitiative.keySet())
+            for(Personnage key : m_OrdreJoueurs.keySet())
             {
                 Personnage personnage =key;
                 actionsPersonnage(personnage, donjon);
+                affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
+                affichage.afficherDonjon(donjon);
             }
         }
     }
@@ -179,14 +181,14 @@ public class MeneurDeJeu {
         int nb_actions = 0;
         while (nb_actions < 3)
         {
-            affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?");
+            affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?\n2 - se déplacer\n3 - ramasser un équipement");
             int numero_action = scanner.nextInt();
+            scanner.nextLine();
             switch (numero_action)
             {
-                case 2 ->
-                {
-                    personnage.seDeplacer(donjon);
-                }
+                case 2 -> personnage.seDeplacer(donjon);
+                case 3 -> personnage.ramasser(donjon);
+                default -> affichage.mdjAfficherMessage("Action non valide.");
             }
             nb_actions+=1;
         }
