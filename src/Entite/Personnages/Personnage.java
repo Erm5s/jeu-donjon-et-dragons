@@ -102,7 +102,9 @@ public class Personnage extends Entite {
                 System.out.println("\nVous ne pouvez pas vous déplacer ici, trop loin");
             }
         }
+        donjon.changeCase(this.getX(),this.getY(),".");
         setCoordonnees(newX, newY);
+        donjon.placerJoueur(this,newX,newY);
         System.out.println("Vous êtes en " + getX() + ";" + getY());
         return null;
     }

@@ -85,8 +85,6 @@ public class MeneurDeJeu {
                 Personnage personnage =key;
                 affichage.mdjAfficherMessage("C'est au tour du joueur: " + personnage.getNom());
                 actionsPersonnage(personnage, donjon);
-                affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
-                affichage.afficherDonjon(donjon);
             }
         }
     }
@@ -198,6 +196,8 @@ public class MeneurDeJeu {
                 }
                 default -> affichage.mdjAfficherMessage("Action non valide.");
             }
+            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
+            affichage.afficherDonjon(donjon);
             nb_actions+=1;
         }
     }

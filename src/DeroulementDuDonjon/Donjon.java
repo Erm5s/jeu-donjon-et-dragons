@@ -33,6 +33,11 @@ public class Donjon
             return this.m_carte[x][y];
         }
 
+        public void changeCase(int x, int y, String caractere)
+        {
+            this.m_carte[x][y] = caractere;
+        }
+
         //placement des éléments sur la carte
 
         public boolean placerObstacle(int x, int y)
