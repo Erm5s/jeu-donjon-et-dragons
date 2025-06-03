@@ -10,8 +10,11 @@ import Entite.Monstres.*;
 import Entite.Equipement.*;
 import Dice.Dice;
 
-
+/**
+ * Représente un personnage jouable dans le donjon
+ */
 public class Personnage extends Entite {
+    // ===================== ATTRIBUTS =====================
     private final String m_nom;
     private final Race m_race;
     private final Classe m_classe;
@@ -88,7 +91,7 @@ public class Personnage extends Entite {
         int newY = -1;
 
 
-        while (newX<Xmin || newX>Xmax || newY<Ymin || newY>Ymax ||
+        while (newX>=Xmin || newX<=Xmax || newY>=Ymin || newY<=Ymax ||
                 !donjon.getCase(newX,newY).equals(".") || !donjon.getCase(newX,newY).equals("*"))
         {
             System.out.println("\n\nTapez les coordonnées X puis Y pour vous déplacer");
