@@ -91,8 +91,7 @@ public class Personnage extends Entite {
         int newY = -1;
 
 
-        while (newX>=Xmin || newX<=Xmax || newY>=Ymin || newY<=Ymax ||
-                !donjon.getCase(newX,newY).equals(".") || !donjon.getCase(newX,newY).equals("*"))
+        while (newX<=Xmin || newX>=Xmax || newY<=Ymin || newY>=Ymax)
         {
             System.out.println("\n\nTapez les coordonnées X puis Y pour vous déplacer");
             Scanner scanner = new Scanner(System.in);

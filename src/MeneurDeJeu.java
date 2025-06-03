@@ -42,7 +42,7 @@ public class MeneurDeJeu {
         }
         System.out.println("Passons aux joueurs, où souhaitez vous les placer ?\n\n");
         for (int i = 0; i < nb_joueurs; i++) {
-            affichage.DDAfficherMessage("Entrez les coordonnées pour placer le joueur numéro %d (x, PUIS y: \n\n");
+            affichage.DDAfficherMessage("Entrez les coordonnées pour placer le joueur: "+ m_joueurs.get(i).getNom() +"(x, PUIS y): \n\n");
             int x = scanner.nextInt();
             int y = scanner.nextInt();
             this.placerJoueur(donjon, this.m_joueurs.get(i), x, y);
@@ -78,17 +78,12 @@ public class MeneurDeJeu {
 
     public void jouerDonjon(Donjon donjon)
     {
-        System.out.println("État initial des joueurs :");
-        for (Personnage p : m_joueurs) {
-            System.out.println(p.getNom() + " a " + p.getStats().getPV() + " PV");
-        }
-
-        System.out.println("j oueursEnVie() = " + joueursEnVie());
         while(joueursEnVie())
         {
             for(Personnage key : m_OrdreJoueurs.keySet())
             {
                 Personnage personnage =key;
+                affichage.mdjAfficherMessage("C'est au tour du joueur: " + personnage.getNom());
                 actionsPersonnage(personnage, donjon);
                 affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
                 affichage.afficherDonjon(donjon);
@@ -106,7 +101,7 @@ public class MeneurDeJeu {
         String nom = scanner.nextLine();
 
         // la race
-        affichage.DDAfficherMessage("Choisissez votre race :\n1,2,3 ou 4 ");
+        affichage.DDAfficherMessage("Choisissez votre race :\n1 - humain\n2 - nain\n3 - elfe\n4 - halfelin ");
         int raceNb = scanner.nextInt();
         Race race = null;
         switch (raceNb) {
@@ -117,7 +112,7 @@ public class MeneurDeJeu {
         }
 
         // la classe
-        affichage.DDAfficherMessage("Choisissez votre classe :\n 1,2,3 ou 4 ");
+        affichage.DDAfficherMessage("Choisissez votre classe :\n1 - clerc\n2 - guerrier\n3 - magicien\n4 - roublard ");
         Classe classe = null;
         int classeNb = scanner.nextInt();
         switch (classeNb) {
@@ -171,7 +166,7 @@ public class MeneurDeJeu {
         affichage.DDAfficherMessage("Combien d'initiative souhaitez vous donner à votre monstre ?");
         int initiative = scanner.nextInt();
 
-        Monstre m = new Monstre(espece,numero,portee,degats,nb_lances,pv,force,dexterite,classe_armure,initiative);
+        Monstre m = new Monstre(espece,portee,degats,nb_lances,pv,force,dexterite,classe_armure,initiative);
         m_monstres.add(m);
     }
 
@@ -181,13 +176,26 @@ public class MeneurDeJeu {
         int nb_actions = 0;
         while (nb_actions < 3)
         {
-            affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?\n2 - se déplacer\n3 - ramasser un équipement");
+            affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?\n1 - équiper une arme\n2 - se déplacer\n3 - ramasser un équipement\n4 - attaquer un monstre");
             int numero_action = scanner.nextInt();
             scanner.nextLine();
             switch (numero_action)
             {
+                case 1 ->
+                {
+                    affichage.mdjAfficherMessage("Quelle arme souhaitez vous équiper ?");
+                    int num = scanner.nextInt();
+                    personnage.equiper(num);
+                }
                 case 2 -> personnage.seDeplacer(donjon);
                 case 3 -> personnage.ramasser(donjon);
+                case 4 ->
+                {
+                    affichage.mdjAfficherMessage("Quel monstre souhaitez-vous attaquer ?");
+                    int num = scanner.nextInt();
+                    personnage.attaquer(m_monstres.get(num));
+
+                }
                 default -> affichage.mdjAfficherMessage("Action non valide.");
             }
             nb_actions+=1;
