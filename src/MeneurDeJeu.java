@@ -127,6 +127,7 @@ public class MeneurDeJeu {
 
 
         Personnage p = new Personnage(nom, race, classe);
+        affichage.DDAfficherMessage("\n"+p.toString());
         return p;
     }
 
@@ -135,35 +136,36 @@ public class MeneurDeJeu {
         int numero = m_monstres.size() +1;
         Scanner scanner = new Scanner(System.in);
 
-        affichage.DDAfficherMessage("\nQuelle espèce souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessage("\nQuelle espèce souhaitez vous donner à votre monstre ?");
         String espece = scanner.nextLine();
 
-        affichage.DDAfficherMessage("Quelle portée souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessage("Quelle portée souhaitez vous donner à votre monstre ?");
         int portee = scanner.nextInt();
 
-        affichage.DDAfficherMessage("Combien de dégâts souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessage("Combien de dégâts souhaitez vous donner à votre monstre ?");
         int degats = scanner.nextInt();
 
-        affichage.DDAfficherMessage("Combien de lancés de dés souhaitez vous que votre monstre fasse lors de son attaque ?");
+        affichage.mdjAfficherMessage("Combien de lancés de dés souhaitez vous que votre monstre fasse lors de son attaque ?");
         int nb_lances = scanner.nextInt();
 
-        affichage.DDAfficherMessage("Combien de Points de vie souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessage("Combien de Points de vie souhaitez vous donner à votre monstre ?");
         int pv = scanner.nextInt();
 
-        affichage.DDAfficherMessage("Combien de force souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessage("Combien de force souhaitez vous donner à votre monstre ?");
         int force = scanner.nextInt();
 
-        affichage.DDAfficherMessage("Combien de dégâts souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessage("Combien de dégâts souhaitez vous donner à votre monstre ?");
         int dexterite = scanner.nextInt();
 
-        affichage.DDAfficherMessage("Quelle armure souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessage("Quelle armure souhaitez vous donner à votre monstre ?");
         int classe_armure = scanner.nextInt();
 
-        affichage.DDAfficherMessage("Combien d'initiative souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessage("Combien d'initiative souhaitez vous donner à votre monstre ?");
         int initiative = scanner.nextInt();
 
         Monstre m = new Monstre(espece,portee,degats,nb_lances,pv,force,dexterite,classe_armure,initiative);
         m_monstres.add(m);
+        affichage.DDAfficherMessage("\n"+m.toString());
     }
 
     public void actionsPersonnage(Personnage personnage, Donjon donjon)

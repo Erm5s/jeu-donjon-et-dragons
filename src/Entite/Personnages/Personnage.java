@@ -171,7 +171,7 @@ public class Personnage extends Entite {
 
     @Override
     public String toString() {
-        String infosJoueur = m_nom + " le";
+        String infosJoueur = m_nom + " le " + m_race + " " + m_classe;
         infosJoueur += "\nPDV : " + m_stats.getPV();
         infosJoueur += "\nFOR : " + m_stats.getForce();
         infosJoueur += "\nDEX : " + m_stats.getDexterite();
