@@ -81,11 +81,10 @@ public class MeneurDeJeu {
 
     public void jouerDonjon(Donjon donjon)
     {
-        while(joueursEnVie())
-        {
-            while(monstresEnVie())
-            {
-                for (Personnage key : m_OrdreJoueurs.keySet()) {
+        while(joueursEnVie() && monstresEnVie()) {
+
+            for (Personnage key : m_OrdreJoueurs.keySet()) {
+                if (monstresEnVie() && joueursEnVie()) {
                     Personnage personnage = key;
                     affichage.mdjAfficherMessage("C'est au tour du joueur: " + personnage.getNom());
                     actionsPersonnage(personnage, donjon);
@@ -191,7 +190,7 @@ public class MeneurDeJeu {
                 {
                     affichage.mdjAfficherMessage("Quel monstre souhaitez-vous attaquer ?");
                     int num = scanner.nextInt();
-                    personnage.attaquer(m_monstres.get(num));
+                    affichage.mdjAfficherMessage(personnage.attaquer(m_monstres.get(num-1)));
 
                 }
                 default -> affichage.mdjAfficherMessage("Action non valide.");
@@ -275,6 +274,7 @@ public class MeneurDeJeu {
         for(int i = 0; i < m_monstres.size();i++)
         {
             if(m_monstres.get(i).getPV() < 1)
+
             {
                 count+=1;
             }
