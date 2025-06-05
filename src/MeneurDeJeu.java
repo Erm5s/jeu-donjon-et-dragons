@@ -25,7 +25,7 @@ public class MeneurDeJeu {
         affichage.affichageRegles();
         affichage.DDAfficherMessage("\nMeneur du jeu, mettez en place le donjon !");
         affichage.mdjAfficherMessage("Veuillez indiquer le nombre de joueurs");
-        int nb_joueurs = scanner.nextInt();
+        int nb_joueurs = affichage.verifInt();
         for (int i = 0; i < nb_joueurs; i++) {
             affichage.DDAfficherMessage("\n\nJOUEUR " + (i+1) + " :");
             this.m_joueurs.add(creationPerso());
@@ -33,12 +33,12 @@ public class MeneurDeJeu {
         //MISE EN PLACE DU DONJON
         affichage.DDAfficherMessage("\nIl est l'heure de commencer le premier donjon de votre aventure !");
         affichage.mdjAfficherMessage("Combien d'obstacles souhaitez vous placer ? (10 max)");
-        int nb_obstacles = scanner.nextInt();
+        int nb_obstacles = affichage.verifInt();
         for (int i = 0; i < nb_obstacles; i++) {
             affichage.DDAfficherMessage("\nOBSTACLE " + (i+1) +"/" + nb_obstacles +" :");
             affichage.mdjAfficherMessage("Où voulez-vous placer l'obstacle? (x puis y)");
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
+            int x = affichage.verifInt();
+            int y = affichage.verifInt();
             this.placerObstacle(donjon, x, y);
             affichage.DDAfficherMessage("\n\nCarte mise à jour : \n");
             affichage.afficherDonjon(donjon);
@@ -46,8 +46,8 @@ public class MeneurDeJeu {
         System.out.println("\nPassons aux joueurs, où souhaitez vous les placer ?");
         for (int i = 0; i < nb_joueurs; i++) {
             affichage.mdjAfficherMessage("Entrez les coordonnées pour placer le joueur suivant : "+ m_joueurs.get(i).getNom() +" (x, PUIS y):");
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
+            int x = affichage.verifInt();
+            int y = affichage.verifInt();
             this.placerJoueur(donjon, this.m_joueurs.get(i), x, y);
 
             affichage.DDAfficherMessage("\n\nCarte mise à jour:\n");
@@ -63,13 +63,13 @@ public class MeneurDeJeu {
 
         affichage.DDAfficherMessage("Meneur de jeu créez vos montres!\n");
         affichage.mdjAfficherMessage("Combien de monstres souhaitez-vous créer ? (max 3)");
-        int nb_Monstres = scanner.nextInt();
+        int nb_Monstres = affichage.verifInt();
         for(int i = 0; i < nb_Monstres;i++)
         {
             creationMonstre();
             affichage.DDAfficherMessage("Où souhaitez-vous placer le monstre ? (x puis y)");
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
+            int x = affichage.verifInt();
+            int y = affichage.verifInt();
             placerMonstre(donjon,m_monstres.get(i),x,y);
             affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
             affichage.afficherDonjon(donjon);
@@ -91,6 +91,7 @@ public class MeneurDeJeu {
                 }
             }
         }
+        affichage.mdjAfficherMessage("Le donjon est terminé!");
     }
 
     public static Personnage creationPerso() {
@@ -174,14 +175,14 @@ public class MeneurDeJeu {
         while (nb_actions < 3)
         {
             affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?\n1 - équiper une arme\n2 - se déplacer\n3 - ramasser un équipement\n4 - attaquer un monstre");
-            int numero_action = scanner.nextInt();
+            int numero_action = affichage.verifInt();
             scanner.nextLine();
             switch (numero_action)
             {
                 case 1 ->
                 {
                     affichage.mdjAfficherMessage("Quelle arme souhaitez vous équiper ?");
-                    int num = scanner.nextInt();
+                    int num = affichage.verifInt();
                     personnage.equiper(num);
                 }
                 case 2 -> personnage.seDeplacer(donjon);
@@ -189,7 +190,7 @@ public class MeneurDeJeu {
                 case 4 ->
                 {
                     affichage.mdjAfficherMessage("Quel monstre souhaitez-vous attaquer ?");
-                    int num = scanner.nextInt();
+                    int num = affichage.verifInt();
                     affichage.mdjAfficherMessage(personnage.attaquer(m_monstres.get(num-1)));
 
                 }

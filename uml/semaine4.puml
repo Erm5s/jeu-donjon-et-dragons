@@ -93,13 +93,6 @@ package DOOnjonsEtDragons
                 + getInitiative() : Integer
             }
 
-            class Attaque
-            {
-                - m_portee : Integer
-                - m_degats : String
-                + <<Create>> Attaque(portee:Integer, degats:String)
-            }
-
         }
 
         package Equipement
@@ -184,7 +177,6 @@ package Dé
     }
 
 Caracteristiques <|-- Personnage
-Monstre <|-- Attaque
 DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Personnages.Personnage
 DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Monstres.Monstre
 DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Equipement.Equipement

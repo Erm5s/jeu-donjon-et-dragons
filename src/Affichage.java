@@ -3,6 +3,7 @@
  import Entite.Personnages.Personnage;
 
  import java.util.List;
+ import java.util.Scanner;
 
  public class Affichage
 {
@@ -96,6 +97,26 @@
                         + "\n- En " + vert +  "vert " + blanc + "les messages liés aux " + vert + "joueurs" + blanc
                         + "\n- En " + jaune + "jaune " + blanc + "les messages " + jaune + "divers " + blanc + "et ceux liés au " + jaune + "donjon");
         System.out.println(regles);
+    }
+
+    public int verifInt()
+    {
+        Scanner scanner = new Scanner(System.in);
+        int entier = 0;
+        boolean entierValide = false;
+        String input = "";
+
+        while (!entierValide) {
+            input = scanner.nextLine();
+
+            try {
+                entier = Integer.parseInt(input);
+                entierValide = true;
+            } catch (NumberFormatException e) {
+                this.DDAfficherMessage("Erreur : ce n'est pas un entier valide. Essayez encore.");
+            }
+        }
+        return entier;
     }
 }
 
