@@ -18,7 +18,7 @@ public class Arme extends Equipement
     // ===================== CONSTRUCTEUR =====================
     /**
      * Crée une arme avec un nom, des dégâts, une portée et une propriété lourde ou non,
-     * c'est une arme de distance si la portée > 1
+     * c'est une arme de distance si la portée > 18
      * @param nom nom de l’arme
      * @param degats nombre de points de dégâts infligés
      * @param portee portée de l’arme (≥ 1)
