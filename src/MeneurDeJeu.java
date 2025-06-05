@@ -83,11 +83,13 @@ public class MeneurDeJeu {
     {
         while(joueursEnVie())
         {
-            for(Personnage key : m_OrdreJoueurs.keySet())
+            while(monstresEnVie())
             {
-                Personnage personnage =key;
-                affichage.mdjAfficherMessage("C'est au tour du joueur: " + personnage.getNom());
-                actionsPersonnage(personnage, donjon);
+                for (Personnage key : m_OrdreJoueurs.keySet()) {
+                    Personnage personnage = key;
+                    affichage.mdjAfficherMessage("C'est au tour du joueur: " + personnage.getNom());
+                    actionsPersonnage(personnage, donjon);
+                }
             }
         }
     }
@@ -264,6 +266,24 @@ public class MeneurDeJeu {
         }
         return true;
     }
+
+    public boolean monstresEnVie()
+    {
+        int count = 0;
+        for(int i = 0; i < m_monstres.size();i++)
+        {
+            if(m_monstres.get(i).getPV() < 1)
+            {
+                count+=1;
+            }
+        }
+        if(count ==  m_monstres.size())
+        {
+            return false;
+        }
+        return true;
+    }
+
 
     //actions du joueur
     public boolean attaquer()
