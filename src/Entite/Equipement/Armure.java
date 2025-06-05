@@ -1,7 +1,6 @@
 package Entite.Equipement;
 
 import java.util.HashMap;
-
 /**
  * Classe représentant une armure dans le jeu
  */
@@ -32,12 +31,12 @@ public class Armure extends Equipement
      * Liste statique contenant toutes les armures disponibles dans le jeu,
      * associées à une clé de type ListeEquipements
      */
-    public static final HashMap<ListeEquipements, Armure> listeArmures = new HashMap<>();
+    private static final HashMap<ListeEquipements, Object[]> listeArmures = new HashMap<>();
     static {
-        listeArmures.put(ListeEquipements.ARMURE_D_ECAILLES, new Armure("armure d'écailles", 9, false));
-        listeArmures.put(ListeEquipements.DEMI_PLATE, new Armure("demi-plate", 10, false));
-        listeArmures.put(ListeEquipements.COTTE_DE_MAILLES, new Armure("cotte de mailles", 11, true));
-        listeArmures.put(ListeEquipements.HARNOIS, new Armure("harnois", 12, true));
+        listeArmures.put(ListeEquipements.ARMURE_D_ECAILLES, new Object[] { "armure d'écailles", 9, false });
+        listeArmures.put(ListeEquipements.DEMI_PLATE, new Object[] { "demi-plate", 10, false });
+        listeArmures.put(ListeEquipements.COTTE_DE_MAILLES, new Object[] { "cotte de mailles", 11, true });
+        listeArmures.put(ListeEquipements.HARNOIS, new Object[] { "harnois", 12, true });
     }
 
     // ===================== METHODE PUBLIQUE =====================
@@ -47,7 +46,8 @@ public class Armure extends Equipement
      * @return armure correspondante, ou null si elle n’existe pas dans la map
      */
     public static Armure creerArmure(ListeEquipements equipement) {
-        return listeArmures.get(equipement);
+        Object[] stats = listeArmures.get(equipement);
+        return new Armure((String) stats[0], (int) stats[1], (boolean) stats[2]);
     }
 
     /**

@@ -1,6 +1,8 @@
 package Entite.Equipement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Classe représentant une arme dans le jeu
@@ -38,15 +40,15 @@ public class Arme extends Equipement
      * Liste statique contenant toutes les armes disponibles dans le jeu,
      * associées à une clé de type ListeEquipements
      */
-    private static final HashMap<ListeEquipements, Arme> listeArmes = new HashMap<>();
+    private static final HashMap<ListeEquipements, Object[]> listeArmes = new HashMap<>();
     static {
-        listeArmes.put(ListeEquipements.BATON, new Arme("bâton", 6, 1, false));
-        listeArmes.put(ListeEquipements.MASSE_D_ARMES, new Arme("masse d'armes", 6, 1, false));
-        listeArmes.put(ListeEquipements.EPEE_LONGUE, new Arme("épée longue", 8, 1, true));
-        listeArmes.put(ListeEquipements.RAPIERE, new Arme("rapière", 8, 1, true));
-        listeArmes.put(ListeEquipements.ARBALETE_LEGERE, new Arme("arbalète légère", 8, 16, false));
-        listeArmes.put(ListeEquipements.FRONDE, new Arme("fronde", 4, 6, false));
-        listeArmes.put(ListeEquipements.ARC_COURT, new Arme("arc court", 6, 16, false));
+        listeArmes.put(ListeEquipements.BATON, new Object[]{"bâton", 6, 1, false});
+        listeArmes.put(ListeEquipements.MASSE_D_ARMES, new Object[]{"masse d'armes", 6, 1, false});
+        listeArmes.put(ListeEquipements.EPEE_LONGUE, new Object[]{"épée longue", 8, 1, true});
+        listeArmes.put(ListeEquipements.RAPIERE, new Object[]{"rapière", 8, 1, true});
+        listeArmes.put(ListeEquipements.ARBALETE_LEGERE, new Object[]{"arbalète légère", 8, 16, false});
+        listeArmes.put(ListeEquipements.FRONDE, new Object[]{"fronde", 4, 6, false});
+        listeArmes.put(ListeEquipements.ARC_COURT, new Object[]{"arc court", 6, 16, false});
     }
 
     // ===================== METHODES =====================
@@ -56,7 +58,8 @@ public class Arme extends Equipement
      * @return arme correspondante, ou null si elle n’existe pas dans la map
      */
     public static Arme creerArme(ListeEquipements equipement) {
-        return listeArmes.get(equipement);
+        Object[] stats = listeArmes.get(equipement);
+        return new Arme((String) stats[0], (int) stats[1], (int) stats[2], (boolean) stats[3]);
     }
 
     /**
@@ -112,5 +115,9 @@ public class Arme extends Equipement
      */
     public boolean getEstDistance() {
         return m_estDistance;
+    }
+
+    public void addDegats(){
+        m_degats++;
     }
 }

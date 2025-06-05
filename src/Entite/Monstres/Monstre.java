@@ -66,6 +66,7 @@ public class Monstre extends Entite.Entite{
         int jet = de.lanceDes(1);
         int bonus = m_portee == 1 ? m_dexterite : m_force;
         int puissance = jet + bonus;
+
         if (puissance > cible.getArmureEquipee().getClasseArmure()) {
             Dice deDegat = new Dice(m_degats);
             int degats = deDegat.lanceDes(m_nbLance);
