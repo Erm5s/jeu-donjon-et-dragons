@@ -6,7 +6,12 @@ package DOOnjonsEtDragons
     {
         abstract class Entite
         {
-
+            - m_x: integer
+            - m_y: integer
+            + getCoordonnees():String
+            + setCoordonnees()
+            + getX():integer
+            + getY():integer
         }
         package Personnages
         {
@@ -30,6 +35,7 @@ package DOOnjonsEtDragons
                 + getStats() : Caracteristique
                 + getArmeEquipee() : Arme
                 + getArmureEquipee() : Armure
+                + afficherInventaire()
 
             }
 
@@ -139,12 +145,13 @@ package DOOnjonsEtDragons
         class Donjon
         {
             +<<create>>Donjon()
-            + creationCarte():Void
-            + creationObstacle():Void
-            + creationMonstre():Void
-            + placerPersonnages():Void
-            + placerEquipements():Void
-            + contexte():String
+            + getTailleCarte():integer
+            + getCase(integer x, integer y):String
+            + changeCase(integer x, integer y, String caractere):
+            + placerObstacle():Boolean
+            + placerMonstre():Boolean
+            + placerPersonnages():Boolean
+            + placerEquipement():Boolean
         }
     }
 
@@ -152,14 +159,17 @@ package DOOnjonsEtDragons
     {
         + <<create>> MeneurDeJeu(String nom)
         + creerDonjon(Donjon donjon)
+        + joueurDonjon(Donjon donjon)
         + creerPersonnage()
         + creerMonstre()
-        + placerObstacle()
-        + placerJoueur()
-        + placerEquipements()
+        + placerObstacle():Boolean
+        + placerJoueur():Boolean
+        + placerMonstre():Boolean
+        + placerEquipements():Boolean
         + determinerOrdre()
         + afficherOrdre()
         + joueursEnVie():boolean
+        + monstresEnVie():boolean
     }
 package Dé
 {

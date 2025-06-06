@@ -81,10 +81,10 @@ public class MeneurDeJeu {
 
     public void jouerDonjon(Donjon donjon)
     {
-        while(joueursEnVie() && monstresEnVie()) {
+        while(joueursEnVie(donjon) && monstresEnVie(donjon)) {
 
             for (Personnage key : m_OrdreJoueurs.keySet()) {
-                if (monstresEnVie() && joueursEnVie()) {
+                if (monstresEnVie(donjon) && joueursEnVie(donjon)) {
                     Personnage personnage = key;
                     affichage.mdjAfficherMessage("C'est au tour du joueur: " + personnage.getNom());
                     actionsPersonnage(personnage, donjon);
@@ -105,7 +105,7 @@ public class MeneurDeJeu {
 
         // la race
         affichage.PersonnageAfficherMessage("\nChoisissez votre race :\n1 - Humain\n2 - Nain\n3 - Elfe\n4 - Halfelin");
-        int raceNb = scanner.nextInt();
+        int raceNb = affichage.verifInt();
         Race race = null;
         switch (raceNb) {
             case 1 -> race = Race.HUMAIN;
@@ -117,7 +117,7 @@ public class MeneurDeJeu {
         // la classe
         affichage.PersonnageAfficherMessage("\nChoisissez votre classe :\n1 - Clerc\n2 - Guerrier\n3 - Magicien\n4 - Roublard ");
         Classe classe = null;
-        int classeNb = scanner.nextInt();
+        int classeNb = affichage.verifInt();
         switch (classeNb) {
             case 1 -> classe = Classe.CLERC;
             case 2 -> classe = Classe.GUERRIER;
@@ -140,28 +140,28 @@ public class MeneurDeJeu {
         String espece = scanner.nextLine();
 
         affichage.mdjAfficherMessage("Quelle portée souhaitez vous donner à votre monstre ?");
-        int portee = scanner.nextInt();
+        int portee = affichage.verifInt();
 
         affichage.mdjAfficherMessage("Combien de dégâts souhaitez vous donner à votre monstre ?");
-        int degats = scanner.nextInt();
+        int degats = affichage.verifInt();
 
         affichage.mdjAfficherMessage("Combien de lancés de dés souhaitez vous que votre monstre fasse lors de son attaque ?");
-        int nb_lances = scanner.nextInt();
+        int nb_lances = affichage.verifInt();
 
         affichage.mdjAfficherMessage("Combien de Points de vie souhaitez vous donner à votre monstre ?");
-        int pv = scanner.nextInt();
+        int pv = affichage.verifInt();
 
         affichage.mdjAfficherMessage("Combien de force souhaitez vous donner à votre monstre ?");
-        int force = scanner.nextInt();
+        int force = affichage.verifInt();
 
         affichage.mdjAfficherMessage("Combien de dégâts souhaitez vous donner à votre monstre ?");
-        int dexterite = scanner.nextInt();
+        int dexterite = affichage.verifInt();
 
         affichage.mdjAfficherMessage("Quelle armure souhaitez vous donner à votre monstre ?");
-        int classe_armure = scanner.nextInt();
+        int classe_armure = affichage.verifInt();
 
         affichage.mdjAfficherMessage("Combien d'initiative souhaitez vous donner à votre monstre ?");
-        int initiative = scanner.nextInt();
+        int initiative = affichage.verifInt();
 
         Monstre m = new Monstre(espece,portee,degats,nb_lances,pv,force,dexterite,classe_armure,initiative);
         m_monstres.add(m);
@@ -189,6 +189,7 @@ public class MeneurDeJeu {
                 case 3 -> personnage.ramasser(donjon);
                 case 4 ->
                 {
+                    this.afficherMonstres();
                     affichage.mdjAfficherMessage("Quel monstre souhaitez-vous attaquer ?");
                     int num = affichage.verifInt();
                     affichage.mdjAfficherMessage(personnage.attaquer(m_monstres.get(num-1)));
@@ -256,8 +257,17 @@ public class MeneurDeJeu {
         }
     }
 
+    public void afficherMonstres()
+    {
+        affichage.mdjAfficherMessage("Voici les monstres en vie:\n");
+        for(int i = 0; i < m_monstres.size();i++)
+        {
+            affichage.mdjAfficherMessage((i+1) +" - "+m_monstres.get(i).getNom() +"\n");
+        }
+    }
+
     //fonction pour savoir si tt les joueurs sont encore en vie
-    public boolean joueursEnVie()
+    public boolean joueursEnVie(Donjon donjon)
     {
         for(int i = 0; i < m_joueurs.size();i++)
         {
@@ -269,7 +279,7 @@ public class MeneurDeJeu {
         return true;
     }
 
-    public boolean monstresEnVie()
+    public boolean monstresEnVie(Donjon donjon)
     {
         int count = 0;
         for(int i = 0; i < m_monstres.size();i++)
@@ -278,6 +288,9 @@ public class MeneurDeJeu {
 
             {
                 count+=1;
+                int x = m_monstres.get(i).getX();
+                int y = m_monstres.get(i).getY();
+                donjon.changeCase(x,y,"X");
             }
         }
         if(count ==  m_monstres.size())
@@ -293,7 +306,7 @@ public class MeneurDeJeu {
     {
         Scanner scanner = new Scanner(System.in);
         affichage.mdjAfficherMessage("Quel monstre souhaitez-vous attaquer ?");
-        int num_monstre = scanner.nextInt();
+        int num_monstre = affichage.verifInt();
         return true;
     }
 }
