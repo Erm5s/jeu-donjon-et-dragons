@@ -172,9 +172,10 @@ public class MeneurDeJeu {
     {
         Scanner scanner  = new Scanner(System.in);
         int nb_actions = 0;
-        while (nb_actions < 3)
+        boolean continuer = true;
+        while (nb_actions < 3 && continuer)
         {
-            affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?\n1 - équiper une arme\n2 - se déplacer\n3 - ramasser un équipement\n4 - attaquer un monstre");
+            affichage.mdjAfficherMessage("Quelle action souhaitez-vous effectuer ?\n1 - équiper une arme\n2 - se déplacer\n3 - ramasser un équipement\n4 - attaquer un monstre\n 5 - Passer le tour");
             int numero_action = affichage.verifInt();
             scanner.nextLine();
             switch (numero_action)
@@ -184,6 +185,7 @@ public class MeneurDeJeu {
                     affichage.mdjAfficherMessage("Quelle arme souhaitez vous équiper ?");
                     int num = affichage.verifInt();
                     personnage.equiper(num);
+                    break;
                 }
                 case 2 -> personnage.seDeplacer(donjon);
                 case 3 -> personnage.ramasser(donjon);
@@ -194,6 +196,10 @@ public class MeneurDeJeu {
                     int num = affichage.verifInt();
                     affichage.mdjAfficherMessage(personnage.attaquer(m_monstres.get(num-1)));
 
+                }
+                case 5 -> {
+                    continuer = false;
+                    break;
                 }
                 default -> affichage.mdjAfficherMessage("Action non valide.");
             }
