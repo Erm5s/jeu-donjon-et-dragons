@@ -1,11 +1,10 @@
- import DeroulementDuDonjon.Donjon;
- import Entite.Monstres.Monstre;
- import Entite.Personnages.Personnage;
+import DeroulementDuDonjon.Donjon;
+import Entite.Monstres.Monstre;
+import Entite.Personnages.Personnage;
 
- import java.util.List;
- import java.util.Scanner;
+import java.util.Scanner;
 
- public class Affichage
+public class Affichage
 {
     private final String blanc = "\u001B[0m";
     private final String jaune = "\u001B[33m";
@@ -29,6 +28,10 @@
         System.out.println(jaune + message + blanc);
     }
 
+    public void afficherMessage(String message)
+    {
+        System.out.println(message);
+    }
 
     public void afficherDonjon(Donjon donjon)
     {
@@ -58,6 +61,22 @@
             affichage += "\n";
         }
         System.out.println(affichage);
+    }
+
+    public void afficherDeplacementJoueur(Personnage p, Donjon d)
+    {
+        int nbCases = p.getStats().getVitesse() / 3;
+
+        int xActuel = p.getX();
+        int yActuel = p.getY();
+        int Xmin = Math.max(xActuel - nbCases, 0);
+        int Xmax = Math.min(xActuel + nbCases, d.getTailleCarte() - 1);
+        int Ymin = Math.max(yActuel - nbCases, 0);
+        int Ymax = Math.min(yActuel + nbCases, d.getTailleCarte() - 1);
+
+        PersonnageAfficherMessage("Position actuelle : (" + xActuel + "," + yActuel + ")"
+                                + "\nNombre de cases max : " + nbCases
+                                + "\nZone autorisée : x[" + Xmin + "," + Xmax + "] / y[" + Ymin + "," + Ymax + "]");
     }
 
     public void afficherInfoPersonnage(Personnage p)
@@ -95,8 +114,14 @@
                         + "\nVoici quelques explications du code couleur avant de débuter le jeu :"
                         + "\n- En " + bleu + "bleu " + blanc + "les messages liés au " + bleu + "meneur de jeu" + blanc
                         + "\n- En " + vert +  "vert " + blanc + "les messages liés aux " + vert + "joueurs" + blanc
-                        + "\n- En " + jaune + "jaune " + blanc + "les messages " + jaune + "divers " + blanc + "et ceux liés au " + jaune + "donjon");
+                        + "\n- En " + jaune + "jaune " + blanc + "les messages " + jaune + "divers " + blanc + "et ceux liés au " + jaune + "donjon")
+                        + transition();
         System.out.println(regles);
+    }
+
+    public String transition()
+    {
+        return (blanc + "\n\n===========================================\n");
     }
 
     public int verifInt()

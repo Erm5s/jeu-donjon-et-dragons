@@ -87,11 +87,9 @@ public class Caracteristique {
     @Override
     public String toString() {
         String infosStats =
-            "\n PDV : " + m_PV +
-            "\n FOR : " + m_force +
-            "\n DEX : " + m_dexterite +
-            "\n VIT : " + m_vitesse +
-            "\n ITV : " + m_initiative;
+            "----- PDV : " + m_PV + "-----"+
+            "\nFOR : " + m_force + " | DEX : " + m_dexterite +
+            "\nVIT : " + m_vitesse + " | ITV : " + m_initiative;
         return infosStats;
     }
 

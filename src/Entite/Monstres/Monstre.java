@@ -93,13 +93,12 @@ public class Monstre extends Entite.Entite{
     @Override
     public String toString()
     {
-        String infoMonstre = m_espece + " " + m_numero + " :"
-                + "\n ATQ : " + m_nbLance + "d" + m_degats + "portée : " + m_portee
-                + "\n PDV : " + m_PV
-                + "\n FOR : " + m_force
-                + "\n DEX : " + m_dexterite
-                + "\n ARM : " + m_classeArmure
-                + "\n ITV : " + m_initiative;
+        String infoMonstre =
+            m_espece + " " + m_numero + " :"
+            + "\n----- PDV : " + m_PV + "-----"
+            + "\nATQ : " + m_nbLance + "d" + m_degats + " | POR : " + m_portee
+            + "\nFOR : " + m_force + "   | DEX : " + m_dexterite
+            + "\nARM : " + m_classeArmure + "   | ITV : " + m_initiative;
         return infoMonstre;
     }
 
