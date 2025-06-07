@@ -10,6 +10,7 @@ public abstract class Entite
     private int m_x;
     private int m_y;
 
+    public abstract TypeEntite getTypeEntite();
     /**
      * Retourne les coordonnées de l'entité sous forme de chaîne
      * @return une chaîne du type "x: X, y: Y"
@@ -45,10 +46,5 @@ public abstract class Entite
         return m_y;
     }
 
-    public String getNom()
-    {
-        return this.m_nom;
-    }
-
-    public abstract boolean estPersonnage();
+    public abstract String getNom();
 }

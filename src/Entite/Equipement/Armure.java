@@ -1,5 +1,7 @@
 package Entite.Equipement;
 
+import Entite.TypeEntite;
+
 import java.util.HashMap;
 /**
  * Classe représentant une armure dans le jeu
@@ -8,7 +10,7 @@ public class Armure extends Equipement
 {
     // ===================== ATTRIBUTS =====================
     private String m_nom;
-    private TypeEquipement m_typeEquipement;
+    private TypeEntite m_typeEntite;
     private int m_classe;
     private boolean m_estLourde;
 
@@ -20,7 +22,7 @@ public class Armure extends Equipement
      * @param estLourde indique si l’armure est lourde (true) ou légère (false)
      */
     public Armure(String nom, int classe, boolean estLourde) {
-        m_typeEquipement = TypeEquipement.ARMURE;
+        m_typeEntite = TypeEntite.ARMURE;
         m_nom = nom;
         m_classe = classe;
         m_estLourde = estLourde;
@@ -72,8 +74,8 @@ public class Armure extends Equipement
     /**
      * @return type d’équipement (ici toujours ARMURE)
      */
-    public TypeEquipement getTypeEquipement() {
-        return m_typeEquipement;
+    public TypeEntite getTypeEntite() {
+        return m_typeEntite;
     }
 
     /**
@@ -88,9 +90,5 @@ public class Armure extends Equipement
      */
     public int getClasseArmure() {
         return m_classe;
-    }
-
-    public boolean estPersonnage() {
-        return false;
     }
 }

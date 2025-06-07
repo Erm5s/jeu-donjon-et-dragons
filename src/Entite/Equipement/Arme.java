@@ -1,5 +1,7 @@
 package Entite.Equipement;
 
+import Entite.TypeEntite;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,7 @@ public class Arme extends Equipement
 {
     // ===================== ATTRIBUTS =====================
     private String m_nom;
-    private TypeEquipement m_typeEquipement;
+    private TypeEntite m_typeEntite;
     private int m_degats;
     private int m_portee;
     private boolean m_estLourde;
@@ -27,7 +29,7 @@ public class Arme extends Equipement
      * @param estLourde indique si l’arme est lourde (true) ou légère (false)
      */
     public Arme(String nom, int degats, int portee, boolean estLourde) {
-        m_typeEquipement = TypeEquipement.ARME;
+        m_typeEntite = TypeEntite.ARME;
         m_nom = nom;
         m_degats = degats;
         m_portee = portee;
@@ -85,8 +87,8 @@ public class Arme extends Equipement
     /**
      * @return type d’équipement (ici toujours ARME)
      */
-    public TypeEquipement getTypeEquipement() {
-        return m_typeEquipement;
+    public TypeEntite getTypeEntite() {
+        return m_typeEntite;
     }
 
     /**
@@ -115,13 +117,5 @@ public class Arme extends Equipement
      */
     public boolean getEstDistance() {
         return m_estDistance;
-    }
-
-    public void addDegats(){
-        m_degats++;
-    }
-
-    public boolean estPersonnage() {
-        return false;
     }
 }

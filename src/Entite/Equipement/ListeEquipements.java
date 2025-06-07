@@ -5,7 +5,7 @@ package Entite.Equipement;
  * Elle contient à la fois les armes et les armures utilisables par les joueurs.
  */
 public enum ListeEquipements {
-    //Armes :
+    //ARMES :
     BATON,
     MASSE_D_ARMES,
     EPEE_LONGUE,
@@ -14,7 +14,7 @@ public enum ListeEquipements {
     FRONDE,
     ARC_COURT,
 
-    // Armures :
+    //ARMURES :
     ARMURE_D_ECAILLES,
     DEMI_PLATE,
     COTTE_DE_MAILLES,

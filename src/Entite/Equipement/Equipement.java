@@ -15,14 +15,4 @@ public abstract class Equipement extends Entite {
      */
     @Override
     public abstract String toString();
-
-    /**
-     * @return nom de l’équipement
-     */
-    public abstract String getNom();
-
-    /**
-     * @return type de l’équipement (ARME ou ARMURE)
-     */
-    public abstract TypeEquipement getTypeEquipement();
 }

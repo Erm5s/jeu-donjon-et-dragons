@@ -1,4 +1,5 @@
 import DeroulementDuDonjon.Donjon;
+import Entite.TypeEntite;
 import Entite.Entite;
 import Entite.Equipement.Equipement;
 import Entite.Monstres.Monstre;
@@ -27,8 +28,10 @@ public class MeneurDeJeu {
         Scanner scanner = new Scanner(System.in);
 
         affichage.affichageRegles();
-
         affichage.transition();
+
+        creationJoueursPartie();
+
         affichage.DDAfficherMessage("\nIl est l'heure de commencer le premier donjon de votre aventure !");
         affichage.mdjAfficherMessage("Combien d'obstacles souhaitez vous placer ? (10 max)");
         int nb_obstacles = affichage.verifInt();
@@ -53,12 +56,6 @@ public class MeneurDeJeu {
             affichage.afficherDonjon(donjon);
         }
 
-        //ON DETERMINE L'ORDRE DES JOUEURS
-        affichage.DDAfficherMessage("Maintenant, passons à l'ordre de jeu de chaque personnage.\n" +
-                "Il est déterminé par l'initiative du personnage à laquelle on additionne le résultat d'un lancé de dé à 20 faces :\n");
-        determinerOrdre();
-        afficherOrdre();
-
         affichage.DDAfficherMessage("Meneur de jeu créez vos montres!\n");
         affichage.mdjAfficherMessage("Combien de monstres souhaitez-vous créer ? (max 3)");
         int nb_Monstres = affichage.verifInt();
@@ -72,6 +69,12 @@ public class MeneurDeJeu {
             affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
             affichage.afficherDonjon(donjon);
         }
+
+        //ON DETERMINE L'ORDRE DES JOUEURS
+        affichage.DDAfficherMessage("Maintenant, passons à l'ordre de jeu de chaque personnage et monstre.\n" +
+                "Il est déterminé par l'initiative de l'entité à laquelle on additionne le résultat d'un lancé de dé à 20 faces :\n");
+        determinerOrdre();
+        afficherOrdre();
     }
 
     public void jouerDonjon(Donjon donjon)
@@ -81,16 +84,15 @@ public class MeneurDeJeu {
             for (Entite key : m_OrdreJoueurs.keySet()) {
                 if (monstresEnVie(donjon) && joueursEnVie(donjon)) {
                     Entite entite = key;
-                    if(entite.estPersonnage())
+                    affichage.DDAfficherMessage("C'est au tour de : " + entite.getNom());
+                    if(entite.getTypeEntite() == TypeEntite.PERSONNAGE)
                     {
                         Personnage p = (Personnage) entite;
-                        affichage.DDAfficherMessage("C'est au tour du joueur: " + entite.getNom());
                         actionsPersonnage(p, donjon);
                     }
-                    else if(!entite.estPersonnage())
+                    else if(entite.getTypeEntite() == TypeEntite.MONSTRE)
                     {
                         Monstre m = (Monstre) entite;
-                        affichage.DDAfficherMessage("C'est au tour du joueur: " + entite.getNom());
                         actionsMonstre(m, donjon);
                     }
                 }
@@ -133,7 +135,8 @@ public class MeneurDeJeu {
     //fonction pour créer les personnages des joueurs de la partie
     public void creationJoueursPartie()
     {
-        affichage.mdjAfficherMessage("Avant de commencer la partie, créez les personnages que vous jouerez dans les donjons!\n Veuillez entrez le nombre de joueurs pour procéder à la création des personnages");
+        affichage.mdjAfficherMessage("Avant de commencer la partie, créez les personnages que vous jouerez dans les donjons!\n" +
+                                     "Veuillez entrez le nombre de joueurs pour procéder à la création des personnages");
         int nb_joueurs = affichage.verifInt();
         for (int i = 0; i < nb_joueurs; i++) {
             affichage.DDAfficherMessage("\n\nJOUEUR " + (i+1) + " :");
@@ -164,6 +167,9 @@ public class MeneurDeJeu {
         affichage.mdjAfficherMessage("Combien de Points de vie souhaitez vous donner à votre monstre ?");
         int pv = affichage.verifInt();
 
+        affichage.mdjAfficherMessage("Combien de vitesse souhaitez vous donner à votre monstre ?");
+        int vitesse = affichage.verifInt();
+
         affichage.mdjAfficherMessage("Combien de force souhaitez vous donner à votre monstre ?");
         int force = affichage.verifInt();
 
@@ -176,7 +182,7 @@ public class MeneurDeJeu {
         affichage.mdjAfficherMessage("Combien d'initiative souhaitez vous donner à votre monstre ?");
         int initiative = affichage.verifInt();
 
-        Monstre m = new Monstre(espece,portee,degats,nb_lances,pv,force,dexterite,classe_armure,initiative);
+        Monstre m = new Monstre(espece,portee,degats,nb_lances,pv,vitesse,force,dexterite,classe_armure,initiative);
         m_monstres.add(m);
         affichage.DDAfficherMessage("\n"+m.toString());
     }
@@ -204,7 +210,7 @@ public class MeneurDeJeu {
                 case 2 ->
                 {
                     affichage.afficherDeplacementJoueur(personnage, donjon);
-                    personnage.seDeplacer(donjon);
+                    affichage.DDAfficherMessage(personnage.seDeplacer(donjon));
                 }
                 case 3 -> personnage.ramasser(donjon);
                 case 4 ->
@@ -219,11 +225,15 @@ public class MeneurDeJeu {
                     continuer = false;
                     break;
                 }
-                default -> affichage.mdjAfficherMessage("Action non valide.");
+                default ->
+                {
+                    affichage.mdjAfficherMessage("Action non valide.");
+                    nb_actions --;
+                }
             }
             affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
             affichage.afficherDonjon(donjon);
-            nb_actions+=1;
+            nb_actions++;
         }
     }
 
@@ -242,7 +252,7 @@ public class MeneurDeJeu {
                 case 1 ->
                 {
                     //RAJOUTER UNE FONCTION PR VOIR OU LE MONSTRE PEUT ALLER
-                    monstre.seDeplacer(donjon);
+                    affichage.afficherMessage(monstre.seDeplacer(donjon));
                 }
                 case 2 ->
                 {
@@ -290,6 +300,9 @@ public class MeneurDeJeu {
         for (int i = 0; i < m_joueurs.size(); i++) {
             m_JoueursEtMonstresInitiative.put(m_joueurs.get(i), m_joueurs.get(i).getStats().getInitiative() + de.lanceDes(1));
         }
+        for (int i = 0; i < m_monstres.size(); i++) {
+            m_JoueursEtMonstresInitiative.put(m_monstres.get(i), m_monstres.get(i).getInitiative() + de.lanceDes(1));
+        }
         while (!m_JoueursEtMonstresInitiative.isEmpty()) {
             Entite maxKey = null;
             int max = Integer.MIN_VALUE;
@@ -301,21 +314,28 @@ public class MeneurDeJeu {
                     maxKey = key;
                 }
             }
-                m_OrdreJoueurs.put(maxKey, max);
-                m_JoueursEtMonstresInitiative.remove(maxKey);
+            m_OrdreJoueurs.put(maxKey, max);
+            m_JoueursEtMonstresInitiative.remove(maxKey);
         }
     }
 
     //FONCTION POUR AFFICHER L'ORDRE DES PUTAIN DE JOUEURS
     public void afficherOrdre()
     {
-        int i = 0;
+        int j = 0;
+        int m = 0;
         String ordre = "";
         for (Entite entite : m_OrdreJoueurs.keySet())
         {
-            i++;
             Entite key = entite;
-            ordre += ("J"+ i +": " + key.getNom() + "\n");
+            if(entite.getTypeEntite() == TypeEntite.PERSONNAGE) {
+                j++;
+                ordre += ("P" + j + ": " + key.getNom() + "\n");
+            }
+            if (entite.getTypeEntite() == TypeEntite.MONSTRE) {
+                m++;
+                ordre += ("M" + m + ": " + key.getNom() + "\n");
+            }
         }
         affichage.DDAfficherMessage(ordre);
     }

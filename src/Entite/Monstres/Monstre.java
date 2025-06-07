@@ -3,18 +3,24 @@ package Entite.Monstres;
 import DeroulementDuDonjon.Donjon;
 import Dice.Dice;
 import Entite.Personnages.*;
+import Entite.TypeEntite;
+import Entite.Entite;
+
+import java.util.Scanner;
 
 /**
  * Classe représentant un monstre dans le jeu
  */
-public class Monstre extends Entite.Entite{
+public class Monstre extends Entite {
     // ===================== ATTRIBUTS =====================
+    private TypeEntite m_typeEntite;
     private String m_espece;
     private int m_numero;
     private int m_portee;
     private int m_degats;
     private int m_nbLance;
     private int m_PV;
+    private int m_vitesse;
     private int m_force;
     private int m_dexterite;
     private int m_classeArmure;
@@ -28,18 +34,21 @@ public class Monstre extends Entite.Entite{
      * @param degats valeur maximale d’un dé de dégâts
      * @param nbLance nombre de dés lancés pour infliger des dégâts
      * @param PV points de vie initiaux du monstre
+     * @param vitesse vitesse de déplacement
      * @param force force utilisée en combat
      * @param dexterite dextérité utilisée en combat
      * @param classeArmure valeur de défense du monstre
      * @param initiative initiative du monstre
      */
     public Monstre (String espece, int portee, int degats, int nbLance,
-                    int PV, int force, int dexterite, int classeArmure, int initiative) {
+                    int PV, int vitesse, int force, int dexterite, int classeArmure, int initiative) {
+        this.m_typeEntite = TypeEntite.MONSTRE;
         this.m_espece = espece;
         this.m_portee = portee;
         this.m_degats = degats;
         this.m_nbLance = nbLance;
         this.m_PV = PV;
+        this.m_vitesse = vitesse;
         this.m_force = force;
         this.m_dexterite = dexterite;
         this.m_classeArmure = classeArmure;
@@ -62,20 +71,23 @@ public class Monstre extends Entite.Entite{
      * @return chaîne décrivant le résultat de l’attaque
      */
     public String attaquer(Personnage cible) {
-        //gerer les portees
+        if (!estCibleAPortee(cible)) {
+            return "Erreur : le personnage est hors de portée de votre attaque (portée max : " + m_portee + ").";
+        }
+
         Dice de = new Dice(20);
         int jet = de.lanceDes(1);
-        int bonus = m_portee == 1 ? m_dexterite : m_force;
+        int bonus = m_portee > 1 ? m_dexterite : m_force;
         int puissance = jet + bonus;
-
-        if (puissance > cible.getArmureEquipee().getClasseArmure()) {
+        int armureJoueur = cible.getArmureEquipee() == null ? 0 : cible.getArmureEquipee().getClasseArmure();
+        if (puissance > armureJoueur) {
             Dice deDegat = new Dice(m_degats);
             int degats = deDegat.lanceDes(m_nbLance);
             cible.getStats().retirerPV(degats);
             return "Vous avez infligé " + degats + " au joueur " + cible.getNom();
-        } else {
+        }
+        else {
             return "Vous êtes faible, vous n'avez infligé aucun dégât...";
-
         }
     }
 
@@ -84,7 +96,54 @@ public class Monstre extends Entite.Entite{
      * @return chaîne
      */
     public String seDeplacer(Donjon donjon){
-        return "On codera plus tard";
+        Scanner scanner = new Scanner(System.in);
+        int nbCases = m_vitesse / 3;
+
+        int xActuel = getX();
+        int yActuel = getY();
+
+        int xMin = Math.max(xActuel - nbCases, 0);
+        int xMax = Math.min(xActuel + nbCases, donjon.getTailleCarte() - 1);
+        int yMin = Math.max(yActuel - nbCases, 0);
+        int yMax = Math.min(yActuel + nbCases, donjon.getTailleCarte() - 1);
+        int xNew = -1;
+        int yNew = -1;
+
+        try {
+            System.out.print("\nEntrez les coordonnées X puis Y : ");
+            xNew = Integer.parseInt(scanner.nextLine());
+            yNew = Integer.parseInt(scanner.nextLine());
+
+            if (xNew < xMin || xNew > xMax || yNew < yMin || yNew > yMax) {
+                return ("Erreur : Cette case est hors de portée.");
+            }
+
+            if (!donjon.getCase(xNew, yNew).equals(".") && !donjon.getCase(xNew, yNew).equals("*")) {
+                return ("Erreur : Cette case est occupée, choisissez une autre.");
+            }
+
+        } catch (NumberFormatException e) {
+            return ("Entrée invalide, veuillez entrer des entiers valides.");
+        }
+
+        donjon.changeCase(xActuel, yActuel, ".");
+        setCoordonnees(xNew, yNew);
+        donjon.placerMonstre(this, xNew, yNew);
+
+        return ("Déplacement effectué. Nouvelle position : (" + getX() + "," + getY() + ")");
+    }
+
+    /**
+     * Vérifie si la cible est à portée de l'arme équipée.
+     * @param cible Le monstre ciblé
+     * @return true si à portée, false sinon
+     */
+    public boolean estCibleAPortee(Personnage cible) {
+        int distanceX = Math.abs(this.getX() - cible.getX());
+        int distanceY = Math.abs(this.getY() - cible.getY());
+        int distance = Math.max(distanceX, distanceY); // type portée carrée
+
+        return distance <= m_portee;
     }
 
     /**
@@ -105,7 +164,7 @@ public class Monstre extends Entite.Entite{
 
     // ===================== GETTERS =====================
     /**
-     * @return nom du monstre
+     * @return l'espece du monstre
      */
     public String getNom()
     {
@@ -113,17 +172,17 @@ public class Monstre extends Entite.Entite{
     }
 
     /**
-     * @return espèce du monstre
-     */
-    public String getEspece() {
-        return m_espece;
-    }
-
-    /**
      * @return points de vie actuels du monstre
      */
     public int getPV() {
         return m_PV;
+    }
+
+    /**
+     * @return vitesse du monstre
+     */
+    public int getVitesse() {
+        return m_vitesse;
     }
 
     /**
@@ -154,8 +213,10 @@ public class Monstre extends Entite.Entite{
         return m_initiative;
     }
 
-
-    public boolean estPersonnage() {
-        return false;
+    /**
+     * @return type de l'entité (MONSTRE)
+     */
+    public TypeEntite getTypeEntite() {
+        return m_typeEntite;
     }
 }

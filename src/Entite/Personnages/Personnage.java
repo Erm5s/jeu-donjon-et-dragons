@@ -15,6 +15,7 @@ import Dice.Dice;
  */
 public class Personnage extends Entite {
     // ===================== ATTRIBUTS =====================
+    private TypeEntite m_typeEntite;
     private final String m_nom;
     private final Race m_race;
     private final Classe m_classe;
@@ -32,6 +33,7 @@ public class Personnage extends Entite {
      * @param classe classe choisie
      */
     public Personnage(String nom, Race race, Classe classe) {
+        m_typeEntite = TypeEntite.PERSONNAGE;
         m_nom = nom;
         m_race = race;
         m_classe = classe;
@@ -68,17 +70,17 @@ public class Personnage extends Entite {
      */
     public String equiper(int i) {
         if (m_inventaire.isEmpty()) {
-            return "Votre inventaire est vide";
+            return "Erreur : votre inventaire est vide";
         }
         try {
             i--;
             Equipement e = m_inventaire.get(i);
             m_inventaire.remove(i);
-            if (e.getTypeEquipement() == TypeEquipement.ARME) {
+            if (e.getTypeEntite() == TypeEntite.ARME) {
                 if (m_armeEquipee != null)
                     m_inventaire.add(m_armeEquipee);
                 m_armeEquipee = (Arme) e;
-            } else if (e.getTypeEquipement() == TypeEquipement.ARMURE) {
+            } else if (e.getTypeEntite() == TypeEntite.ARMURE) {
                 if (m_armureEquipee != null)
                     m_inventaire.add(m_armureEquipee);
                 m_armureEquipee = (Armure) e;
@@ -109,34 +111,28 @@ public class Personnage extends Entite {
         int xNew = -1;
         int yNew = -1;
 
-        while (true) {
-            try {
-                System.out.print("\nEntrez les coordonnées X puis Y : ");
-                xNew = Integer.parseInt(scanner.nextLine());
-                yNew = Integer.parseInt(scanner.nextLine());
+    try {
+        System.out.print("\nEntrez les coordonnées X puis Y : ");
+        xNew = Integer.parseInt(scanner.nextLine());
+        yNew = Integer.parseInt(scanner.nextLine());
 
-                if (xNew < xMin || xNew > xMax || yNew < yMin || yNew > yMax) {
-                    System.out.println("Vous ne pouvez pas vous déplacer ici : hors de portée.");
-                    continue;
-                }
-
-                if (!donjon.getCase(xNew, yNew).equals(".") || !donjon.getCase(xNew, yNew).equals("*")) {
-                    System.out.println("La case est occupée, choisissez une autre.");
-                    continue;
-                }
-
-                break;
-
-            } catch (NumberFormatException e) {
-                System.out.println("Entrée invalide, veuillez entrer des entiers valides.");
-            }
+        if (xNew < xMin || xNew > xMax || yNew < yMin || yNew > yMax) {
+            return ("Erreur : Cette case est hors de portée.");
         }
 
-        donjon.changeCase(xActuel, yActuel, ".");
-        setCoordonnees(xNew, yNew);
-        donjon.placerJoueur(this, xNew, yNew);
+        if (!donjon.getCase(xNew, yNew).equals(".") && !donjon.getCase(xNew, yNew).equals("*")) {
+            return ("Erreur : Cette case est occupée, choisissez une autre.");
+        }
 
-        return ("Déplacement effectué. Nouvelle position : (" + getX() + "," + getY() + ")");
+    } catch (NumberFormatException e) {
+        return ("Entrée invalide, veuillez entrer des entiers valides.");
+    }
+
+    donjon.changeCase(xActuel, yActuel, ".");
+    setCoordonnees(xNew, yNew);
+    donjon.placerJoueur(this, xNew, yNew);
+
+    return ("Déplacement effectué. Nouvelle position : (" + getX() + "," + getY() + ")");
     }
 
 
@@ -146,8 +142,14 @@ public class Personnage extends Entite {
      * @return un message indiquant le résultat de l’attaque
      */
     public String attaquer(Monstre cible) {
-        //erreur si aucune arme équipée
-        //gerer les portees
+        if (m_armeEquipee == null) {
+            return "Erreur : aucune arme équipée.";
+        }
+
+        if (!estCibleAPortee(cible)) {
+            return "Erreur : le monstre est hors de portée de votre " + m_armeEquipee.getNom() + " (portée max : " + m_armeEquipee.getPortee() + ").";
+        }
+
         Dice de = new Dice(20);
         int jet = de.lanceDes(1);
         int bonus = m_armeEquipee.getEstDistance() ? m_stats.getDexterite() : m_stats.getForce();
@@ -156,7 +158,7 @@ public class Personnage extends Entite {
             Dice deDegat = new Dice(m_armeEquipee.getDegats());
             int degats = deDegat.lanceDes(1);
             cible.retirerPV(degats);
-            return "Vous avez infligé " + degats + " au monstre " + cible.getEspece();
+            return "Vous avez infligé " + degats + " au monstre " + cible.getNom();
         }
         else {
             return "Vous êtes faible, vous n'avez infligé aucun dégât...";
@@ -189,6 +191,21 @@ public class Personnage extends Entite {
             }
         }
         return inventaire;
+    }
+
+    /**
+     * Vérifie si la cible est à portée de l'arme équipée.
+     * @param cible Le monstre ciblé
+     * @return true si à portée, false sinon
+     */
+    public boolean estCibleAPortee(Monstre cible) {
+        if (m_armeEquipee == null) return false;
+
+        int distanceX = Math.abs(this.getX() - cible.getX());
+        int distanceY = Math.abs(this.getY() - cible.getY());
+        int distance = Math.max(distanceX, distanceY); // type portée carrée
+
+        return distance <= m_armeEquipee.getPortee();
     }
 
     /**
@@ -246,9 +263,11 @@ public class Personnage extends Entite {
         return m_armureEquipee;
     }
 
-
-    public boolean estPersonnage() {
-        return true;
+    /**
+     * @return type de l'entité (MONSTRE)
+     */
+    public TypeEntite getTypeEntite() {
+        return m_typeEntite;
     }
 
 }
