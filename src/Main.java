@@ -1,17 +1,14 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import DeroulementDuDonjon.Donjon;
-import Entite.Personnages.*;
-import java.util.List;
-
+import MeneurDeJeu.MeneurDeJeu;
+import DeroulementDuDonjon.Tour;
 public class Main
 {
     public static void main(String args[])
     {
         MeneurDeJeu mdj  = new MeneurDeJeu();
+        Tour t = new Tour();
         Donjon donjon1 = new Donjon();
         mdj.creerDonjon(donjon1);
-        mdj.jouerDonjon(donjon1);
+        t.jouerDonjon(donjon1);
     }
 }

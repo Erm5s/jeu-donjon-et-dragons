@@ -1,3 +1,5 @@
+package MeneurDeJeu;
+
 import DeroulementDuDonjon.Donjon;
 import Entite.Equipement.Arme;
 import Entite.TypeEntite;
@@ -8,6 +10,7 @@ import Entite.Personnages.Classe;
 import Entite.Personnages.Personnage;
 import Entite.Personnages.Race;
 import Dice.Dice;
+import affichage.*;
 
 import java.util.*;
 
@@ -77,30 +80,6 @@ public class MeneurDeJeu {
                 "Il est déterminé par l'initiative de l'entité à laquelle on additionne le résultat d'un lancé de dé à 20 faces :\n");
         determinerOrdre();
         affichage.afficherOrdre();
-    }
-
-    public void jouerDonjon(Donjon donjon)
-    {
-        while(joueursEnVie(donjon) && monstresEnVie(donjon)) {
-
-            for (Entite key : m_OrdreJoueurs.keySet()) {
-                if (monstresEnVie(donjon) && joueursEnVie(donjon)) {
-                    Entite entite = key;
-                    affichage.DDAfficherMessage("C'est au tour de : " + entite.getNom());
-                    if(entite.getTypeEntite() == TypeEntite.PERSONNAGE)
-                    {
-                        Personnage p = (Personnage) entite;
-                        actionsPersonnage(p, donjon);
-                    }
-                    else if(entite.getTypeEntite() == TypeEntite.MONSTRE)
-                    {
-                        Monstre m = (Monstre) entite;
-                        actionsMonstre(m, donjon);
-                    }
-                }
-            }
-        }
-        affichage.mdjAfficherMessage("Le donjon est terminé!");
     }
 
     public Personnage creationPerso() {
@@ -223,92 +202,6 @@ public class MeneurDeJeu {
             m_EquipementDonjon.get(i).setCoordonnees(x,y);
             m_EquipementDonjon.add(i,m_EquipementDonjon.get(i));
             donjon.changeCase(x,y,"*");
-        }
-    }
-    public void actionsPersonnage(Personnage personnage, Donjon donjon)
-    {
-        Scanner scanner  = new Scanner(System.in);
-        int nb_actions = 1;
-        boolean continuer = true;
-        while (nb_actions <= 3 && continuer)
-        {
-            affichage.DDAfficherMessage("ACTION " + nb_actions + "/3");
-            affichage.PersonnageAfficherMessage("Quelle action souhaitez-vous effectuer ?\n1 - équiper une arme\n2 - se déplacer\n3 - ramasser un équipement\n4 - attaquer un monstre\n5 - Passer le tour");
-            int numero_action = affichage.verifInt();
-            switch (numero_action)
-            {
-                case 1 ->
-                {
-                    affichage.DDAfficherMessage(personnage.inventaireToString());
-                    affichage.mdjAfficherMessage("Quelle arme souhaitez vous équiper ?");
-                    int num = affichage.verifInt();
-                    affichage.DDAfficherMessage(personnage.equiper(num));
-                    break;
-                }
-                case 2 ->
-                {
-                    affichage.afficherDeplacementJoueur(personnage, donjon);
-                    affichage.DDAfficherMessage(personnage.seDeplacer(donjon));
-                }
-                case 3 -> personnage.ramasser(donjon);
-                case 4 ->
-                {
-                    affichage.afficherMonstres();
-                    affichage.mdjAfficherMessage("Quel monstre souhaitez-vous attaquer ?");
-                    int num = affichage.verifInt();
-                    affichage.mdjAfficherMessage(personnage.attaquer(m_monstres.get(num-1)));
-
-                }
-                case 5 -> {
-                    continuer = false;
-                    break;
-                }
-                default ->
-                {
-                    affichage.mdjAfficherMessage("Action non valide.");
-                    nb_actions --;
-                }
-            }
-            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
-            affichage.afficherDonjon(donjon);
-            nb_actions++;
-        }
-    }
-
-    public void actionsMonstre(Monstre monstre, Donjon donjon)
-    {
-        Scanner scanner  = new Scanner(System.in);
-        int nb_actions = 1;
-        boolean continuer = true;
-        while (nb_actions <= 3 && continuer)
-        {
-            affichage.DDAfficherMessage("ACTION " + nb_actions + "/3");
-            affichage.PersonnageAfficherMessage("Quelle action souhaitez-vous effectuer ?\n1 - se déplacer\n2 - attaquer un personnage\n3 - Passer le tour");
-            int numero_action = affichage.verifInt();
-            switch (numero_action)
-            {
-                case 1 ->
-                {
-                    //RAJOUTER UNE FONCTION PR VOIR OU LE MONSTRE PEUT ALLER
-                    affichage.afficherMessage(monstre.seDeplacer(donjon));
-                }
-                case 2 ->
-                {
-                    affichage.afficherPersonnages();
-                    affichage.mdjAfficherMessage("Quel personnage souhaitez-vous attaquer ?");
-                    int num = affichage.verifInt();
-                    affichage.mdjAfficherMessage(monstre.attaquer(m_joueurs.get(num-1)));
-
-                }
-                case 3   -> {
-                    continuer = false;
-                    break;
-                }
-                default -> affichage.mdjAfficherMessage("Action non valide.");
-            }
-            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
-            affichage.afficherDonjon(donjon);
-            nb_actions+=1;
         }
     }
 

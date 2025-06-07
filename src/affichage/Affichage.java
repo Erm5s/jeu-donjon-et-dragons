@@ -1,8 +1,11 @@
+package affichage;
+
 import DeroulementDuDonjon.Donjon;
 import Entite.Entite;
 import Entite.Monstres.Monstre;
 import Entite.Personnages.Personnage;
 import Entite.TypeEntite;
+import MeneurDeJeu.MeneurDeJeu;
 
 
 import java.util.Scanner;
