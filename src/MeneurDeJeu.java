@@ -1,4 +1,5 @@
 import DeroulementDuDonjon.Donjon;
+import Entite.Equipement.Arme;
 import Entite.TypeEntite;
 import Entite.Entite;
 import Entite.Equipement.Equipement;
@@ -16,6 +17,7 @@ public class MeneurDeJeu {
     private HashMap<Entite, Integer> m_JoueursEtMonstresInitiative;
     private HashMap<Entite, Integer> m_OrdreJoueurs = new HashMap<Entite,Integer>();
     private Affichage affichage = new Affichage();
+    private List<Equipement> m_EquipementDonjon;
 
     public MeneurDeJeu()
     {
@@ -74,7 +76,7 @@ public class MeneurDeJeu {
         affichage.DDAfficherMessage("Maintenant, passons à l'ordre de jeu de chaque personnage et monstre.\n" +
                 "Il est déterminé par l'initiative de l'entité à laquelle on additionne le résultat d'un lancé de dé à 20 faces :\n");
         determinerOrdre();
-        afficherOrdre();
+        affichage.afficherOrdre();
     }
 
     public void jouerDonjon(Donjon donjon)
@@ -187,6 +189,42 @@ public class MeneurDeJeu {
         affichage.DDAfficherMessage("\n"+m.toString());
     }
 
+    public void creationEquipementDonjon()
+    {
+        Scanner scanner = new Scanner(System.in);
+        affichage.DDAfficherMessage("Meneur de jeu, créez les équipements qui seront présents dans le donjon\nCombien d'équipements souhaitez-vous créer ?");
+        int nbEquipements = scanner.nextInt();
+        for(int i = 0; i < nbEquipements;i++)
+        {
+            affichage.DDAfficherMessage("Quel nom souhaitez vous donner à votre arme ?\n");
+            String nom = scanner.nextLine();
+            affichage.DDAfficherMessage("Combien de dégâts souhaitez-vous donner à votre arme?\n");
+            int degats = affichage.verifInt();
+            affichage.DDAfficherMessage("Quelle portée souhaitez-vous donner à votre arme?\n");
+            int portee = affichage.verifInt();
+            affichage.DDAfficherMessage("Votre arme est-elle légère ou lourde? 1 - si lourde, 2 - si légère\n");
+            int lourdelegere = affichage.verifInt();
+            boolean estlourde = true;
+            if(lourdelegere == 2){estlourde = false;}
+            Arme a = new Arme(nom,degats,portee,estlourde);
+
+        }
+
+    }
+
+    public void placerEquipement(Donjon donjon)
+    {
+        Scanner scanner = new Scanner(System.in);
+        for(int i = 0; i < m_EquipementDonjon.size();i++)
+        {
+            affichage.DDAfficherMessage("Meneur de jeu, où souhaitez vous placer l'arme: "+m_EquipementDonjon.get(i).getNom()+". Y puis X");
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+            m_EquipementDonjon.get(i).setCoordonnees(x,y);
+            m_EquipementDonjon.add(i,m_EquipementDonjon.get(i));
+            donjon.changeCase(x,y,"*");
+        }
+    }
     public void actionsPersonnage(Personnage personnage, Donjon donjon)
     {
         Scanner scanner  = new Scanner(System.in);
@@ -215,7 +253,7 @@ public class MeneurDeJeu {
                 case 3 -> personnage.ramasser(donjon);
                 case 4 ->
                 {
-                    this.afficherMonstres();
+                    affichage.afficherMonstres();
                     affichage.mdjAfficherMessage("Quel monstre souhaitez-vous attaquer ?");
                     int num = affichage.verifInt();
                     affichage.mdjAfficherMessage(personnage.attaquer(m_monstres.get(num-1)));
@@ -256,7 +294,7 @@ public class MeneurDeJeu {
                 }
                 case 2 ->
                 {
-                    this.afficherPersonnages();
+                    affichage.afficherPersonnages();
                     affichage.mdjAfficherMessage("Quel personnage souhaitez-vous attaquer ?");
                     int num = affichage.verifInt();
                     affichage.mdjAfficherMessage(monstre.attaquer(m_joueurs.get(num-1)));
@@ -319,45 +357,6 @@ public class MeneurDeJeu {
         }
     }
 
-    //FONCTION POUR AFFICHER L'ORDRE DES PUTAIN DE JOUEURS
-    public void afficherOrdre()
-    {
-        int j = 0;
-        int m = 0;
-        String ordre = "";
-        for (Entite entite : m_OrdreJoueurs.keySet())
-        {
-            Entite key = entite;
-            if(entite.getTypeEntite() == TypeEntite.PERSONNAGE) {
-                j++;
-                ordre += ("P" + j + ": " + key.getNom() + "\n");
-            }
-            if (entite.getTypeEntite() == TypeEntite.MONSTRE) {
-                m++;
-                ordre += ("M" + m + ": " + key.getNom() + "\n");
-            }
-        }
-        affichage.DDAfficherMessage(ordre);
-    }
-
-    public void afficherMonstres()
-    {
-        affichage.mdjAfficherMessage("Voici les monstres en vie:\n");
-        for(int i = 0; i < m_monstres.size();i++)
-        {
-            affichage.mdjAfficherMessage((i+1) +" - "+m_monstres.get(i).getNom() +"\n");
-        }
-    }
-
-    public void afficherPersonnages()
-    {
-        affichage.mdjAfficherMessage("Voici les personnages en vie:\n");
-        for(int i = 0; i < m_joueurs.size();i++)
-        {
-            affichage.mdjAfficherMessage((i+1) +" - "+m_joueurs.get(i).getNom() +"\n");
-        }
-    }
-
 
     //fonction pour savoir si tt les joueurs sont encore en vie
     public boolean joueursEnVie(Donjon donjon)
@@ -392,4 +391,10 @@ public class MeneurDeJeu {
         }
         return true;
     }
+
+    public List<Personnage> getJoueurs(){return m_joueurs;}
+
+    public List<Monstre> getMonstres(){return m_monstres;}
+
+    public HashMap<Entite,Integer> getOrdre(){return m_OrdreJoueurs;}
 }

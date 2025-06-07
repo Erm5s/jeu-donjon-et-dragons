@@ -1,6 +1,9 @@
 import DeroulementDuDonjon.Donjon;
+import Entite.Entite;
 import Entite.Monstres.Monstre;
 import Entite.Personnages.Personnage;
+import Entite.TypeEntite;
+
 
 import java.util.Scanner;
 
@@ -142,6 +145,48 @@ public class Affichage
             }
         }
         return entier;
+    }
+
+    public void afficherPersonnages()
+    {
+        MeneurDeJeu mdj = new MeneurDeJeu();
+        this.mdjAfficherMessage("Voici les personnages en vie:\n");
+        for(int i = 0; i < mdj.getJoueurs().size();i++)
+        {
+            this.mdjAfficherMessage((i+1) +" - "+ mdj.getJoueurs().get(i).getNom() +"\n");
+        }
+    }
+
+    public void afficherMonstres()
+    {
+        MeneurDeJeu mdj = new MeneurDeJeu();
+        this.mdjAfficherMessage("Voici les monstres en vie:\n");
+        for(int i = 0; i < mdj.getMonstres().size();i++)
+        {
+            this.mdjAfficherMessage((i+1) +" - "+mdj.getMonstres().get(i).getNom() +"\n");
+        }
+    }
+
+    //FONCTION POUR AFFICHER L'ORDRE DES PUTAIN DE JOUEURS
+    public void afficherOrdre()
+    {
+        MeneurDeJeu mdj = new MeneurDeJeu();
+        int j = 0;
+        int m = 0;
+        String ordre = "";
+        for (Entite entite : mdj.getOrdre().keySet())
+        {
+            Entite key = entite;
+            if(entite.getTypeEntite() == TypeEntite.PERSONNAGE) {
+                j++;
+                ordre += ("P" + j + ": " + key.getNom() + "\n");
+            }
+            if (entite.getTypeEntite() == TypeEntite.MONSTRE) {
+                m++;
+                ordre += ("M" + m + ": " + key.getNom() + "\n");
+            }
+        }
+        this.DDAfficherMessage(ordre);
     }
 }
 
