@@ -245,4 +245,10 @@ public class Personnage extends Entite {
     public Armure getArmureEquipee() {
         return m_armureEquipee;
     }
+
+
+    public boolean estPersonnage() {
+        return true;
+    }
+
 }

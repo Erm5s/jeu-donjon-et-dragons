@@ -89,4 +89,8 @@ public class Armure extends Equipement
     public int getClasseArmure() {
         return m_classe;
     }
+
+    public boolean estPersonnage() {
+        return false;
+    }
 }

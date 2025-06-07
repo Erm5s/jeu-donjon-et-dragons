@@ -1,5 +1,6 @@
 package Entite.Monstres;
 
+import DeroulementDuDonjon.Donjon;
 import Dice.Dice;
 import Entite.Personnages.*;
 
@@ -82,7 +83,7 @@ public class Monstre extends Entite.Entite{
      * Méthode pour simuler un déplacement
      * @return chaîne
      */
-    public String seDeplacer(){
+    public String seDeplacer(Donjon donjon){
         return "On codera plus tard";
     }
 
@@ -151,5 +152,10 @@ public class Monstre extends Entite.Entite{
      */
     public int getInitiative() {
         return m_initiative;
+    }
+
+
+    public boolean estPersonnage() {
+        return false;
     }
 }

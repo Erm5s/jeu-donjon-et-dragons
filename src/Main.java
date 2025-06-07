@@ -11,6 +11,7 @@ public class Main
     {
         MeneurDeJeu mdj  = new MeneurDeJeu();
         Donjon donjon1 = new Donjon();
+        mdj.creationJoueursPartie();
         mdj.creerDonjon(donjon1);
         mdj.jouerDonjon(donjon1);
     }

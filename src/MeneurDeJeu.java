@@ -1,4 +1,5 @@
 import DeroulementDuDonjon.Donjon;
+import Entite.Entite;
 import Entite.Equipement.Equipement;
 import Entite.Monstres.Monstre;
 import Entite.Personnages.Classe;
@@ -11,8 +12,8 @@ import java.util.*;
 public class MeneurDeJeu {
     private List<Personnage> m_joueurs;
     private List<Monstre> m_monstres;
-    private HashMap<Personnage, Integer> m_JoueursInitiative;
-    private HashMap<Personnage, Integer> m_OrdreJoueurs = new HashMap<Personnage,Integer>();
+    private HashMap<Entite, Integer> m_JoueursEtMonstresInitiative;
+    private HashMap<Entite, Integer> m_OrdreJoueurs = new HashMap<Entite,Integer>();
     private Affichage affichage = new Affichage();
 
     public MeneurDeJeu()
@@ -26,14 +27,6 @@ public class MeneurDeJeu {
         Scanner scanner = new Scanner(System.in);
 
         affichage.affichageRegles();
-        affichage.mdjAfficherMessage("Meneur du jeu, mettez en place le donjon !\nVeuillez indiquer le nombre de joueurs");
-        int nb_joueurs = affichage.verifInt();
-        for (int i = 0; i < nb_joueurs; i++) {
-            affichage.DDAfficherMessage("\n\nJOUEUR " + (i+1) + " :");
-            this.m_joueurs.add(creationPerso());
-            affichage.DDAfficherMessage("\nPersonnage crée :");
-            affichage.afficherInfoPersonnage(m_joueurs.get(i));
-        }
 
         affichage.transition();
         affichage.DDAfficherMessage("\nIl est l'heure de commencer le premier donjon de votre aventure !");
@@ -41,7 +34,7 @@ public class MeneurDeJeu {
         int nb_obstacles = affichage.verifInt();
         for (int i = 0; i < nb_obstacles; i++) {
             affichage.DDAfficherMessage("\nOBSTACLE " + (i+1) +"/" + nb_obstacles +" :");
-            affichage.mdjAfficherMessage("Où voulez-vous placer l'obstacle? (x puis y)");
+            affichage.mdjAfficherMessage("Où voulez-vous placer l'obstacle? (Y puis X)");
             int x = affichage.verifInt();
             int y = affichage.verifInt();
             this.placerObstacle(donjon, x, y);
@@ -50,8 +43,8 @@ public class MeneurDeJeu {
         }
 
         System.out.println("\nPassons aux joueurs, où souhaitez vous les placer ?");
-        for (int i = 0; i < nb_joueurs; i++) {
-            affichage.mdjAfficherMessage("Entrez les coordonnées pour placer le joueur suivant : "+ m_joueurs.get(i).getNom() +" (x, PUIS y):");
+        for (int i = 0; i < m_joueurs.size(); i++) {
+            affichage.mdjAfficherMessage("Entrez les coordonnées pour placer le joueur suivant : "+ m_joueurs.get(i).getNom() +" (Y, PUIS X):");
             int x = affichage.verifInt();
             int y = affichage.verifInt();
             this.placerJoueur(donjon, this.m_joueurs.get(i), x, y);
@@ -72,7 +65,7 @@ public class MeneurDeJeu {
         for(int i = 0; i < nb_Monstres;i++)
         {
             creationMonstre();
-            affichage.DDAfficherMessage("Où souhaitez-vous placer le monstre ? (x puis y)");
+            affichage.DDAfficherMessage("Où souhaitez-vous placer le monstre ? (Y puis X)");
             int x = affichage.verifInt();
             int y = affichage.verifInt();
             placerMonstre(donjon,m_monstres.get(i),x,y);
@@ -85,11 +78,21 @@ public class MeneurDeJeu {
     {
         while(joueursEnVie(donjon) && monstresEnVie(donjon)) {
 
-            for (Personnage key : m_OrdreJoueurs.keySet()) {
+            for (Entite key : m_OrdreJoueurs.keySet()) {
                 if (monstresEnVie(donjon) && joueursEnVie(donjon)) {
-                    Personnage personnage = key;
-                    affichage.DDAfficherMessage("C'est au tour de joueur suivant : " + personnage.getNom());
-                    actionsPersonnage(personnage, donjon);
+                    Entite entite = key;
+                    if(entite.estPersonnage())
+                    {
+                        Personnage p = (Personnage) entite;
+                        affichage.DDAfficherMessage("C'est au tour du joueur: " + entite.getNom());
+                        actionsPersonnage(p, donjon);
+                    }
+                    else if(!entite.estPersonnage())
+                    {
+                        Monstre m = (Monstre) entite;
+                        affichage.DDAfficherMessage("C'est au tour du joueur: " + entite.getNom());
+                        actionsMonstre(m, donjon);
+                    }
                 }
             }
         }
@@ -127,6 +130,20 @@ public class MeneurDeJeu {
         return p;
     }
 
+    //fonction pour créer les personnages des joueurs de la partie
+    public void creationJoueursPartie()
+    {
+        affichage.mdjAfficherMessage("Avant de commencer la partie, créez les personnages que vous jouerez dans les donjons!\n Veuillez entrez le nombre de joueurs pour procéder à la création des personnages");
+        int nb_joueurs = affichage.verifInt();
+        for (int i = 0; i < nb_joueurs; i++) {
+            affichage.DDAfficherMessage("\n\nJOUEUR " + (i+1) + " :");
+            this.m_joueurs.add(creationPerso());
+            affichage.DDAfficherMessage("\nPersonnage crée :");
+            affichage.afficherInfoPersonnage(m_joueurs.get(i));
+        }
+    }
+
+    //fonction pour créer les monstres d'un donjon
     public void creationMonstre()
     {
         int numero = m_monstres.size() +1;
@@ -210,6 +227,43 @@ public class MeneurDeJeu {
         }
     }
 
+    public void actionsMonstre(Monstre monstre, Donjon donjon)
+    {
+        Scanner scanner  = new Scanner(System.in);
+        int nb_actions = 1;
+        boolean continuer = true;
+        while (nb_actions <= 3 && continuer)
+        {
+            affichage.DDAfficherMessage("ACTION " + nb_actions + "/3");
+            affichage.PersonnageAfficherMessage("Quelle action souhaitez-vous effectuer ?\n1 - se déplacer\n2 - attaquer un personnage\n3 - Passer le tour");
+            int numero_action = affichage.verifInt();
+            switch (numero_action)
+            {
+                case 1 ->
+                {
+                    //RAJOUTER UNE FONCTION PR VOIR OU LE MONSTRE PEUT ALLER
+                    monstre.seDeplacer(donjon);
+                }
+                case 2 ->
+                {
+                    this.afficherPersonnages();
+                    affichage.mdjAfficherMessage("Quel personnage souhaitez-vous attaquer ?");
+                    int num = affichage.verifInt();
+                    affichage.mdjAfficherMessage(monstre.attaquer(m_joueurs.get(num-1)));
+
+                }
+                case 3   -> {
+                    continuer = false;
+                    break;
+                }
+                default -> affichage.mdjAfficherMessage("Action non valide.");
+            }
+            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
+            affichage.afficherDonjon(donjon);
+            nb_actions+=1;
+        }
+    }
+
     public Boolean placerObstacle(Donjon donjon, int x, int y) {
         return donjon.placerObstacle(x, y);
     }
@@ -224,31 +278,31 @@ public class MeneurDeJeu {
     }
 
     public boolean placerEquipement(Donjon donjon, Equipement equipement, int x, int y) {
-        return donjon.placerEquipement(equipement, x, y);
+        return donjon.placerEquipement(equipement, x,y);
     }
 
 
     //FONCTION POUR DETERMINER L'ORDRE DE JEUUUUUUUUUUUUUUUUUUUU
     public void determinerOrdre() {
-        m_JoueursInitiative = new HashMap<>();
+        m_JoueursEtMonstresInitiative = new HashMap<>();
         Dice de = new Dice(20);
         //on remplit la hashmap
         for (int i = 0; i < m_joueurs.size(); i++) {
-            m_JoueursInitiative.put(m_joueurs.get(i), m_joueurs.get(i).getStats().getInitiative() + de.lanceDes(1));
+            m_JoueursEtMonstresInitiative.put(m_joueurs.get(i), m_joueurs.get(i).getStats().getInitiative() + de.lanceDes(1));
         }
-        while (!m_JoueursInitiative.isEmpty()) {
-            Personnage maxKey = null;
+        while (!m_JoueursEtMonstresInitiative.isEmpty()) {
+            Entite maxKey = null;
             int max = Integer.MIN_VALUE;
 
-            for (Personnage key : m_JoueursInitiative.keySet()) {
-                int initiative = m_JoueursInitiative.get(key);
+            for (Entite key : m_JoueursEtMonstresInitiative.keySet()) {
+                int initiative = m_JoueursEtMonstresInitiative.get(key);
                 if (initiative > max) {
                     max = initiative;
                     maxKey = key;
                 }
             }
                 m_OrdreJoueurs.put(maxKey, max);
-                m_JoueursInitiative.remove(maxKey);
+                m_JoueursEtMonstresInitiative.remove(maxKey);
         }
     }
 
@@ -257,10 +311,10 @@ public class MeneurDeJeu {
     {
         int i = 0;
         String ordre = "";
-        for (Personnage personnage : m_OrdreJoueurs.keySet())
+        for (Entite entite : m_OrdreJoueurs.keySet())
         {
             i++;
-            Personnage key = personnage;
+            Entite key = entite;
             ordre += ("J"+ i +": " + key.getNom() + "\n");
         }
         affichage.DDAfficherMessage(ordre);
@@ -274,6 +328,16 @@ public class MeneurDeJeu {
             affichage.mdjAfficherMessage((i+1) +" - "+m_monstres.get(i).getNom() +"\n");
         }
     }
+
+    public void afficherPersonnages()
+    {
+        affichage.mdjAfficherMessage("Voici les personnages en vie:\n");
+        for(int i = 0; i < m_joueurs.size();i++)
+        {
+            affichage.mdjAfficherMessage((i+1) +" - "+m_joueurs.get(i).getNom() +"\n");
+        }
+    }
+
 
     //fonction pour savoir si tt les joueurs sont encore en vie
     public boolean joueursEnVie(Donjon donjon)
@@ -306,16 +370,6 @@ public class MeneurDeJeu {
         {
             return false;
         }
-        return true;
-    }
-
-
-    //actions du joueur
-    public boolean attaquer()
-    {
-        Scanner scanner = new Scanner(System.in);
-        affichage.mdjAfficherMessage("Quel monstre souhaitez-vous attaquer ?");
-        int num_monstre = affichage.verifInt();
         return true;
     }
 }

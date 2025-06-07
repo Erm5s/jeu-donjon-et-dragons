@@ -6,6 +6,7 @@ package Entite;
  */
 public abstract class Entite
 {
+    private String m_nom;
     private int m_x;
     private int m_y;
 
@@ -43,4 +44,11 @@ public abstract class Entite
     public int getY() {
         return m_y;
     }
+
+    public String getNom()
+    {
+        return this.m_nom;
+    }
+
+    public abstract boolean estPersonnage();
 }

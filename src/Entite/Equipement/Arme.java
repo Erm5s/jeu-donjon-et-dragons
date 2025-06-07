@@ -120,4 +120,8 @@ public class Arme extends Equipement
     public void addDegats(){
         m_degats++;
     }
+
+    public boolean estPersonnage() {
+        return false;
+    }
 }
