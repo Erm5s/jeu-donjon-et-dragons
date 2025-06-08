@@ -1,14 +1,26 @@
 package Dice;
 import java.util.Random;
 
+/**
+ * Classe utilitaire représentant un système de dés.
+ */
 public class Dice
 {
+    // ===================== ATTRIBUT =====================
     private Random m_rand;
 
+    // ===================== CONSTRUCTEUR =====================
     public Dice() {
         this.m_rand = new Random();
     }
 
+    // ===================== MÉTHODES =====================
+    /**
+     * Lance un nombre de dés donnés avec un certain nombre de faces.
+     * @param nbLances nombre de dés à lancer
+     * @param nbFaces nombre de faces sur chaque dé
+     * @return la somme des résultats de tous les dés lancés
+     */
     public int lanceDes(int nbLances, int nbFaces) {
         int resultat = 0;
         for (int i = 0; i < nbLances; i++) {
@@ -17,7 +29,11 @@ public class Dice
         return resultat;
     }
 
-    // Lance un dé avec notation "XdY" (ex : "2d6")
+    /**
+     * Lance des dés selon une notation de type "XdY" (ex: "2d6" pour deux dés à 6 faces).
+     * @param XdY chaîne représentant le type de jet de dé
+     * @return résultat du lancer ou 0 si erreur de format
+     */
     public int lancer(String XdY) {
         try {
             String[] partie = XdY.split("d");

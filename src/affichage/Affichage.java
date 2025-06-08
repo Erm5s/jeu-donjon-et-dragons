@@ -96,6 +96,11 @@ public class Affichage
         System.out.println(bleu + message + blanc);
     }
 
+    public void DDAfficherMessageAvecEntree(String message)
+    {
+    System.out.println(violet + message + blanc);
+    System.out.print("> ");
+    }
 
 
     public void DDAfficherMessage(String message)

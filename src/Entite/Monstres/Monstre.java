@@ -19,6 +19,7 @@ public class Monstre extends Entite {
     private int m_portee;
     private String m_degats;
     private int m_PV;
+    private int m_PVInitial;
     private int m_vitesse;
     private int m_force;
     private int m_dexterite;
@@ -44,6 +45,7 @@ public class Monstre extends Entite {
         this.m_espece = espece;
         this.m_portee = portee;
         this.m_degats = degats;
+        this.m_PVInitial = PV;
         this.m_PV = PV;
         this.m_vitesse = vitesse;
         this.m_force = force;
@@ -137,7 +139,7 @@ public class Monstre extends Entite {
     public boolean estCibleAPortee(Personnage cible) {
         int distanceX = Math.abs(this.getX() - cible.getX());
         int distanceY = Math.abs(this.getY() - cible.getY());
-        int distance = Math.max(distanceX, distanceY); // type portée carrée
+        int distance = Math.max(distanceX, distanceY);
 
         return distance <= m_portee;
     }
@@ -151,7 +153,7 @@ public class Monstre extends Entite {
     {
         String infoMonstre =
             m_espece + " " + m_numero + " :"
-            + "\n----- PDV : " + m_PV + "-----"
+            + "\n-- PDV : " + m_PV + "/" + m_PVInitial + " --"
             + "\nATQ : " + m_degats + " | POR : " + m_portee
             + "\nFOR : " + m_force + "   | DEX : " + m_dexterite
             + "\nARM : " + m_classeArmure + "   | ITV : " + m_initiative;

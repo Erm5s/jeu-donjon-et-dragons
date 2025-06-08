@@ -41,7 +41,7 @@ public class Armure extends Equipement
         listeArmures.put(ListeEquipements.HARNOIS, new Object[] { "harnois", 12, true });
     }
 
-    // ===================== METHODE PUBLIQUE =====================
+    // ===================== METHODES =====================
     /**
      * Crée une armure à partir d’une valeur de l’énumération ListeEquipements
      * @param equipement clé correspondant à l’armure souhaitée
