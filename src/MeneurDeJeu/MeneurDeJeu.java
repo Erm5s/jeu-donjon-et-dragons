@@ -38,33 +38,65 @@ public class MeneurDeJeu {
         creationJoueursPartie();
         affichage.transition();
 
-        affichage.DDAfficherMessage("\nMDJ, où souhaitez vous les placer ?");
-        choixPlacementPersonnage(donjon);
-        affichage.transition();
-
-        affichage.DDAfficherMessage("\nMDJ, combien d'obstcles souhaitez-vous placer votre donjon ? (10 max)");
-        creerObstacles(donjon);
-        affichage.transition();
-
         affichage.DDAfficherMessage("Meneur de jeu créez vos montres!\n");
         affichage.mdjAfficherMessageAvecEntree("Combien de monstres souhaitez-vous créer ? (max 3)");
         int nb_Monstres = affichage.verifInt();
         for(int i = 0; i < nb_Monstres;i++)
         {
             creationMonstre();
-            affichage.DDAfficherMessage("Où souhaitez-vous placer le monstre ? (Y puis X)");
-            int x = affichage.verifInt();
-            int y = affichage.verifInt();
-            placerMonstre(donjon,m_monstres.get(i),x,y);
-            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
-            affichage.afficherDonjon(donjon);
         }
+
+
+        affichage.DDAfficherMessage("\nMDJ, souhaitez vous utiliser:\n1 - un donjon pré-fait\n2 - en créer un vous même");
+        int choix = scanner.nextInt();
+        switch(choix)
+        {
+            case 1 -> this.donjonPrefait(donjon);
+            case 2 ->
+            {
+                affichage.DDAfficherMessage("\nMDJ, où souhaitez vous placer les joueurs ?");
+                choixPlacementPersonnage(donjon);
+                affichage.transition();
+
+                affichage.DDAfficherMessage("\nMDJ, combien d'obstcles souhaitez-vous placer votre donjon ? (10 max)");
+                creerObstacles(donjon);
+                affichage.transition();
+
+                for(int i = 0; i < nb_Monstres;i++)
+                {
+                    affichage.DDAfficherMessage("Où souhaitez-vous placer le monstre: "+ m_monstres.get(i).getNom()+" (Y puis X)");
+                    int x = affichage.verifInt();
+                    int y = affichage.verifInt();
+                    placerMonstre(donjon,m_monstres.get(i),x,y);
+                    affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
+                    affichage.afficherDonjon(donjon);
+                }
+            }
+        }
+
 
         //ON DETERMINE L'ORDRE DES JOUEURS
         affichage.DDAfficherMessage("Maintenant, passons à l'ordre de jeu de chaque personnage et monstre.\n" +
                 "Il est déterminé par l'initiative de l'entité à laquelle on additionne le résultat d'un lancé de dé à 20 faces :\n");
         determinerOrdre();
         affichage.afficherOrdre(this);
+    }
+
+    public void donjonPrefait(Donjon donjon)
+    {
+        int x = 9;
+        int y = 9;
+        for(int i = 0; i < m_joueurs.size();i++)
+        {
+            this.placerJoueur(donjon,m_joueurs.get(i),x,y);
+            y+=1;
+        }
+        for(int i = 0; i < m_monstres.size();i++)
+        {
+            this.placerMonstre(donjon,m_monstres.get(i),x+1,y);
+            y+=1;
+        }
+
     }
 
     public void creerObstacles(Donjon donjon) {
@@ -295,4 +327,5 @@ public class MeneurDeJeu {
     public List<Monstre> getMonstres(){return m_monstres;}
 
     public HashMap<Entite,Integer> getOrdre(){return m_OrdreJoueurs;}
+
 }
