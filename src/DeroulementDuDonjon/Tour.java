@@ -3,6 +3,9 @@ package DeroulementDuDonjon;
 import Entite.Entite;
 import Entite.Monstres.Monstre;
 import Entite.Personnages.Personnage;
+import Entite.Personnages.Sorts.ArmeMagique;
+import Entite.Personnages.Sorts.BoogieWoogie;
+import Entite.Personnages.Sorts.Guerison;
 import Entite.TypeEntite;
 import MeneurDeJeu.MeneurDeJeu;
 import affichage.*;
@@ -44,7 +47,7 @@ public class Tour
         while (nb_actions <= 3 && continuer)
         {
             affichage.DDAfficherMessage("ACTION " + nb_actions + "/3");
-            affichage.PersonnageAfficherMessage("Quelle action souhaitez-vous effectuer ?\n1 - équiper une arme\n2 - se déplacer\n3 - ramasser un équipement\n4 - attaquer un monstre\n5 - Passer le tour");
+            affichage.PersonnageAfficherMessage("Quelle action souhaitez-vous effectuer ?\n1 - équiper une arme\n2 - se déplacer\n3 - ramasser un équipement\n4 - attaquer un monstre\n5 - lancer un sort\n6 - passer le tour");
             int numero_action = affichage.verifInt();
             switch (numero_action)
             {
@@ -70,9 +73,33 @@ public class Tour
                     affichage.mdjAfficherMessageAvecEntree(personnage.attaquer(mdj.getMonstres().get(num-1)));
 
                 }
-                case 5 -> {
+                case 6 -> {
                     continuer = false;
                     break;
+                }
+                case 5 ->
+                {
+                    affichage.mdjAfficherMessage("Quel sort voulez-vous lancer ?\n1 - arme magique\n2 - boogie woogie\n3 - guérison\n");
+                    int num_sort = scanner.nextInt();
+                    switch (num_sort)
+                    {
+                        default -> affichage.mdjAfficherMessage("Ce sort n'est pas valide");
+                        case 2 ->
+                        {
+                            BoogieWoogie boogieWoogie = new BoogieWoogie();
+                            boogieWoogie.lancer(personnage,donjon,mdj.getJoueurs(),mdj.getMonstres());
+                        }
+                        case 1 ->
+                        {
+                            ArmeMagique armeMagique = new ArmeMagique();
+                            armeMagique.lancer(personnage,donjon,mdj.getJoueurs(),mdj.getMonstres());
+                        }
+                        case 3 ->
+                        {
+                            Guerison guerison = new Guerison();
+                            guerison.lancer(personnage,donjon,mdj.getJoueurs(),mdj.getMonstres());
+                        }
+                    }
                 }
                 default ->
                 {
