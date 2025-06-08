@@ -72,9 +72,9 @@ public class Arme extends Equipement
     @Override
     public String toString() {
         return "Arme   : " + m_nom +
-                "\t[Degats: " + m_degats +
+                " (Degats: " + m_degats +
                 ", Portee:" + m_portee +
-                ", " +(m_estLourde?"Lourde]":"Legere]");
+                ", " +(m_estLourde?"Lourde)":"Legere)");
     }
 
     // ===================== GETTERS =====================

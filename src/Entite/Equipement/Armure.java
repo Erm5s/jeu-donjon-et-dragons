@@ -59,8 +59,8 @@ public class Armure extends Equipement
     @Override
     public String toString() {
         return "Armure : " + m_nom +
-                "\t[Classe:" + m_classe +
-                ", " +(m_estLourde?"Lourde]":"Legere]");
+                " (Classe:" + m_classe +
+                ", " +(m_estLourde?"Lourde)":"Legere)");
     }
 
     // ===================== GETTERS =====================

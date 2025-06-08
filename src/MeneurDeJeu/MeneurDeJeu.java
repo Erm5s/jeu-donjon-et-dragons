@@ -36,30 +36,15 @@ public class MeneurDeJeu {
 
         affichage.mdjAfficherMessageAvecEntree("\nOhé visiteurs courageux ! Combien êtes vous à vouloir entrer dans ce donjon ?");
         creationJoueursPartie();
+        affichage.transition();
 
-        affichage.DDAfficherMessage("\nIl est l'heure de commencer le premier donjon de votre aventure !");
-        affichage.mdjAfficherMessageAvecEntree("Combien d'obstacles souhaitez vous placer ? (10 max)");
-        int nb_obstacles = affichage.verifInt();
-        for (int i = 0; i < nb_obstacles; i++) {
-            affichage.DDAfficherMessage("\nOBSTACLE " + (i+1) +"/" + nb_obstacles +" :");
-            affichage.mdjAfficherMessageAvecEntree("Où voulez-vous placer l'obstacle? (Y puis X)");
-            int x = affichage.verifInt();
-            int y = affichage.verifInt();
-            this.placerObstacle(donjon, x, y);
-            affichage.DDAfficherMessage("\n\nCarte mise à jour : \n");
-            affichage.afficherDonjon(donjon);
-        }
+        affichage.DDAfficherMessage("\nMDJ, où souhaitez vous les placer ?");
+        choixPlacementPersonnage(donjon);
+        affichage.transition();
 
-        System.out.println("\nPassons aux joueurs, où souhaitez vous les placer ?");
-        for (int i = 0; i < m_joueurs.size(); i++) {
-            affichage.mdjAfficherMessageAvecEntree("Entrez les coordonnées pour placer le joueur suivant : "+ m_joueurs.get(i).getNom() +" (Y, PUIS X):");
-            int x = affichage.verifInt();
-            int y = affichage.verifInt();
-            this.placerJoueur(donjon, this.m_joueurs.get(i), x, y);
-
-            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n");
-            affichage.afficherDonjon(donjon);
-        }
+        affichage.DDAfficherMessage("\nMDJ, combien d'obstcles souhaitez-vous placer votre donjon ? (10 max)");
+        creerObstacles(donjon);
+        affichage.transition();
 
         affichage.DDAfficherMessage("Meneur de jeu créez vos montres!\n");
         affichage.mdjAfficherMessageAvecEntree("Combien de monstres souhaitez-vous créer ? (max 3)");
@@ -79,7 +64,32 @@ public class MeneurDeJeu {
         affichage.DDAfficherMessage("Maintenant, passons à l'ordre de jeu de chaque personnage et monstre.\n" +
                 "Il est déterminé par l'initiative de l'entité à laquelle on additionne le résultat d'un lancé de dé à 20 faces :\n");
         determinerOrdre();
-        affichage.afficherOrdre();
+        affichage.afficherOrdre(this);
+    }
+
+    public void creerObstacles(Donjon donjon) {
+        int nb_obstacles = affichage.verifInt();
+        for (int i = 0; i < nb_obstacles; i++) {
+            affichage.afficherMessage("\nOBSTACLE " + (i+1) +"/" + nb_obstacles +" :");
+            affichage.DDAfficherMessage("Où voulez-vous placer l'obstacle? (Y puis X)");
+            int x = affichage.verifInt();
+            int y = affichage.verifInt();
+            this.placerObstacle(donjon, x, y);
+            affichage.DDAfficherMessage("\n\nCarte mise à jour : \n");
+            affichage.afficherDonjon(donjon);
+        }
+    }
+
+    public void choixPlacementPersonnage(Donjon donjon) {
+        for (int i = 0; i < m_joueurs.size(); i++) {
+            affichage.mdjAfficherMessageAvecEntree("Entrez les coordonnées pour placer le joueur suivant : "+ m_joueurs.get(i).getNom() +" (Y, PUIS X):");
+            int x = affichage.verifInt();
+            int y = affichage.verifInt();
+            this.placerJoueur(donjon, this.m_joueurs.get(i), x, y);
+
+            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n");
+            affichage.afficherDonjon(donjon);
+        }
     }
 
     public Personnage creationPerso() {
@@ -118,10 +128,11 @@ public class MeneurDeJeu {
     {
         int nb_joueurs = affichage.verifInt();
         for (int i = 0; i < nb_joueurs; i++) {
-            affichage.afficherMessage("\n\nJOUEUR " + (i+1) + " :");
+            affichage.afficherMessage("\nJOUEUR " + (i+1) + " :");
             this.m_joueurs.add(creationPerso());
-            affichage.DDAfficherMessage("\nPersonnage crée :");
+            affichage.mdjAfficherMessage("\nEntrez dans le donjon, " + m_joueurs.get(i).getNom() + "\n");
             affichage.afficherInfoPersonnage(m_joueurs.get(i));
+            affichage.transition();
         }
     }
 

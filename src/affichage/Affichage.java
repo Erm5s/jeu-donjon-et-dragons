@@ -2,6 +2,7 @@ package affichage;
 
 import DeroulementDuDonjon.Donjon;
 import Entite.Entite;
+import Entite.Equipement.Equipement;
 import Entite.Monstres.Monstre;
 import Entite.Personnages.Personnage;
 import Entite.TypeEntite;
@@ -29,18 +30,73 @@ public class Affichage
 
         System.out.println("\nBienvenue MDJ, accueillez les visiteurs comme il se doit");
     }
-    
+
+    // AFFICHAGE JOUEUR
+    public void PersonnageAfficherMessage(String message)
+    {
+        System.out.println(vert + message + blanc);
+        System.out.print("> ");
+    }
+
+    public void afficherInfoPersonnage(Personnage p)
+    {
+        System.out.println(vert + p.toString() + blanc);
+        afficherInventaire(p);
+        afficherEquipements(p);
+    }
+
+    public void afficherInventaire(Personnage p)
+    {
+        int i = 0;
+        System.out.println("\nInventaire :");
+        System.out.print(vert);
+        if (!p.getInventaire().isEmpty())
+            for (Equipement e : p.getInventaire()) {
+                i++;
+                System.out.println("- [" + i + "] " + e.toString());
+            }
+        else
+            System.out.println("vide");
+        System.out.print(blanc);
+    }
+
+    public void afficherEquipements(Personnage p)
+    {
+        System.out.println("\nÉquipés :");
+        if (p.getArmeEquipee() == null)
+            System.out.println(vert + "- Aucune arme équipée");
+        else
+            System.out.println(vert + "- " + p.getArmeEquipee().toString());
+
+        if (p.getArmureEquipee() == null)
+            System.out.println(vert + "- Aucune armure équipée");
+        else
+            System.out.println(vert + "- " + p.getArmureEquipee().toString());
+        System.out.print(blanc);
+    }
+
+    public void afficherPersonnages()
+    {
+        MeneurDeJeu mdj = new MeneurDeJeu();
+        this.mdjAfficherMessageAvecEntree("Voici les personnages en vie:\n");
+        for(int i = 0; i < mdj.getJoueurs().size();i++)
+        {
+            this.mdjAfficherMessageAvecEntree((i+1) +" - "+ mdj.getJoueurs().get(i).getNom() +"\n");
+        }
+    }
+
     public void mdjAfficherMessageAvecEntree(String message)
     {
         System.out.println(bleu + message + blanc);
         System.out.print("> ");
     }
 
-    public void PersonnageAfficherMessage(String message)
+    public void mdjAfficherMessage(String message)
     {
-        System.out.println(vert + message + blanc);
-        System.out.print("> ");
+        System.out.println(bleu + message + blanc);
     }
+
+
 
     public void DDAfficherMessage(String message)
     {
@@ -98,19 +154,16 @@ public class Affichage
                                 + "\nZone autorisée : x[" + Xmin + "," + Xmax + "] / y[" + Ymin + "," + Ymax + "]");
     }
 
-    public void afficherInfoPersonnage(Personnage p)
-    {
-        System.out.println("\u001B[32m" + p.toString() + "\u001B[0m");
-    }
+
 
     public void afficherInfoMonstre(Monstre m)
     {
         System.out.println("\u001B[31m" + m.toString() + "\u001B[0m");
     }
 
-    public String transition()
+    public void transition()
     {
-        return (blanc + "\n\n===========================================\n");
+        System.out.println(blanc + "\n===========================================");
     }
 
     public int verifInt()
@@ -127,21 +180,18 @@ public class Affichage
                 entier = Integer.parseInt(input);
                 entierValide = true;
             } catch (NumberFormatException e) {
-                this.DDAfficherMessage("Erreur : ce n'est pas un entier valide. Essayez encore.");
+                afficherErreur("Erreur : ce n'est pas un entier valide. Essayez encore.");
+                System.out.print("> ");
             }
         }
         return entier;
     }
 
-    public void afficherPersonnages()
+    public void afficherErreur(String message)
     {
-        MeneurDeJeu mdj = new MeneurDeJeu();
-        this.mdjAfficherMessageAvecEntree("Voici les personnages en vie:\n");
-        for(int i = 0; i < mdj.getJoueurs().size();i++)
-        {
-            this.mdjAfficherMessageAvecEntree((i+1) +" - "+ mdj.getJoueurs().get(i).getNom() +"\n");
-        }
+        System.out.println(jaune + message + blanc);
     }
+
 
     public void afficherMonstres()
     {
@@ -154,9 +204,8 @@ public class Affichage
     }
 
     //FONCTION POUR AFFICHER L'ORDRE DES PUTAIN DE JOUEURS
-    public void afficherOrdre()
+    public void afficherOrdre(MeneurDeJeu mdj)
     {
-        MeneurDeJeu mdj = new MeneurDeJeu();
         int j = 0;
         int m = 0;
         String ordre = "";

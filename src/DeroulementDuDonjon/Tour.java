@@ -12,9 +12,8 @@ import java.util.Scanner;
 public class Tour
 {
     private Affichage affichage = new Affichage();
-    public void jouerDonjon(Donjon donjon)
+    public void jouerDonjon(Donjon donjon, MeneurDeJeu mdj)
     {
-        MeneurDeJeu mdj = new MeneurDeJeu();
         while(mdj.joueursEnVie(donjon) && mdj.monstresEnVie(donjon)) {
 
             for (Entite key : mdj.getOrdre().keySet()) {
@@ -24,12 +23,12 @@ public class Tour
                     if(entite.getTypeEntite() == TypeEntite.PERSONNAGE)
                     {
                         Personnage p = (Personnage) entite;
-                        this.actionsPersonnage(p, donjon);
+                        this.actionsPersonnage(p, donjon, mdj);
                     }
                     else if(entite.getTypeEntite() == TypeEntite.MONSTRE)
                     {
                         Monstre m = (Monstre) entite;
-                        this.actionsMonstre(m, donjon);
+                        this.actionsMonstre(m, donjon, mdj);
                     }
                 }
             }
@@ -37,9 +36,8 @@ public class Tour
         affichage.mdjAfficherMessageAvecEntree("Le donjon est terminé!");
     }
 
-    public void actionsPersonnage(Personnage personnage, Donjon donjon)
+    public void actionsPersonnage(Personnage personnage, Donjon donjon, MeneurDeJeu mdj)
     {
-        MeneurDeJeu mdj = new MeneurDeJeu();
         Scanner scanner  = new Scanner(System.in);
         int nb_actions = 1;
         boolean continuer = true;
@@ -88,9 +86,8 @@ public class Tour
         }
     }
 
-    public void actionsMonstre(Monstre monstre, Donjon donjon)
+    public void actionsMonstre(Monstre monstre, Donjon donjon, MeneurDeJeu mdj)
     {
-        MeneurDeJeu mdj = new MeneurDeJeu();
         Scanner scanner  = new Scanner(System.in);
         int nb_actions = 1;
         boolean continuer = true;

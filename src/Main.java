@@ -9,6 +9,6 @@ public class Main
         Tour t = new Tour();
         Donjon donjon1 = new Donjon();
         mdj.creerDonjon(donjon1);
-        t.jouerDonjon(donjon1);
+        t.jouerDonjon(donjon1, mdj);
     }
 }
