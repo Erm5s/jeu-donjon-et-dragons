@@ -15,4 +15,8 @@ public abstract class Equipement extends Entite {
      */
     @Override
     public abstract String toString();
+
+    /**
+     * @return le type de l'équipement
+     */
 }

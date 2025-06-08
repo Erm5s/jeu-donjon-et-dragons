@@ -17,7 +17,20 @@ public class Affichage
     private final String rouge = "\u001B[31m";
     private final String vert = "\u001B[32m";
     private final String bleu ="\u001B[34m";
-    public void mdjAfficherMessage(String message)
+    private final String cyan = "\u001B[36m";
+    private final String violet = "\u001B[35m";
+
+    public void introduction()
+    {
+        String logo = violet + "╔══════════════════════════════════════╗" +
+                "\n║     DOONJONS & DRAGONS - SAE P21     ║" +
+                "\n╚══════════════════════════════════════╝";
+        System.out.println(logo);
+
+        System.out.println("\nBienvenue MDJ, accueillez les visiteurs comme il se doit");
+    }
+    
+    public void mdjAfficherMessageAvecEntree(String message)
     {
         System.out.println(bleu + message + blanc);
         System.out.print("> ");
@@ -31,7 +44,7 @@ public class Affichage
 
     public void DDAfficherMessage(String message)
     {
-        System.out.println(jaune + message + blanc);
+        System.out.println(violet + message + blanc);
     }
 
     public void afficherMessage(String message)
@@ -95,36 +108,6 @@ public class Affichage
         System.out.println("\u001B[31m" + m.toString() + "\u001B[0m");
     }
 
-    public void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    public String majPremiereLettre(String texte) {
-        if (texte == null || texte.isEmpty()) return texte;
-        String[] mots = texte.toLowerCase().split("\\s+");
-        StringBuilder resultat = new StringBuilder();
-        for (String mot : mots) {
-            if (!mot.isEmpty()) {
-                resultat.append(Character.toUpperCase(mot.charAt(0)))
-                        .append(mot.substring(1))
-                        .append(" ");
-            }
-        }
-        return resultat.toString().trim();
-    }
-
-    public void affichageRegles()
-    {
-        String regles = ( jaune + "\nBIENVENUE DANS DOOJONS ET DRAGONS !\n" + blanc
-                        + "\nVoici quelques explications du code couleur avant de débuter le jeu :"
-                        + "\n- En " + bleu + "bleu " + blanc + "les messages liés au " + bleu + "meneur de jeu" + blanc
-                        + "\n- En " + vert +  "vert " + blanc + "les messages liés aux " + vert + "joueurs" + blanc
-                        + "\n- En " + jaune + "jaune " + blanc + "les messages " + jaune + "divers " + blanc + "et ceux liés au " + jaune + "donjon")
-                        + transition();
-        System.out.println(regles);
-    }
-
     public String transition()
     {
         return (blanc + "\n\n===========================================\n");
@@ -153,20 +136,20 @@ public class Affichage
     public void afficherPersonnages()
     {
         MeneurDeJeu mdj = new MeneurDeJeu();
-        this.mdjAfficherMessage("Voici les personnages en vie:\n");
+        this.mdjAfficherMessageAvecEntree("Voici les personnages en vie:\n");
         for(int i = 0; i < mdj.getJoueurs().size();i++)
         {
-            this.mdjAfficherMessage((i+1) +" - "+ mdj.getJoueurs().get(i).getNom() +"\n");
+            this.mdjAfficherMessageAvecEntree((i+1) +" - "+ mdj.getJoueurs().get(i).getNom() +"\n");
         }
     }
 
     public void afficherMonstres()
     {
         MeneurDeJeu mdj = new MeneurDeJeu();
-        this.mdjAfficherMessage("Voici les monstres en vie:\n");
+        this.mdjAfficherMessageAvecEntree("Voici les monstres en vie:\n");
         for(int i = 0; i < mdj.getMonstres().size();i++)
         {
-            this.mdjAfficherMessage((i+1) +" - "+mdj.getMonstres().get(i).getNom() +"\n");
+            this.mdjAfficherMessageAvecEntree((i+1) +" - "+mdj.getMonstres().get(i).getNom() +"\n");
         }
     }
 

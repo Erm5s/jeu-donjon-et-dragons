@@ -3,28 +3,30 @@ import java.util.Random;
 
 public class Dice
 {
-    private int m_nbfaces;
-    private int m_nbDes;
     private Random m_rand;
 
-    public Dice(int nbFaces)
-    {
-        this.m_nbfaces = nbFaces;
+    public Dice() {
         this.m_rand = new Random();
     }
 
-    public int random(int nbFaces)
-    {
-        return this.m_rand.nextInt(nbFaces);
-    }
-
-    public int lanceDes(int nbLances)
-    {
-        int resultat=0;
-        for(int i = 0; i < nbLances; i++)
-        {
-            resultat+= this.random(this.m_nbfaces)+1;
+    public int lanceDes(int nbLances, int nbFaces) {
+        int resultat = 0;
+        for (int i = 0; i < nbLances; i++) {
+            resultat += m_rand.nextInt(nbFaces) + 1;
         }
         return resultat;
+    }
+
+    // Lance un dé avec notation "XdY" (ex : "2d6")
+    public int lancer(String XdY) {
+        try {
+            String[] partie = XdY.split("d");
+            int nbLances = Integer.parseInt(partie[0]);
+            int nbFaces = Integer.parseInt(partie[1]);
+            return lanceDes(nbLances, nbFaces);
+        } catch (Exception e) {
+            System.out.println("Erreur : notation de dés invalide (" + XdY + ")");
+            return 0;
+        }
     }
 }

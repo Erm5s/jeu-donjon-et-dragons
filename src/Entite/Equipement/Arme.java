@@ -14,7 +14,7 @@ public class Arme extends Equipement
     // ===================== ATTRIBUTS =====================
     private String m_nom;
     private TypeEntite m_typeEntite;
-    private int m_degats;
+    private String m_degats;
     private int m_portee;
     private boolean m_estLourde;
     private boolean m_estDistance;
@@ -28,7 +28,7 @@ public class Arme extends Equipement
      * @param portee portée de l’arme (≥ 1)
      * @param estLourde indique si l’arme est lourde (true) ou légère (false)
      */
-    public Arme(String nom, int degats, int portee, boolean estLourde) {
+    public Arme(String nom, String degats, int portee, boolean estLourde) {
         m_typeEntite = TypeEntite.ARME;
         m_nom = nom;
         m_degats = degats;
@@ -44,13 +44,14 @@ public class Arme extends Equipement
      */
     private static final HashMap<ListeEquipements, Object[]> listeArmes = new HashMap<>();
     static {
-        listeArmes.put(ListeEquipements.BATON, new Object[]{"bâton", 6, 1, false});
-        listeArmes.put(ListeEquipements.MASSE_D_ARMES, new Object[]{"masse d'armes", 6, 1, false});
-        listeArmes.put(ListeEquipements.EPEE_LONGUE, new Object[]{"épée longue", 8, 1, true});
-        listeArmes.put(ListeEquipements.RAPIERE, new Object[]{"rapière", 8, 1, true});
-        listeArmes.put(ListeEquipements.ARBALETE_LEGERE, new Object[]{"arbalète légère", 8, 16, false});
-        listeArmes.put(ListeEquipements.FRONDE, new Object[]{"fronde", 4, 6, false});
-        listeArmes.put(ListeEquipements.ARC_COURT, new Object[]{"arc court", 6, 16, false});
+        listeArmes.put(ListeEquipements.BATON, new Object[]{"bâton", "1d6", 1, false});
+        listeArmes.put(ListeEquipements.MASSE_D_ARMES, new Object[]{"masse d'armes", "1d6", 1, false});
+        listeArmes.put(ListeEquipements.EPEE_LONGUE, new Object[]{"épée longue", "1d8", 1, true});
+        listeArmes.put(ListeEquipements.RAPIERE, new Object[]{"rapière", "1d8", 1, true});
+        listeArmes.put(ListeEquipements.ARBALETE_LEGERE, new Object[]{"arbalète légère", "1d8", 16, false});
+        listeArmes.put(ListeEquipements.FRONDE, new Object[]{"fronde", "1d4", 6, false});
+        listeArmes.put(ListeEquipements.ARC_COURT, new Object[]{"arc court", "1d6", 16, false});
+        listeArmes.put(ListeEquipements.EPEE_A_DEUX_MAINS, new Object[]{"épée à deux mains", "2d6", 1, true});
     }
 
     // ===================== METHODES =====================
@@ -61,7 +62,7 @@ public class Arme extends Equipement
      */
     public static Arme creerArme(ListeEquipements equipement) {
         Object[] stats = listeArmes.get(equipement);
-        return new Arme((String) stats[0], (int) stats[1], (int) stats[2], (boolean) stats[3]);
+        return new Arme((String) stats[0], (String) stats[1], (int) stats[2], (boolean) stats[3]);
     }
 
     /**
@@ -71,7 +72,7 @@ public class Arme extends Equipement
     @Override
     public String toString() {
         return "Arme   : " + m_nom +
-                "\t[Degats:1d" + m_degats +
+                "\t[Degats: " + m_degats +
                 ", Portee:" + m_portee +
                 ", " +(m_estLourde?"Lourde]":"Legere]");
     }
@@ -94,7 +95,7 @@ public class Arme extends Equipement
     /**
      * @return nombre de dégâts infligés par l’arme
      */
-    public int getDegats() {
+    public String getDegats() {
         return m_degats;
     }
 

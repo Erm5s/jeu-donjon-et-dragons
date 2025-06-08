@@ -1,12 +1,12 @@
 package Entite.Personnages;
 import Dice.Dice;
-import Entite.Monstres.Monstre;
 
 /**
  * Classe représentant les caractéristiques d’un personnage (PV, force, vitesse...)
  */
 public class Caracteristique {
     // ===================== ATTRIBUTS =====================
+    private int m_PVInitial;
     private int m_PV;
     private int m_force;
     private int m_dexterite;
@@ -22,25 +22,25 @@ public class Caracteristique {
     public Caracteristique (Personnage personnage)
     {
         // Attribution force, dexterite, vitesse, initiative (commune à chaque instance de Personnage)
-        Dice de = new Dice(4);
-        m_force = de.lanceDes(4) + 3;
-        m_dexterite = de.lanceDes(4) + 3;
-        m_vitesse = de.lanceDes(4) + 3;
-        m_initiative = de.lanceDes(4) + 3;
+        Dice de = new Dice();
+        m_force = de.lancer("4d4") + 3;
+        m_dexterite = de.lancer("4d4") + 3;
+        m_vitesse = de.lancer("4d4") + 3;
+        m_initiative = de.lancer("4d4") + 3;
 
         // Attribution de points de vie selon la classe
         switch (personnage.getClasse()) { // ajouter un case en cas de nouvelle classe
-            case GUERRIER -> m_PV = 20;
-            case CLERC -> m_PV = 16;
-            case MAGICIEN -> m_PV = 12;
-            case ROUBLARD -> m_PV = 16;
+            case GUERRIER -> m_PVInitial = 20;
+            case CLERC -> m_PVInitial = 16;
+            case MAGICIEN -> m_PVInitial = 12;
+            case ROUBLARD -> m_PVInitial = 16;
         }
 
         // Ajustement de stats selon la race
         switch (personnage.getRace()){ // ajouter un case en cas de nouvelle race
             case HUMAIN ->
             {
-                m_PV += 2;
+                m_PVInitial += 2;
                 m_force += 2;
                 m_dexterite += 2;
                 m_vitesse += 2;
@@ -54,6 +54,7 @@ public class Caracteristique {
                 m_vitesse += 2;
             }
         }
+        m_PV = m_PVInitial;
     }
 
     // ===================== MÉTHODES =====================
@@ -74,10 +75,10 @@ public class Caracteristique {
 
     /**
      * Retire des points de vie au personnage
-     * @param degats nombre de points de vie à retirer
+     * @param newPV ses nouveaux points de vie
      */
-    public void retirerPV(int degats) {
-        m_PV -= degats;
+    public void setPV(int newPV) {
+        m_PV -= newPV;
     }
 
     /**
@@ -87,13 +88,20 @@ public class Caracteristique {
     @Override
     public String toString() {
         String infosStats =
-            "----- PDV : " + m_PV + "-----"+
+            "-- PDV : " + m_PV + "/" + m_PVInitial + "--"+
             "\nFOR : " + m_force + " | DEX : " + m_dexterite +
             "\nVIT : " + m_vitesse + " | ITV : " + m_initiative;
         return infosStats;
     }
 
     // ===================== GETTERS =====================
+    /**
+     * @return points de vie initials
+     */
+    public int getPVInitial() {
+        return m_PVInitial;
+    }
+
     /**
      * @return points de vie restants
      */

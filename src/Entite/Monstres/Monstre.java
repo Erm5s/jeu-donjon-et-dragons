@@ -17,8 +17,7 @@ public class Monstre extends Entite {
     private String m_espece;
     private int m_numero;
     private int m_portee;
-    private int m_degats;
-    private int m_nbLance;
+    private String m_degats;
     private int m_PV;
     private int m_vitesse;
     private int m_force;
@@ -32,7 +31,6 @@ public class Monstre extends Entite {
      * @param espece nom/espèce du monstre
      * @param portee portée de l’attaque (1 = corps-à-corps, >1 = distance)
      * @param degats valeur maximale d’un dé de dégâts
-     * @param nbLance nombre de dés lancés pour infliger des dégâts
      * @param PV points de vie initiaux du monstre
      * @param vitesse vitesse de déplacement
      * @param force force utilisée en combat
@@ -40,13 +38,12 @@ public class Monstre extends Entite {
      * @param classeArmure valeur de défense du monstre
      * @param initiative initiative du monstre
      */
-    public Monstre (String espece, int portee, int degats, int nbLance,
+    public Monstre (String espece, int portee, String degats,
                     int PV, int vitesse, int force, int dexterite, int classeArmure, int initiative) {
         this.m_typeEntite = TypeEntite.MONSTRE;
         this.m_espece = espece;
         this.m_portee = portee;
         this.m_degats = degats;
-        this.m_nbLance = nbLance;
         this.m_PV = PV;
         this.m_vitesse = vitesse;
         this.m_force = force;
@@ -75,15 +72,14 @@ public class Monstre extends Entite {
             return "Erreur : le personnage est hors de portée de votre attaque (portée max : " + m_portee + ").";
         }
 
-        Dice de = new Dice(20);
-        int jet = de.lanceDes(1);
+        Dice de = new Dice();
+        int jet = de.lancer("1d20");
         int bonus = m_portee > 1 ? m_dexterite : m_force;
         int puissance = jet + bonus;
         int armureJoueur = cible.getArmureEquipee() == null ? 0 : cible.getArmureEquipee().getClasseArmure();
         if (puissance > armureJoueur) {
-            Dice deDegat = new Dice(m_degats);
-            int degats = deDegat.lanceDes(m_nbLance);
-            cible.getStats().retirerPV(degats);
+            int degats = de.lancer(m_degats);
+            cible.getStats().setPV(getPV() - degats);
             return "Vous avez infligé " + degats + " au joueur " + cible.getNom();
         }
         else {
@@ -156,7 +152,7 @@ public class Monstre extends Entite {
         String infoMonstre =
             m_espece + " " + m_numero + " :"
             + "\n----- PDV : " + m_PV + "-----"
-            + "\nATQ : " + m_nbLance + "d" + m_degats + " | POR : " + m_portee
+            + "\nATQ : " + m_degats + " | POR : " + m_portee
             + "\nFOR : " + m_force + "   | DEX : " + m_dexterite
             + "\nARM : " + m_classeArmure + "   | ITV : " + m_initiative;
         return infoMonstre;

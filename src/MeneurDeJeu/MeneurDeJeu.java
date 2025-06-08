@@ -32,17 +32,17 @@ public class MeneurDeJeu {
         Affichage affichage = new Affichage();
         Scanner scanner = new Scanner(System.in);
 
-        affichage.affichageRegles();
-        affichage.transition();
+        affichage.introduction();
 
+        affichage.mdjAfficherMessageAvecEntree("\nOhé visiteurs courageux ! Combien êtes vous à vouloir entrer dans ce donjon ?");
         creationJoueursPartie();
 
         affichage.DDAfficherMessage("\nIl est l'heure de commencer le premier donjon de votre aventure !");
-        affichage.mdjAfficherMessage("Combien d'obstacles souhaitez vous placer ? (10 max)");
+        affichage.mdjAfficherMessageAvecEntree("Combien d'obstacles souhaitez vous placer ? (10 max)");
         int nb_obstacles = affichage.verifInt();
         for (int i = 0; i < nb_obstacles; i++) {
             affichage.DDAfficherMessage("\nOBSTACLE " + (i+1) +"/" + nb_obstacles +" :");
-            affichage.mdjAfficherMessage("Où voulez-vous placer l'obstacle? (Y puis X)");
+            affichage.mdjAfficherMessageAvecEntree("Où voulez-vous placer l'obstacle? (Y puis X)");
             int x = affichage.verifInt();
             int y = affichage.verifInt();
             this.placerObstacle(donjon, x, y);
@@ -52,7 +52,7 @@ public class MeneurDeJeu {
 
         System.out.println("\nPassons aux joueurs, où souhaitez vous les placer ?");
         for (int i = 0; i < m_joueurs.size(); i++) {
-            affichage.mdjAfficherMessage("Entrez les coordonnées pour placer le joueur suivant : "+ m_joueurs.get(i).getNom() +" (Y, PUIS X):");
+            affichage.mdjAfficherMessageAvecEntree("Entrez les coordonnées pour placer le joueur suivant : "+ m_joueurs.get(i).getNom() +" (Y, PUIS X):");
             int x = affichage.verifInt();
             int y = affichage.verifInt();
             this.placerJoueur(donjon, this.m_joueurs.get(i), x, y);
@@ -62,7 +62,7 @@ public class MeneurDeJeu {
         }
 
         affichage.DDAfficherMessage("Meneur de jeu créez vos montres!\n");
-        affichage.mdjAfficherMessage("Combien de monstres souhaitez-vous créer ? (max 3)");
+        affichage.mdjAfficherMessageAvecEntree("Combien de monstres souhaitez-vous créer ? (max 3)");
         int nb_Monstres = affichage.verifInt();
         for(int i = 0; i < nb_Monstres;i++)
         {
@@ -86,10 +86,10 @@ public class MeneurDeJeu {
         Scanner scanner = new Scanner(System.in);
         Affichage affichage = new Affichage();
 
-        affichage.PersonnageAfficherMessage("Entrez votre nom");
+        affichage.mdjAfficherMessageAvecEntree("Quel est votre nom ?");
         String nom = scanner.nextLine();
 
-        affichage.PersonnageAfficherMessage("\nChoisissez votre race :\n1 - Humain | 2 - Nain\n3 - Elfe   | 4 - Halfelin");
+        affichage.mdjAfficherMessageAvecEntree("\nQuelle est votre race :\n1 - Humain | 2 - Nain | 3 - Elfe | 4 - Halfelin");
         int raceNb = affichage.verifInt();
         Race race = null;
         switch (raceNb) {
@@ -99,7 +99,7 @@ public class MeneurDeJeu {
             case 4 -> race = Race.HALFELIN;
         }
 
-        affichage.PersonnageAfficherMessage("\nChoisissez votre classe :\n1 - Clerc    | 2 - Guerrier\n3 - Magicien | 4 - Roublard ");
+        affichage.mdjAfficherMessageAvecEntree("\nChoisissez votre classe :\n1 - Clerc | 2 - Guerrier | 3 - Magicien | 4 - Roublard ");
         Classe classe = null;
         int classeNb = affichage.verifInt();
         switch (classeNb) {
@@ -116,11 +116,9 @@ public class MeneurDeJeu {
     //fonction pour créer les personnages des joueurs de la partie
     public void creationJoueursPartie()
     {
-        affichage.mdjAfficherMessage("Avant de commencer la partie, créez les personnages que vous jouerez dans les donjons!\n" +
-                                     "Veuillez entrez le nombre de joueurs pour procéder à la création des personnages");
         int nb_joueurs = affichage.verifInt();
         for (int i = 0; i < nb_joueurs; i++) {
-            affichage.DDAfficherMessage("\n\nJOUEUR " + (i+1) + " :");
+            affichage.afficherMessage("\n\nJOUEUR " + (i+1) + " :");
             this.m_joueurs.add(creationPerso());
             affichage.DDAfficherMessage("\nPersonnage crée :");
             affichage.afficherInfoPersonnage(m_joueurs.get(i));
@@ -133,37 +131,34 @@ public class MeneurDeJeu {
         int numero = m_monstres.size() +1;
         Scanner scanner = new Scanner(System.in);
 
-        affichage.mdjAfficherMessage("\nQuelle espèce souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessageAvecEntree("\nQuelle espèce souhaitez vous donner à votre monstre ?");
         String espece = scanner.nextLine();
 
-        affichage.mdjAfficherMessage("Quelle portée souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessageAvecEntree("Quelle portée souhaitez vous donner à votre monstre ?");
         int portee = affichage.verifInt();
 
-        affichage.mdjAfficherMessage("Combien de dégâts souhaitez vous donner à votre monstre ?");
-        int degats = affichage.verifInt();
+        affichage.mdjAfficherMessageAvecEntree("Combien de dégâts souhaitez vous donner à votre monstre ?");
+        String degats = scanner.nextLine();
 
-        affichage.mdjAfficherMessage("Combien de lancés de dés souhaitez vous que votre monstre fasse lors de son attaque ?");
-        int nb_lances = affichage.verifInt();
-
-        affichage.mdjAfficherMessage("Combien de Points de vie souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessageAvecEntree("Combien de Points de vie souhaitez vous donner à votre monstre ?");
         int pv = affichage.verifInt();
 
-        affichage.mdjAfficherMessage("Combien de vitesse souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessageAvecEntree("Combien de vitesse souhaitez vous donner à votre monstre ?");
         int vitesse = affichage.verifInt();
 
-        affichage.mdjAfficherMessage("Combien de force souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessageAvecEntree("Combien de force souhaitez vous donner à votre monstre ?");
         int force = affichage.verifInt();
 
-        affichage.mdjAfficherMessage("Combien de dégâts souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessageAvecEntree("Combien de dextérité souhaitez vous donner à votre monstre ?");
         int dexterite = affichage.verifInt();
 
-        affichage.mdjAfficherMessage("Quelle armure souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessageAvecEntree("Quelle armure souhaitez vous donner à votre monstre ?");
         int classe_armure = affichage.verifInt();
 
-        affichage.mdjAfficherMessage("Combien d'initiative souhaitez vous donner à votre monstre ?");
+        affichage.mdjAfficherMessageAvecEntree("Combien d'initiative souhaitez vous donner à votre monstre ?");
         int initiative = affichage.verifInt();
 
-        Monstre m = new Monstre(espece,portee,degats,nb_lances,pv,vitesse,force,dexterite,classe_armure,initiative);
+        Monstre m = new Monstre(espece,portee,degats ,pv,vitesse,force,dexterite,classe_armure,initiative);
         m_monstres.add(m);
         affichage.DDAfficherMessage("\n"+m.toString());
     }
@@ -177,8 +172,8 @@ public class MeneurDeJeu {
         {
             affichage.DDAfficherMessage("Quel nom souhaitez vous donner à votre arme ?\n");
             String nom = scanner.nextLine();
-            affichage.DDAfficherMessage("Combien de dégâts souhaitez-vous donner à votre arme?\n");
-            int degats = affichage.verifInt();
+            affichage.DDAfficherMessage("Combien de dégâts souhaitez-vous donner à votre arme? (XdY)\n");
+            String degats = scanner.nextLine();
             affichage.DDAfficherMessage("Quelle portée souhaitez-vous donner à votre arme?\n");
             int portee = affichage.verifInt();
             affichage.DDAfficherMessage("Votre arme est-elle légère ou lourde? 1 - si lourde, 2 - si légère\n");
@@ -186,7 +181,6 @@ public class MeneurDeJeu {
             boolean estlourde = true;
             if(lourdelegere == 2){estlourde = false;}
             Arme a = new Arme(nom,degats,portee,estlourde);
-
         }
 
     }
@@ -226,13 +220,13 @@ public class MeneurDeJeu {
     //FONCTION POUR DETERMINER L'ORDRE DE JEUUUUUUUUUUUUUUUUUUUU
     public void determinerOrdre() {
         m_JoueursEtMonstresInitiative = new HashMap<>();
-        Dice de = new Dice(20);
+        Dice de = new Dice();
         //on remplit la hashmap
         for (int i = 0; i < m_joueurs.size(); i++) {
-            m_JoueursEtMonstresInitiative.put(m_joueurs.get(i), m_joueurs.get(i).getStats().getInitiative() + de.lanceDes(1));
+            m_JoueursEtMonstresInitiative.put(m_joueurs.get(i), m_joueurs.get(i).getStats().getInitiative() + de.lancer("1d20"));
         }
         for (int i = 0; i < m_monstres.size(); i++) {
-            m_JoueursEtMonstresInitiative.put(m_monstres.get(i), m_monstres.get(i).getInitiative() + de.lanceDes(1));
+            m_JoueursEtMonstresInitiative.put(m_monstres.get(i), m_monstres.get(i).getInitiative() + de.lancer("1d20"));
         }
         while (!m_JoueursEtMonstresInitiative.isEmpty()) {
             Entite maxKey = null;

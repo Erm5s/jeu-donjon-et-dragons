@@ -34,7 +34,7 @@ public class Tour
                 }
             }
         }
-        affichage.mdjAfficherMessage("Le donjon est terminé!");
+        affichage.mdjAfficherMessageAvecEntree("Le donjon est terminé!");
     }
 
     public void actionsPersonnage(Personnage personnage, Donjon donjon)
@@ -53,7 +53,7 @@ public class Tour
                 case 1 ->
                 {
                     affichage.DDAfficherMessage(personnage.inventaireToString());
-                    affichage.mdjAfficherMessage("Quelle arme souhaitez vous équiper ?");
+                    affichage.mdjAfficherMessageAvecEntree("Quelle arme souhaitez vous équiper ?");
                     int num = affichage.verifInt();
                     affichage.DDAfficherMessage(personnage.equiper(num));
                     break;
@@ -67,9 +67,9 @@ public class Tour
                 case 4 ->
                 {
                     affichage.afficherMonstres();
-                    affichage.mdjAfficherMessage("Quel monstre souhaitez-vous attaquer ?");
+                    affichage.mdjAfficherMessageAvecEntree("Quel monstre souhaitez-vous attaquer ?");
                     int num = affichage.verifInt();
-                    affichage.mdjAfficherMessage(personnage.attaquer(mdj.getMonstres().get(num-1)));
+                    affichage.mdjAfficherMessageAvecEntree(personnage.attaquer(mdj.getMonstres().get(num-1)));
 
                 }
                 case 5 -> {
@@ -78,7 +78,7 @@ public class Tour
                 }
                 default ->
                 {
-                    affichage.mdjAfficherMessage("Action non valide.");
+                    affichage.mdjAfficherMessageAvecEntree("Action non valide.");
                     nb_actions --;
                 }
             }
@@ -109,16 +109,16 @@ public class Tour
                 case 2 ->
                 {
                     affichage.afficherPersonnages();
-                    affichage.mdjAfficherMessage("Quel personnage souhaitez-vous attaquer ?");
+                    affichage.mdjAfficherMessageAvecEntree("Quel personnage souhaitez-vous attaquer ?");
                     int num = affichage.verifInt();
-                    affichage.mdjAfficherMessage(monstre.attaquer(mdj.getJoueurs().get(num-1)));
+                    affichage.mdjAfficherMessageAvecEntree(monstre.attaquer(mdj.getJoueurs().get(num-1)));
 
                 }
                 case 3   -> {
                     continuer = false;
                     break;
                 }
-                default -> affichage.mdjAfficherMessage("Action non valide.");
+                default -> affichage.mdjAfficherMessageAvecEntree("Action non valide.");
             }
             affichage.DDAfficherMessage("\n\nCarte mise à jour:\n\n");
             affichage.afficherDonjon(donjon);

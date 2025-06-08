@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import Entite.Personnages.Sorts.*;
 import DeroulementDuDonjon.Donjon;
 import Entite.*;
 import Entite.Monstres.*;
 import Entite.Equipement.*;
 import Dice.Dice;
+import Entite.Personnages.Sorts.Sort;
 
 /**
  * Représente un personnage jouable dans le donjon
@@ -23,6 +25,7 @@ public class Personnage extends Entite {
     private List<Equipement> m_inventaire;
     private Arme m_armeEquipee;
     private Armure m_armureEquipee;
+    private List<Sort> m_sorts;
 
     // ===================== CONSTRUCTEUR =====================
     /**
@@ -39,12 +42,14 @@ public class Personnage extends Entite {
         m_classe = classe;
         m_stats = new Caracteristique(this);
 
+        m_sorts = new ArrayList<>();
         m_inventaire = new ArrayList<>();
         switch (getClasse()) {
             case CLERC -> {
                 m_inventaire.add(Armure.creerArmure(ListeEquipements.ARMURE_D_ECAILLES));
                 m_inventaire.add(Arme.creerArme(ListeEquipements.MASSE_D_ARMES));
                 m_inventaire.add(Arme.creerArme(ListeEquipements.ARBALETE_LEGERE));
+                m_sorts.add(new Guerison());
             }
             case GUERRIER -> {
                 m_inventaire.add(Armure.creerArmure(ListeEquipements.COTTE_DE_MAILLES));
@@ -54,6 +59,9 @@ public class Personnage extends Entite {
             case MAGICIEN -> {
                 m_inventaire.add(Arme.creerArme(ListeEquipements.BATON));
                 m_inventaire.add(Arme.creerArme(ListeEquipements.FRONDE));
+                m_sorts.add(new Guerison());
+                m_sorts.add(new BoogieWoogie());
+                m_sorts.add(new ArmeMagique());
             }
             case ROUBLARD -> {
                 m_inventaire.add(Arme.creerArme(ListeEquipements.RAPIERE));
@@ -150,13 +158,13 @@ public class Personnage extends Entite {
             return "Erreur : le monstre est hors de portée de votre " + m_armeEquipee.getNom() + " (portée max : " + m_armeEquipee.getPortee() + ").";
         }
 
-        Dice de = new Dice(20);
-        int jet = de.lanceDes(1);
+        Dice de = new Dice();
+        int jet = de.lancer("1d20");
         int bonus = m_armeEquipee.getEstDistance() ? m_stats.getDexterite() : m_stats.getForce();
         int puissance = jet + bonus;
         if (puissance > cible.getClasseArmure()) {
-            Dice deDegat = new Dice(m_armeEquipee.getDegats());
-            int degats = deDegat.lanceDes(1);
+            Dice deDegat = new Dice();
+            int degats = deDegat.lancer(m_armeEquipee.getDegats());
             cible.retirerPV(degats);
             return "Vous avez infligé " + degats + " au monstre " + cible.getNom();
         }
@@ -261,6 +269,22 @@ public class Personnage extends Entite {
      * */
     public Armure getArmureEquipee() {
         return m_armureEquipee;
+    }
+
+    /**
+     * @return le contenu de l'inventaire
+     */
+    public List<Equipement> getInventaire()
+    {
+        return m_inventaire;
+    }
+
+    /**
+     * @return les sorts utilisables
+     */
+    public List<Sort> getSorts()
+    {
+        return m_sorts;
     }
 
     /**

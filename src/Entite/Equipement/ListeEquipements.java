@@ -13,6 +13,7 @@ public enum ListeEquipements {
     ARBALETE_LEGERE,
     FRONDE,
     ARC_COURT,
+    EPEE_A_DEUX_MAINS,
 
     //ARMURES :
     ARMURE_D_ECAILLES,
