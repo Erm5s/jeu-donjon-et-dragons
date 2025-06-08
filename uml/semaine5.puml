@@ -1,0 +1,303 @@
+@startuml
+scale 0.7
+package DOOnjonsEtDragons
+{
+    package entite
+    {
+        abstract class Entite
+        {
+            - m_x: integer
+            - m_y: integer
+            + getCoordonnees():String
+            + setCoordonnees()
+            + getX():integer
+            + getY():integer
+        }
+        package Personnages
+        {
+            package Sorts
+            {
+                class ArmeMagique extends Sort
+                {
+                    + <<create>>ArmeMagique
+                    + lancer(Personnage lanceur, Donjon donjon, List<Personnage> persos, List<Monstre> monstres): String
+                }
+                class BoogieWoogie extends Sort
+                {
+                    + <<create>>BoogieWoogie
+                    + lancer(Personnage lanceur, Donjon donjon, List<Personnage> persos, List<Monstre> monstres): String
+                }
+                class Guerison extends Sort
+                {
+                    + <<create>>Guerison
+                    + lancer(Personnage lanceur, Donjon donjon, List<Personnage> persos, List<Monstre> monstres)
+                }
+
+                abstract class Sort
+                {
+                    - String m_nom;
+                    + <<create>>Sort
+                    + getNom(): String
+                    + lancer(Personnage lanceur, Donjon donjon, List<Personnage> persos, List<Monstre> monstres)
+                }
+            }
+            class Personnage
+            {
+                - m_nom : String
+                - m_race : Race
+                - m_classe : Classe
+                - m_caract : Caracteristique
+                - m_inventaire : Array<Equipement>
+                - m_equipement : Array<Equipement>
+                + <<Create>> Personnage(nom:String, race:Race, caract:Caracteristique, inventaire:Array, equipement:Array)
+                + retirerPV(degats:Integer)
+                + equiper(i:Integr) : String
+                + attaquer(cible:Monstre) : String
+                + seDeplacer() : String
+                + ramasser() : String
+                + getNom() : String
+                + getRace() : Race
+                + getClasse() : Classe
+                + getStats() : Caracteristique
+                + getArmeEquipee() : Arme
+                + getArmureEquipee() : Armure
+                + afficherInventaire()
+
+            }
+
+            enum Race
+            {
+                ELFE,
+                HALFELIN,
+                HUMAIN,
+                NAIN
+            }
+
+            enum Classe
+            {
+                CLERC,
+                GUERRIER,
+                MAGICIEN,
+                ROUBLARD
+            }
+
+            class Caracteristiques
+            {
+                - m_PVInitial : Integer
+                - m_PV : Integer
+                - m_Force : Integer
+                - m_Dexterite : Integer
+                - m_Vitesse : Integer
+                - m_Initiative : Integer
+                + <<Create>> Caracteristique(Personnage p)
+                + statsPoidsEquipement(Personnage p)
+                + setPV(newPV: Integer)
+                + getPVInitial)(): Integer
+                + getPV() : Integer
+                + getForce() : Integer
+                + getDexterite() : Integer
+                + getVitesse() : Integer
+                + getInitiative() : Integer
+            }
+        }
+
+        package Monstres
+        {
+            class Monstre
+            {
+                - m_typeEntite:TypeEntite
+                - m_espece : String
+                - m_numero : Integer
+                - m_attaque : Attaque
+                - m_PV : Integer
+                - m_force : Integer
+                - m_dexterite : Integer
+                - m_classeArmure : Integer
+                - m_initiative : Integer
+                + <<Create>> Monstre(espece:String, numero:Integer, portee:Integer, degats:String,
+                  PV:integer, force:Integer, dexterite:Integer, classeArmure:Integer, initiative:Integer)
+                + retirerPV(degats: Integer)
+                + attaquer() : String
+                + seDeplacer() : String
+                + getEspece() : String
+                + getPV() : Integer
+                + getForce() : Integer
+                + getDexterite() : Integer
+                + getClasseArmure() : Integer
+                + getInitiative() : Integer
+            }
+
+        }
+
+        package Equipement
+        {
+            enum ListeEquipements
+            {
+                BATON
+                MASSE_D_ARMES
+                EPEE_LONGUE
+                RAPIERE
+                ARBALETE_LEGERE
+                FRONDE
+                ARC_COURT
+                EPEE_A_DEUX_MAINS
+
+                ARMURE_D_ECAILLES
+                DEMI_PLATE
+                COTTE_DE_MAILLES
+                HARNOIS
+            }
+            abstract class Equipement <<abstract>>
+            {
+            }
+
+            class Arme extends Equipement
+            {
+                - m_nom : String
+                - m_degats : Integer
+                - m_portee : Integer
+                - m_estLourde : Boolean
+                - m_estDistance : Boolean
+                + <<Create>> Arme(nom:String, degats:Integer, portee:Integer, estLourde:Boolean)
+                + creerArme(id:Integer) : Arme
+                + getNom() : String
+                + getTypeEntite: String
+                + getDegats() : Integer
+                + getPortee() : Integer
+                + getEstLourde() : Boolean
+                + getEstDistance() : Boolean
+            }
+
+            class Armure extends Equipement
+            {
+                - m_nom : String
+                - m_classe : Integer
+                - m_estLourde : Boolean
+                - m_typeEntite
+                - listeArmures: Hashmap<ListeEquipements, Object[]>
+                + <<Create>> Armure(nom:String, m_classe:Integer, m_estLourde:Boolean)
+                + creerArmure(id:Integer) : Armure
+                + getNom() : String
+                + getTypeEntite():TypeEntite
+                + getClasseArmure() : Integer
+                + getEstLourde() : Integer
+            }
+        }
+    }
+
+    package DéroulementDuDonjon
+    {
+        class Donjon
+        {
+            +<<create>>Donjon()
+            + getTailleCarte():integer
+            + getCase(integer x, integer y):String
+            + changeCase(integer x, integer y, String caractere):
+            + placerObstacle():Boolean
+            + placerMonstre():Boolean
+            + placerJoueur():Boolean
+            + placerEquipement():Boolean
+        }
+        class Tour
+        {
+        + jouerDonjon(Donjon donjon, MeneurDeJeu mdj)
+        + actionsPersonnage(Personnage personnage, Donjon donjon, MeneurDeJeu mdj)
+        + actionsMonstre(Monstre monstre, Donjon donjon, MeneurDeJeu mdj)
+        }
+    }
+
+    class MeneurDeJeu
+    {
+        - m_joueurs: List<Personnage>
+        - m_monstres: List<Monstre>
+        - m_joueursEtMonstresInitiative: Hashmap<Entite,Integer>
+        - m_OrdreJoueurs: Hashmap<Entite,Integer>
+        - affichage: Affichage
+        - m_equipementDonjon: List<Equipement>
+        + <<create>> MeneurDeJeu()
+        + creerDonjon(Donjon donjon)
+        + donjonPrefait(Donjon donjon)
+        + creerObstacles(Donjon donjon)
+        + choixPlacementPersonnage(Donjon donjon)
+        + creationPerso()
+        + creationMonstre()
+        + creationJoueursPartie()
+        + creationEquipementDonjon()
+        + placerEquipement(Donjon donjon)
+        + placerObstacle():Boolean
+        + placerJoueur():Boolean
+        + placerMonstre():Boolean
+        + placerEquipement():Boolean
+        + determinerOrdre()
+        + afficherOrdre()
+        + joueursEnVie():boolean
+        + monstresEnVie():boolean
+        + getJoueurs():List<Personnage>
+        + getMonstres(): List<Monstre>
+        + getOrdre(): Hashmap<Entite,Integer>
+    }
+package Dé
+{
+    class Dé
+    {
+        + <<create>>Affichage()
+        + lancerDe(nbLances:Integer, nbFaces:Integer) : Integer
+        + lancer(String XdY): Integer
+    }
+}
+
+    class Affichage
+    {
+    + <<create>>Affichage()
+    + afficherDonjon(Donjon donjon)
+    + introduction()
+    + PersonnageAfficherMessage(String message)
+    + afficherInfoPersonnage(Personnage p)
+    + afficherInventaire(Personnage p)
+    + afficherEquipements(Personnage p)
+    + afficherPersonnages()
+    + mdjAfficherMessageAvecEntree(String message)
+    + mdjAfficherMessage(String message)
+    + DDAfficherMessage(String message)
+    + afficherMessage(String message)
+    + afficherDeplacementJoueur(Personnage p, Donjon d)
+    + afficherInfoMonstre(Monstre m)
+    + transition()
+    + verifInt()
+    + afficherErreur(String message)
+    + afficherMonstres()
+    + afficherOrdre(MeneurDeJeu mdj)
+    }
+
+Caracteristiques <|-- Personnage
+DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Personnages.Personnage
+DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Monstres.Monstre
+DOOnjonsEtDragons.entite.Entite <|-- DOOnjonsEtDragons.entite.Equipement.Equipement
+Personnage --* Classe
+Personnage --* Race
+Arme --* ListeEquipements
+Armure --* ListeEquipements
+
+Personnage ..> Monstre : attaque
+Personnage <.. Monstre : attaque
+MeneurDeJeu ..> Donjon : <<uses>>
+MeneurDeJeu ..> DOOnjonsEtDragons.entite.Equipement.Equipement : <<uses>>
+MeneurDeJeu ..> Dé : <<uses>>
+MeneurDeJeu ..> Personnage : <<instanciates>>
+MeneurDeJeu ..> Monstre : <<instanciates>>
+Affichage ..> Donjon : <<uses>>
+Affichage ..> MeneurDeJeu : <<uses>>
+Affichage ..> Personnage : <<uses>>
+
+Donjon ..> Personnage : <<uses>>
+Donjon ..> DOOnjonsEtDragons.entite.Equipement.Equipement : <<uses>>
+Sort ..> Personnage : <<uses>>
+Sort ..> Donjon : <<use>>
+Caracteristiques ..> Personnage : <<uses>>
+Tour ..> Donjon : uses
+Tour ..> MeneurDeJeu: uses
+
+
+
+}
+@enduml
