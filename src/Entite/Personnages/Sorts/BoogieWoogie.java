@@ -4,6 +4,7 @@ import DeroulementDuDonjon.Donjon;
 import Entite.Entite;
 import Entite.Monstres.Monstre;
 import Entite.Personnages.Personnage;
+import affichage.Affichage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,17 +18,18 @@ public class BoogieWoogie extends Sort {
     @Override
     public String lancer(Personnage lanceur, Donjon donjon, List<Personnage> persos, List<Monstre> monstres) {
         Scanner sc = new Scanner(System.in);
+        Affichage affichage = new Affichage();
 
         List<Entite> toutes = new ArrayList<>();
         toutes.addAll(persos);
         toutes.addAll(monstres);
 
         for (int i = 0; i < toutes.size(); i++)
-            System.out.println((i + 1) + " - " + toutes.get(i).getNom());
+            affichage.mdjAfficherMessage((i + 1) + " - " + toutes.get(i).getNom());
 
-        System.out.println("Choisissez le premier à échanger :");
+        affichage.mdjAfficherMessageAvecEntree("Choisissez le premier à échanger :");
         Entite e1 = toutes.get(Integer.parseInt(sc.nextLine()) - 1);
-        System.out.println("Choisissez le second à échanger :");
+        affichage.mdjAfficherMessageAvecEntree("Choisissez le second à échanger :");
         Entite e2 = toutes.get(Integer.parseInt(sc.nextLine()) - 1);
 
         int x1 = e1.getX(), y1 = e1.getY();

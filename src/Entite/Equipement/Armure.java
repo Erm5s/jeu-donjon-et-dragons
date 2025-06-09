@@ -91,4 +91,11 @@ public class Armure extends Equipement
     public int getClasseArmure() {
         return m_classe;
     }
+
+    /**
+     * @return la liste des armures possibles à créer
+     */
+    public static HashMap<ListeEquipements, Object[]> getListeArmures() {
+        return listeArmures;
+    }
 }

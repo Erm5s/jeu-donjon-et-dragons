@@ -15,6 +15,7 @@ public class Arme extends Equipement
     private String m_nom;
     private TypeEntite m_typeEntite;
     private String m_degats;
+    private int m_bonusDegats;
     private int m_portee;
     private boolean m_estLourde;
     private boolean m_estDistance;
@@ -35,6 +36,7 @@ public class Arme extends Equipement
         m_portee = portee;
         m_estLourde = estLourde;
         m_estDistance = (m_portee > 1);
+        m_bonusDegats = 0;
     }
 
     // ===================== DONNÉES STATIQUES =====================
@@ -63,6 +65,13 @@ public class Arme extends Equipement
     public static Arme creerArme(ListeEquipements equipement) {
         Object[] stats = listeArmes.get(equipement);
         return new Arme((String) stats[0], (String) stats[1], (int) stats[2], (boolean) stats[3]);
+    }
+
+    /**
+     * Améliore les dégâts de l'arme avec le sort ArmeMagique
+     */
+    public void ameliorer() {
+        m_bonusDegats++;
     }
 
     /**
@@ -100,6 +109,13 @@ public class Arme extends Equipement
     }
 
     /**
+     * @return bonus de dégâts de l'arme
+     */
+    public int getBonusDegats() {
+        return m_bonusDegats;
+    }
+
+    /**
      * @return portée de l’arme
      */
     public int getPortee() {
@@ -118,5 +134,12 @@ public class Arme extends Equipement
      */
     public boolean getEstDistance() {
         return m_estDistance;
+    }
+
+    /**
+     * @return la liste des armes possibles à créer
+     */
+    public static HashMap<ListeEquipements, Object[]> getListeArmes() {
+        return listeArmes;
     }
 }

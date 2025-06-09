@@ -4,7 +4,6 @@ import DeroulementDuDonjon.Donjon;
 import Entite.Equipement.Arme;
 import Entite.Equipement.Armure;
 import Entite.Equipement.ListeEquipements;
-import Entite.TypeEntite;
 import Entite.Entite;
 import Entite.Equipement.Equipement;
 import Entite.Monstres.Monstre;
@@ -24,6 +23,7 @@ public class MeneurDeJeu {
     private List<Personnage> m_joueurs;
     private List<Monstre> m_monstres;
     private List<Equipement> m_equipements;
+    private Map<String, Equipement> m_equipementsSurCarte = new HashMap<>();
     private HashMap<Entite, Integer> m_JoueursEtMonstresInitiative;
     private HashMap<Entite, Integer> m_OrdreJoueurs = new HashMap<Entite,Integer>();
     private Affichage affichage = new Affichage();
@@ -37,6 +37,11 @@ public class MeneurDeJeu {
     }
 
     // ===================== MÉTHODES POUR DONJON =====================
+    /**
+     * Gère l'intégralité de la création d'un donjon : personnages, monstres,
+     * obstacles, équipements, placement et ordre de jeu.
+     * @param donjon Le donjon à configurer.
+     */
     public void creerDonjon(Donjon donjon) {
         Affichage affichage = new Affichage();
         Scanner scanner = new Scanner(System.in);
@@ -51,9 +56,13 @@ public class MeneurDeJeu {
         creationMonstresPartie();
         affichage.transition();
 
+        affichage.DDAfficherMessageAvecEntree("\nMDJ, créez les équipements!\nCombien d'équipements souhaitez-vous créer ? (max 3)");
+        creationEquipementsPartie();
+        affichage.transition();
+
         int choix = -1;
         while (choix != 1 && choix != 2) {
-            affichage.DDAfficherMessage("\nMDJ, souhaitez vous utiliser:\n1 - un donjon pré-fait\n2 - en créer un vous même");
+            affichage.DDAfficherMessageAvecEntree("\nMDJ, souhaitez vous utiliser:\n1 - un donjon pré-fait\n2 - en créer un vous même");
             choix = scanner.nextInt();
         }
 
@@ -71,12 +80,13 @@ public class MeneurDeJeu {
                 choixPlacementMonstre(donjon);
                 affichage.transition();
 
+                affichage.DDAfficherMessage("\nMDJ, où souhaitez-vous placer les équipements ?");
+                choixPlacementEquipement(donjon);
+                affichage.transition();
+
                 affichage.DDAfficherMessage("\nMDJ, combien d'obstacles souhaitez-vous placer votre donjon ?");
                 creerObstacles(donjon);
                 affichage.transition();
-
-                affichage.DDAfficherMessage("\nMDJ combien d'équipements souhaitez-vous placer dans votre donjon ?");
-                choixPlacementEquipement(donjon);
             }
         }
 
@@ -88,13 +98,17 @@ public class MeneurDeJeu {
         affichage.afficherOrdre(this);
     }
 
+    /**
+     * Génère un donjon avec un placement automatique des entités (pré-fait).
+     * @param donjon Donjon à configurer automatiquement.
+     */
     public void donjonPrefait(Donjon donjon)
     {
         int x = 9;
         int y = 9;
         for(int i = 0; i < m_joueurs.size();i++)
         {
-            this.placerJoueur(donjon,m_joueurs.get(i),x,y);
+            this.placerPersonnage(donjon,m_joueurs.get(i),x,y);
             y+=1;
         }
         for(int i = 0; i < m_monstres.size();i++)
@@ -129,7 +143,7 @@ public class MeneurDeJeu {
         Scanner scanner = new Scanner(System.in);
         Affichage affichage = new Affichage();
 
-        affichage.mdjAfficherMessageAvecEntree("Quel est votre nom ?");
+        affichage.mdjAfficherMessageAvecEntree("\nQuel est votre nom ?");
         String nom = scanner.nextLine();
 
         affichage.mdjAfficherMessageAvecEntree("\nQuelle est votre race :\n1 - Humain | 2 - Nain | 3 - Elfe | 4 - Halfelin");
@@ -166,8 +180,9 @@ public class MeneurDeJeu {
             int y = -1;
             Boolean caseLibre = false;
             while (!caseLibre) {
-                affichage.DDAfficherMessage("Entrez les coordonnées pour placer le joueur suivant : " + m_joueurs.get(i).getNom() + " (Y, puis X):");
+                affichage.DDAfficherMessageAvecEntree("Entrez les coordonnées pour placer le joueur suivant : " + m_joueurs.get(i).getNom() + " (Y, puis X):");
                 x = affichage.verifInt();
+                affichage.afficherMessage("> ");
                 y = affichage.verifInt();
                 if (donjon.getCase(x, y).equals("."))
                     caseLibre = true;
@@ -176,11 +191,24 @@ public class MeneurDeJeu {
                     affichage.afficherErreur("Erreur : cette case est occupée !");
                 }
             }
-            this.placerJoueur(donjon, this.m_joueurs.get(i), x, y);
+            this.placerPersonnage(donjon, this.m_joueurs.get(i), x, y);
 
             affichage.DDAfficherMessage("\n\nCarte mise à jour:\n");
             affichage.afficherDonjon(donjon);
         }
+    }
+
+    /**
+     * Place un équipement sur une case spécifique du donjon.
+     * @param donjon Donjon ciblé.
+     * @param personnage Personnage à placer.
+     * @param x Coordonnée X.
+     * @param y Coordonnée Y.
+     * @return true si le placement a réussi, false sinon.
+     */
+    public boolean placerPersonnage(Donjon donjon, Personnage personnage, int x, int y)
+    {
+        return donjon.placerJoueur(personnage, x, y);
     }
 
     // ===================== MÉTHODES POUR MONSTRE =====================
@@ -208,7 +236,7 @@ public class MeneurDeJeu {
         int numero = m_monstres.size() +1;
         Scanner scanner = new Scanner(System.in);
 
-        affichage.DDAfficherMessageAvecEntree("Quelle espèce souhaitez vous donner à votre monstre ?");
+        affichage.DDAfficherMessageAvecEntree("\nQuelle espèce souhaitez vous donner à votre monstre ?");
         String espece = scanner.nextLine();
 
         affichage.DDAfficherMessageAvecEntree("Quelle portée souhaitez vous donner à votre monstre ?");
@@ -240,7 +268,7 @@ public class MeneurDeJeu {
     }
 
     /**
-     * Permet au MDJ de placer les monstres joueurs manuellement sur la carte.
+     * Permet au MDJ de placer les monstres manuellement sur la carte.
      * @param donjon Le donjon dans lequel les monstres sont placés.
      */
     public void choixPlacementMonstre(Donjon donjon) {
@@ -249,8 +277,9 @@ public class MeneurDeJeu {
             int y = -1;
             Boolean caseLibre = false;
             while (!caseLibre) {
-                affichage.mdjAfficherMessageAvecEntree("Entrez les coordonnées pour placer le monstre suivant : " + m_monstres.get(i).getNom() + " (Y, PUIS X):");
+                affichage.DDAfficherMessageAvecEntree("Entrez les coordonnées pour placer le monstre suivant : " + m_monstres.get(i).getNom() + " (Y, PUIS X):");
                 x = affichage.verifInt();
+                affichage.afficherMessage("> ");
                 y = affichage.verifInt();
                 if (donjon.getCase(x, y).equals("."))
                     caseLibre = true;
@@ -266,6 +295,19 @@ public class MeneurDeJeu {
         }
     }
 
+    /**
+     * Place un équipement sur une case spécifique du donjon.
+     * @param donjon Donjon ciblé.
+     * @param monstre Monstre à placer.
+     * @param x Coordonnée X.
+     * @param y Coordonnée Y.
+     * @return true si le placement a réussi, false sinon.
+     */
+    public boolean placerMonstre(Donjon donjon,Monstre monstre, int x, int y)
+    {
+        return donjon.placerMonstre(monstre,x,y);
+    }
+
     // ===================== MÉTHODES POUR ÉQUIPEMENT =====================
     /**
      * Crée l'ensemble des équipements à partir des saisies utilisateurs.
@@ -276,89 +318,79 @@ public class MeneurDeJeu {
         for (int i = 0; i < nb_equipements; i++) {
             affichage.afficherMessage("\nEQUIPEMENT " + (i+1) + "/" + nb_equipements + " :");
             this.m_equipements.add(creationEquipement());
-            affichage.mdjAfficherMessage("\nAttention, " + m_equipements.get(i).getNom() + " arrive !\n");
+            affichage.mdjAfficherMessage("\nOh, " + m_equipements.get(i).getNom() + " est trouvable dans le donjon !\n");
             affichage.afficherMessage(m_equipements.get(i).toString());
             affichage.transition();
         }
     }
 
+    /**
+     * Crée l'équipement choisi par le MDJ.
+     * @return Le monstre créé.
+     */
     public Equipement creationEquipement()
     {
         Scanner scanner = new Scanner(System.in);
 
         ListeEquipements[] equipementsDisponibles = ListeEquipements.values();
-        affichage.DDAfficherMessage("Voici la liste des équipements disponibles :");
+        affichage.DDAfficherMessage("\nVoici la liste des équipements disponibles :");
 
         for (int i = 0; i < equipementsDisponibles.length; i++) {
-            affichage.DDAfficherMessage(i + " - " + equipementsDisponibles[i].name());
+            affichage.DDAfficherMessage(i+1 + " - " + equipementsDisponibles[i].name());
         }
 
         int choix = -1;
-        while (choix < 0 || choix >= equipementsDisponibles.length) {
+        while (choix < 0 || choix >= equipementsDisponibles.length + 1) {
             affichage.DDAfficherMessageAvecEntree("Entrez le numéro de l'équipement que vous souhaitez créer :");
-            choix = affichage.verifInt();
-            if ((choix < 0 || choix >= equipementsDisponibles.length))
+            choix = affichage.verifInt() - 1;
+            if ((choix < 0 || choix >= equipementsDisponibles.length + 1))
                 affichage.afficherErreur("Choix invalide. Veuillez réessayer.");
-            creationEquipement();
         }
 
         ListeEquipements equipementACreer = equipementsDisponibles[choix];
+        Equipement nouveauEquipement;
 
-        Equipement equipementCree = null;
-        if (Arme.creerArme(equipementACreer) != null) {
-            equipementCree = Arme.creerArme(equipementACreer);
-        } else if (Armure.creerArmure(equipementACreer) != null) {
-            equipementCree = Armure.creerArmure(equipementACreer);
-        }
-
-        if (equipementCree != null) {
-            m_equipements.add(equipementCree);
-            affichage.DDAfficherMessage("Équipement ajouté :\n" + equipementCree);
+        if (Arme.getListeArmes().containsKey(equipementACreer)) {
+            nouveauEquipement = Arme.creerArme(equipementACreer);
         } else {
-            affichage.afficherErreur("Erreur lors de la création de l'équipement.");
+            nouveauEquipement = Armure.creerArmure(equipementACreer);
         }
-        return equipementCree;
+
+        return nouveauEquipement;
     }
 
+    /**
+     * Permet au MDJ de placer les équipements manuellement sur la carte.
+     * @param donjon Le donjon dans lequel les monstres sont placés.
+     */
     public void choixPlacementEquipement(Donjon donjon)
     {
-        Scanner scanner = new Scanner(System.in);
-        for(int i = 0; i < m_equipements.size();i++)
-        {
-            affichage.DDAfficherMessage("Meneur de jeu, où souhaitez vous placer l'arme: "+m_equipements.get(i).getNom()+". Y puis X");
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
-            m_equipements.get(i).setCoordonnees(x,y);
-            m_equipements.add(i,m_equipements.get(i));
-            donjon.changeCase(x,y,"*");
-        }
-    }
+        for (int i = 0; i < m_equipements.size(); i++) {
+            int x = -1;
+            int y = -1;
+            Boolean caseLibre = false;
+            while (!caseLibre) {
+                affichage.DDAfficherMessageAvecEntree("Entrez les coordonnées pour placer l'équipement suivant : " + m_equipements.get(i).getNom() + " (Y, PUIS X):");
+                x = affichage.verifInt();
+                affichage.afficherMessage("> ");
+                y = affichage.verifInt();
+                if (donjon.getCase(x, y).equals("."))
+                    caseLibre = true;
+                else {
+                    caseLibre = false;
+                    affichage.afficherErreur("Erreur : cette case est occupée !");
+                }
+            }
+            this.placerEquipement(donjon, this.m_equipements.get(i), x, y);
 
-
-    public void creerObstacles(Donjon donjon) {
-        int nb_obstacles = affichage.verifInt();
-        for (int i = 0; i < nb_obstacles; i++) {
-            affichage.afficherMessage("\nOBSTACLE " + (i+1) +"/" + nb_obstacles +" :");
-            affichage.DDAfficherMessage("Où voulez-vous placer l'obstacle? (Y puis X)");
-            int x = affichage.verifInt();
-            int y = affichage.verifInt();
-            this.placerObstacle(donjon, x, y);
-            affichage.DDAfficherMessage("\n\nCarte mise à jour : \n");
+            affichage.DDAfficherMessage("\n\nCarte mise à jour:\n");
             affichage.afficherDonjon(donjon);
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Permet au MDJ de créer un nouvel équipement.
+     */
     public void creationNouvelEquipementDonjon()
     {
         Scanner scanner = new Scanner(System.in);
@@ -378,31 +410,58 @@ public class MeneurDeJeu {
             if(lourdelegere == 2){estlourde = false;}
             Arme a = new Arme(nom,degats,portee,estlourde);
         }
-
     }
 
+    /**
+     * Place un équipement sur une case spécifique du donjon.
+     * @param donjon Donjon ciblé.
+     * @param equipement Équipement à placer.
+     * @param x Coordonnée X.
+     * @param y Coordonnée Y.
+     * @return true si le placement a réussi, false sinon.
+     */
+    public boolean placerEquipement(Donjon donjon, Equipement equipement, int x, int y)
+    {
+        m_equipementsSurCarte.put(x + "-" + y, equipement);
+        return donjon.placerEquipement(equipement, x,y);
+    }
+
+
+    // ===================== MÉTHODES POUR OBSTACLES =====================
+    /**
+     * Permet au MJ de créer un certain nombre d'obstacles dans le donjon.
+     * @param donjon Le donjon concerné.
+     */
+    public void creerObstacles(Donjon donjon) {
+        int nb_obstacles = affichage.verifInt();
+        for (int i = 0; i < nb_obstacles; i++) {
+            affichage.afficherMessage("\nOBSTACLE " + (i+1) +"/" + nb_obstacles +" :");
+            affichage.DDAfficherMessageAvecEntree("\nOù voulez-vous placer l'obstacle? (Y puis X)");
+            int x = affichage.verifInt();
+            affichage.afficherMessage("> ");
+            int y = affichage.verifInt();
+            this.placerObstacle(donjon, x, y);
+            affichage.DDAfficherMessage("\n\nCarte mise à jour : \n");
+            affichage.afficherDonjon(donjon);
+        }
+    }
+
+    /**
+     * Place un obstacle sur une case spécifique du donjon.
+     * @param donjon Donjon ciblé.
+     * @param x Coordonnée X.
+     * @param y Coordonnée Y.
+     * @return true si le placement a réussi, false sinon.
+     */
     public Boolean placerObstacle(Donjon donjon, int x, int y)
     {
         return donjon.placerObstacle(x, y);
     }
 
-    public boolean placerJoueur(Donjon donjon, Personnage personnage, int x, int y)
-    {
-        return donjon.placerJoueur(personnage, x, y);
-    }
-
-    public boolean placerMonstre(Donjon donjon,Monstre monstre, int x, int y)
-    {
-        return donjon.placerMonstre(monstre,x,y);
-    }
-
-    public boolean placerEquipement(Donjon donjon, Equipement equipement, int x, int y)
-    {
-        return donjon.placerEquipement(equipement, x,y);
-    }
-
-
-    //FONCTION POUR DETERMINER L'ORDRE DE JEUUUUUUUUUUUUUUUUUUUU
+    // ===================== MÉTHODES POUR ÉTAT DU JEU =====================
+    /**
+     * Calcule l'ordre de jeu des entités selon leur initiative et un lancer de dé.
+     */
     public void determinerOrdre() {
         m_JoueursEtMonstresInitiative = new HashMap<>();
         Dice de = new Dice();
@@ -429,8 +488,11 @@ public class MeneurDeJeu {
         }
     }
 
-
-    //fonction pour savoir si tt les joueurs sont encore en vie
+    /**
+     * Vérifie si tous les joueurs sont encore en vie.
+     * @param donjon Le donjon contenant les entités.
+     * @return true s'il reste au moins un joueur en vie, false sinon.
+     */
     public boolean joueursEnVie(Donjon donjon)
     {
         for(int i = 0; i < m_joueurs.size();i++)
@@ -443,6 +505,11 @@ public class MeneurDeJeu {
         return true;
     }
 
+    /**
+     * Vérifie si tous les monstres sont encore en vie et marque les morts sur la carte.
+     * @param donjon Le donjon contenant les entités.
+     * @return true s'il reste au moins un monstre en vie, false sinon.
+     */
     public boolean monstresEnVie(Donjon donjon)
     {
         int count = 0;
@@ -464,10 +531,27 @@ public class MeneurDeJeu {
         return true;
     }
 
+    // ===================== GETTERS =====================
+    /**
+     * Accesseur de la liste des personnages joueurs.
+     * @return Liste des joueurs.
+     */
     public List<Personnage> getJoueurs(){return m_joueurs;}
 
+    /**
+     * Accesseur de la liste des monstres du donjon.
+     * @return Liste des monstres.
+     */
     public List<Monstre> getMonstres(){return m_monstres;}
 
+    public Map<String, Equipement> getEquipementsSurCarte() {
+        return m_equipementsSurCarte;
+    }
+
+    /**
+     * Accesseur de l'ordre de jeu des entités.
+     * @return HashMap contenant l'ordre de jeu.
+     */
     public HashMap<Entite,Integer> getOrdre(){return m_OrdreJoueurs;}
 
 }

@@ -5,6 +5,7 @@ import Dice.Dice;
 import Entite.Personnages.*;
 import Entite.TypeEntite;
 import Entite.Entite;
+import affichage.Affichage;
 
 import java.util.Scanner;
 
@@ -85,7 +86,7 @@ public class Monstre extends Entite {
             return "Vous avez infligé " + degats + " au joueur " + cible.getNom();
         }
         else {
-            return "Vous êtes faible, vous n'avez infligé aucun dégât...";
+            return "Vous êtes faible, votre puissance est de " + puissance + ", le personnage à une protection de " + cible.getArmureEquipee().getClasseArmure();
         }
     }
 
@@ -94,8 +95,9 @@ public class Monstre extends Entite {
      * @return chaîne
      */
     public String seDeplacer(Donjon donjon){
+        Affichage affichage = new Affichage();
         Scanner scanner = new Scanner(System.in);
-        int nbCases = m_vitesse / 3;
+        int nbCases = getVitesse() / 3;
 
         int xActuel = getX();
         int yActuel = getY();
@@ -108,8 +110,9 @@ public class Monstre extends Entite {
         int yNew = -1;
 
         try {
-            System.out.print("\nEntrez les coordonnées X puis Y : ");
+            affichage.mdjAfficherMessageAvecEntree("\nEntrez les coordonnées X puis Y : ");
             xNew = Integer.parseInt(scanner.nextLine());
+            affichage.afficherMessage("> ");
             yNew = Integer.parseInt(scanner.nextLine());
 
             if (xNew < xMin || xNew > xMax || yNew < yMin || yNew > yMax) {

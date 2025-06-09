@@ -4,6 +4,7 @@ import Dice.*;
 import DeroulementDuDonjon.Donjon;
 import Entite.Monstres.Monstre;
 import Entite.Personnages.Personnage;
+import affichage.Affichage;
 
 import java.util.List;
 import java.util.Scanner;
@@ -16,9 +17,12 @@ public class Guerison extends Sort {
     @Override
     public String lancer(Personnage lanceur, Donjon donjon, List<Personnage> persos, List<Monstre> monstres) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Qui souhaitez-vous soigner ? (donnez un numéro)");
+        Affichage affichage = new Affichage();
+
+        affichage.mdjAfficherMessage("Qui souhaitez-vous soigner ? (donnez un numéro)");
         for (int i = 0; i < persos.size(); i++)
-            System.out.println((i+1) + " - " + persos.get(i).getNom());
+            affichage.mdjAfficherMessage((i+1) + " - " + persos.get(i).getNom());
+        affichage.mdjAfficherMessage("> ");
         int choix = Integer.parseInt(sc.nextLine()) - 1;
 
         Personnage cible = persos.get(choix);
@@ -29,6 +33,6 @@ public class Guerison extends Sort {
         int nouveauPV = Math.min(pvAvant + soin, pvMax);
         cible.getStats().setPV(nouveauPV);
 
-        return cible.getNom() + " a été soigné de " + (nouveauPV - pvAvant) + " PV.\nPV actuels : " + cible.getStats().getPVInitial();
+        return cible.getNom() + " a été soigné de " + (nouveauPV - pvAvant) + " PV.\nPV actuels : " + cible.getStats().getPV() + "/" + cible.getStats().getPVInitial();
     }
 }

@@ -6,6 +6,7 @@ import Entite.Equipement.Arme;
 import Entite.Equipement.Equipement;
 import Entite.Monstres.Monstre;
 import Entite.Personnages.Personnage;
+import affichage.Affichage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +20,13 @@ public class ArmeMagique extends Sort {
     @Override
     public String lancer(Personnage lanceur, Donjon donjon, List<Personnage> persos, List<Monstre> monstres) {
         Scanner sc = new Scanner(System.in);
+        Affichage affichage = new Affichage();
 
-        System.out.println("Quel personnage ? ");
+        affichage.mdjAfficherMessage("L'arme auquel personnage souhaitez-vous améliorer ? ");
         for (int i = 0; i < persos.size(); i++)
-            System.out.println((i+1) + " - " + persos.get(i).getNom());
+            affichage.mdjAfficherMessage((i+1) + " - " + persos.get(i).getNom());
         int choixPerso = Integer.parseInt(sc.nextLine()) - 1;
+        affichage.afficherMessage("> ");
         Personnage cible = persos.get(choixPerso);
 
         List<Equipement> inventaire = cible.getInventaire();
@@ -37,13 +40,13 @@ public class ArmeMagique extends Sort {
         if (cible.getArmeEquipee() != null)
             armes.add(cible.getArmeEquipee());
 
-
+        affichage.mdjAfficherMessage("Voici ses armes :");
         for (int i = 0; i < armes.size(); i++)
-            System.out.println((i+1) + " - " + armes.get(i).getNom());
-        System.out.println("Quelle arme voulez-vous améliorer ?");
+            affichage.mdjAfficherMessageAvecEntree((i+1) + " - " + armes.get(i).getNom());
+        affichage.mdjAfficherMessageAvecEntree("Quelle arme voulez-vous améliorer ?");
         int choixArme = Integer.parseInt(sc.nextLine()) - 1;
         Arme arme = armes.get(choixArme);
-        //arme.ameliorer();
+        arme.ameliorer();
 
         return "L’arme " + arme.getNom() + " a été améliorée !";
     }

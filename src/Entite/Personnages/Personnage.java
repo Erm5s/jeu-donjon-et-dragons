@@ -2,6 +2,7 @@ package Entite.Personnages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import Entite.Personnages.Sorts.*;
@@ -11,6 +12,7 @@ import Entite.Monstres.*;
 import Entite.Equipement.*;
 import Dice.Dice;
 import Entite.Personnages.Sorts.Sort;
+import affichage.Affichage;
 
 /**
  * Représente un personnage jouable dans le donjon
@@ -106,6 +108,7 @@ public class Personnage extends Entite {
      * @return chaîne indiquant sa nouvelle position dans le donjon
      */
     public String seDeplacer(Donjon donjon) {
+        Affichage affichage = new Affichage();
         Scanner scanner = new Scanner(System.in);
         int nbCases = getStats().getVitesse() / 3;
 
@@ -120,8 +123,9 @@ public class Personnage extends Entite {
         int yNew = -1;
 
     try {
-        System.out.print("\nEntrez les coordonnées X puis Y : ");
+        affichage.mdjAfficherMessageAvecEntree("\nEntrez les coordonnées X puis Y : ");
         xNew = Integer.parseInt(scanner.nextLine());
+        affichage.afficherMessage("> ");
         yNew = Integer.parseInt(scanner.nextLine());
 
         if (xNew < xMin || xNew > xMax || yNew < yMin || yNew > yMax) {
@@ -160,16 +164,16 @@ public class Personnage extends Entite {
 
         Dice de = new Dice();
         int jet = de.lancer("1d20");
-        int bonus = m_armeEquipee.getEstDistance() ? m_stats.getDexterite() : m_stats.getForce();
+        int bonus = m_armeEquipee.getEstDistance() ? m_stats.getDexterite() + getArmeEquipee().getBonusDegats() : m_stats.getForce() + getArmeEquipee().getBonusDegats();
         int puissance = jet + bonus;
         if (puissance > cible.getClasseArmure()) {
             Dice deDegat = new Dice();
-            int degats = deDegat.lancer(m_armeEquipee.getDegats());
+            int degats = deDegat.lancer(m_armeEquipee.getDegats()) + getArmeEquipee().getBonusDegats();
             cible.retirerPV(degats);
             return "Vous avez infligé " + degats + " au monstre " + cible.getNom();
         }
         else {
-            return "Vous êtes faible, vous n'avez infligé aucun dégât...";
+            return "Vous êtes faible, votre puissance est de " + puissance + ", le monstre à une protection de " + cible.getClasseArmure();
         }
     }
 
@@ -178,13 +182,17 @@ public class Personnage extends Entite {
      * @param donjon donjon dans lequel se trouve le joueur
      * @return chaîne indiquant l'équipement ramassé
      */
-    public String ramasser(Donjon donjon){
-        if (donjon.getCase(getX(), getY()) == "*")
+    public String ramasser(Donjon donjon, Map<String, Equipement> equipementsSurCarte){
+        int x = getX();
+        int y = getY();
+        String key = x + "-" + y;
+        if (donjon.getCase(getX(), getY()).equals("*") && equipementsSurCarte.containsKey(key))
         {
-            // deplacer les print
-            System.out.println("Vous pouvez ramasser l'arme");
+            Equipement e = equipementsSurCarte.get(key);
+            m_inventaire.add(e);
+            return "Vous avez ramassé : " + e.getNom();
         }
-        return "";
+        return "Erreur : Il n'y a rien à ramasser sur cette case";
     }
 
     /**
