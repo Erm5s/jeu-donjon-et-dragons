@@ -1,6 +1,6 @@
-import DeroulementDuDonjon.Donjon;
-import MeneurDeJeu.MeneurDeJeu;
-import DeroulementDuDonjon.Tour;
+import deroulementDuDonjon.Donjon;
+import meneurDeJeu.MeneurDeJeu;
+import deroulementDuDonjon.Tour;
 public class Main
 {
     public static void main(String args[])

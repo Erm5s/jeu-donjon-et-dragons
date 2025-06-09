@@ -1,12 +1,12 @@
 package affichage;
 
-import DeroulementDuDonjon.Donjon;
-import Entite.Entite;
-import Entite.Equipement.Equipement;
-import Entite.Monstres.Monstre;
-import Entite.Personnages.Personnage;
-import Entite.TypeEntite;
-import MeneurDeJeu.MeneurDeJeu;
+import deroulementDuDonjon.Donjon;
+import entite.Entite;
+import entite.equipements.Equipement;
+import entite.monstres.Monstre;
+import entite.personnages.Personnage;
+import entite.TypeEntite;
+import meneurDeJeu.MeneurDeJeu;
 
 
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package Entite.Equipement;
+package entite.equipements;
 
 /**
  * Énumération représentant la liste de tous les équipements disponibles dans le jeu.

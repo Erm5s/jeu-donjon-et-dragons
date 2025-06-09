@@ -1,4 +1,4 @@
-package Entite.Personnages;
+package entite.personnages;
 
 /**
  * Énumération des différentes classes disponibles pour les personnages.

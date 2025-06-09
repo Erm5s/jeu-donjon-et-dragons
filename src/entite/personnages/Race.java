@@ -1,4 +1,4 @@
-package Entite.Personnages;
+package entite.personnages;
 
 /**
  * Énumeration ses différentes races disponibles pour les personnages jouables.

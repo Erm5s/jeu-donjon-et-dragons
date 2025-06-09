@@ -1,14 +1,14 @@
-package DeroulementDuDonjon;
+package deroulementDuDonjon;
 
-import Entite.Entite;
-import Entite.Monstres.Monstre;
-import Entite.Personnages.Classe;
-import Entite.Personnages.Personnage;
-import Entite.Personnages.Sorts.ArmeMagique;
-import Entite.Personnages.Sorts.BoogieWoogie;
-import Entite.Personnages.Sorts.Guerison;
-import Entite.TypeEntite;
-import MeneurDeJeu.MeneurDeJeu;
+import entite.Entite;
+import entite.monstres.Monstre;
+import entite.personnages.Classe;
+import entite.personnages.Personnage;
+import entite.personnages.sorts.ArmeMagique;
+import entite.personnages.sorts.BoogieWoogie;
+import entite.personnages.sorts.Guerison;
+import entite.TypeEntite;
+import meneurDeJeu.MeneurDeJeu;
 import affichage.*;
 
 import java.util.Scanner;

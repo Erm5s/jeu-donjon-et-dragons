@@ -1,9 +1,9 @@
-package DeroulementDuDonjon;
+package deroulementDuDonjon;
 
 
-import Entite.Personnages.Personnage;
-import Entite.Monstres.Monstre;
-import Entite.Equipement.Equipement;
+import entite.personnages.Personnage;
+import entite.monstres.Monstre;
+import entite.equipements.Equipement;
 
 /**
  * Classe représentant un Donjon sous forme de grille 25x25.

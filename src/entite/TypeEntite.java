@@ -1,4 +1,4 @@
-package Entite;
+package entite;
 
 public enum TypeEntite {
     PERSONNAGE,

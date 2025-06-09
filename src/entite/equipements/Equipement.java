@@ -1,6 +1,6 @@
-package Entite.Equipement;
+package entite.equipements;
 
-import Entite.Entite;
+import entite.Entite;
 
 /**
  * Classe abstraite représentant un équipement générique (arme, armure).

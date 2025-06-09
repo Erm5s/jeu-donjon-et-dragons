@@ -1,17 +1,17 @@
-package Entite.Personnages;
+package entite.personnages;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import Entite.Personnages.Sorts.*;
-import DeroulementDuDonjon.Donjon;
-import Entite.*;
-import Entite.Monstres.*;
-import Entite.Equipement.*;
-import Dice.Dice;
-import Entite.Personnages.Sorts.Sort;
+import entite.personnages.sorts.*;
+import deroulementDuDonjon.Donjon;
+import entite.*;
+import entite.monstres.*;
+import entite.equipements.*;
+import dice.Dice;
+import entite.personnages.sorts.Sort;
 import affichage.Affichage;
 
 /**

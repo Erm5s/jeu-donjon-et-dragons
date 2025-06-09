@@ -1,6 +1,6 @@
-package Entite.Equipement;
+package entite.equipements;
 
-import Entite.TypeEntite;
+import entite.TypeEntite;
 
 import java.util.HashMap;
 /**

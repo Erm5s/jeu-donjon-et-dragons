@@ -1,5 +1,5 @@
-package Entite.Personnages;
-import Dice.Dice;
+package entite.personnages;
+import dice.Dice;
 
 /**
  * Classe représentant les caractéristiques d’un personnage (PV, force, vitesse...)

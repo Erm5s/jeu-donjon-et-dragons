@@ -1,4 +1,4 @@
-package Entite;
+package entite;
 
 /**
  * Classe abstraite représentant une entité positionnée dans le donjon (joueur, monstre, etc.).

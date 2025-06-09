@@ -1,11 +1,11 @@
-package Entite.Personnages.Sorts;
+package entite.personnages.sorts;
 
-import Entite.TypeEntite;
-import DeroulementDuDonjon.Donjon;
-import Entite.Equipement.Arme;
-import Entite.Equipement.Equipement;
-import Entite.Monstres.Monstre;
-import Entite.Personnages.Personnage;
+import entite.TypeEntite;
+import deroulementDuDonjon.Donjon;
+import entite.equipements.Arme;
+import entite.equipements.Equipement;
+import entite.monstres.Monstre;
+import entite.personnages.Personnage;
 import affichage.Affichage;
 
 import java.util.ArrayList;

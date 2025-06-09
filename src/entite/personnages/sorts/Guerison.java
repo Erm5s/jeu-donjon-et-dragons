@@ -1,9 +1,9 @@
-package Entite.Personnages.Sorts;
+package entite.personnages.sorts;
 
-import Dice.*;
-import DeroulementDuDonjon.Donjon;
-import Entite.Monstres.Monstre;
-import Entite.Personnages.Personnage;
+import dice.*;
+import deroulementDuDonjon.Donjon;
+import entite.monstres.Monstre;
+import entite.personnages.Personnage;
 import affichage.Affichage;
 
 import java.util.List;

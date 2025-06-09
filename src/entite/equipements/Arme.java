@@ -1,10 +1,8 @@
-package Entite.Equipement;
+package entite.equipements;
 
-import Entite.TypeEntite;
+import entite.TypeEntite;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Classe représentant une arme dans le jeu

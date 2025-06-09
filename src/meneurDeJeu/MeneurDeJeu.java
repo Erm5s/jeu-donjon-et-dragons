@@ -1,16 +1,16 @@
-package MeneurDeJeu;
+package meneurDeJeu;
 
-import DeroulementDuDonjon.Donjon;
-import Entite.Equipement.Arme;
-import Entite.Equipement.Armure;
-import Entite.Equipement.ListeEquipements;
-import Entite.Entite;
-import Entite.Equipement.Equipement;
-import Entite.Monstres.Monstre;
-import Entite.Personnages.Classe;
-import Entite.Personnages.Personnage;
-import Entite.Personnages.Race;
-import Dice.Dice;
+import deroulementDuDonjon.Donjon;
+import entite.equipements.Arme;
+import entite.equipements.Armure;
+import entite.equipements.ListeEquipements;
+import entite.Entite;
+import entite.equipements.Equipement;
+import entite.monstres.Monstre;
+import entite.personnages.Classe;
+import entite.personnages.Personnage;
+import entite.personnages.Race;
+import dice.Dice;
 import affichage.*;
 
 import java.util.*;

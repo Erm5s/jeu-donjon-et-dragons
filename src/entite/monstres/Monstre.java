@@ -1,10 +1,10 @@
-package Entite.Monstres;
+package entite.monstres;
 
-import DeroulementDuDonjon.Donjon;
-import Dice.Dice;
-import Entite.Personnages.*;
-import Entite.TypeEntite;
-import Entite.Entite;
+import deroulementDuDonjon.Donjon;
+import dice.Dice;
+import entite.personnages.*;
+import entite.TypeEntite;
+import entite.Entite;
 import affichage.Affichage;
 
 import java.util.Scanner;
